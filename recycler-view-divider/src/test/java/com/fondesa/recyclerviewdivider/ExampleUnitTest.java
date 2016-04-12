@@ -1,4 +1,4 @@
-package com.fondesa.recycler_view_divider;
+package com.fondesa.recyclerviewdivider;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.fondesa.recycler_view_divider;
+package com.fondesa.recyclerviewdivider;
 
 import android.content.res.Resources;
 import android.graphics.Canvas;
