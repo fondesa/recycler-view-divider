@@ -8,7 +8,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 23
         versionCode Integer.parseInt(new Date().format("yyMMddHHmm"))
-        versionName LIBRARY_VERSION
+        versionName "1.0.0"
     }
     buildTypes {
         release {
@@ -25,26 +25,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.3.0'
 }
 
-ext {
-    bintrayRepo = BINTRAY_REPO
-    bintrayName = BINTRAY_NAME
-
-    publishedGroupId = BINTRAY_GROUP_ID
-    libraryName = LIBRARY_NAME
-    artifact = ARTIFACT_ID
-
-    libraryDescription = LIBRARY_DESCRIPTION
-
-    siteUrl = SITE_URL
-    gitUrl = GIT_URL
-
-    libraryVersion = LIBRARY_VERSION
-
-    developerId = BINTRAY_DEVELOPER_ID
-    developerName = BINTRAY_DEVELOPER_NAME
-    developerEmail = BINTRAY_DEVELOPER_MAIL
-
-    licenseName = BINTRAY_LICENSE_NAME
-    licenseUrl = BINTRAY_LICENSE_URL
-    allLicenses = [BINTRAY_LICENSE_ID]
-}
+apply from: "${rootDir}/gradle/scripts/bintray_uploader.gradle"
+apply from: "${rootDir}/gradle/scripts/pom_generator.gradle"

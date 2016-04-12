@@ -62,4 +62,4 @@ crashlytics-build.properties
 .log
 
 app/keystore.properties
-gradle.properties
+bintray.properties

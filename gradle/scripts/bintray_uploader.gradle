@@ -1,0 +1,66 @@
+apply plugin: 'com.jfrog.bintray'
+
+Properties global = new Properties()
+global.load(new File("D:/Gradle/bintray.properties").newDataInputStream())
+
+Properties local = new Properties()
+local.load(new File("${project.rootDir}/bintray.properties").newDataInputStream())
+
+version = local.getProperty("bintray.library.version")
+
+if (project.hasProperty("android")) {
+    // Android libraries
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        //noinspection GroovyAssignabilityCheck
+        from android.sourceSets.main.java.srcDirs
+    }
+
+    task javadoc(type: Javadoc) {
+        source = android.sourceSets.main.java.srcDirs
+        //noinspection GroovyAssignabilityCheck
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    }
+} else {
+    // Java libraries
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    //noinspection GroovyAccessibility
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+bintray {
+    user = global.getProperty("bintray.username")
+    key = global.getProperty("bintray.apikey")
+
+    configurations = ['archives']
+    pkg {
+        repo = global.getProperty("bintray.repo")
+        name = local.getProperty("bintray.name")
+        desc = local.getProperty("bintray.library.description")
+        websiteUrl = local.getProperty("bintray.site.url")
+        vcsUrl = local.getProperty("bintray.git.url")
+        licenses = [local.getProperty("bintray.license.id")]
+        publish = true
+        publicDownloadNumbers = true
+        //noinspection GroovyAssignabilityCheck
+        version {
+            desc = local.getProperty("bintray.library.description")
+            gpg {
+                sign = true
+                passphrase = global.getProperty("bintray.gpg.password")
+            }
+        }
+    }
+}
