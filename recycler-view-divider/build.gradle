@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0.0"
+        versionCode Integer.parseInt(new Date().format("yyMMddHHmm"))
+        versionName LIBRARY_VERSION
     }
     buildTypes {
         release {
@@ -25,26 +25,26 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.3.0'
 }
 
-//ext {
-//    bintrayRepo = BINTRAY_REPO
-//    bintrayName = 'recycler-view-divider'
-//
-//    publishedGroupId = BINTRAY_GROUP_ID
-//    libraryName = 'RecyclerViewDivider'
-//    artifact = 'recycler-view-divider'
-//
-//    libraryDescription = 'A simple library that creates a divider for a RecyclerView'
-//
-//    siteUrl = 'https://github.com/nuuneoi/FBLikeAndroid'
-//    gitUrl = 'https://github.com/nuuneoi/FBLikeAndroid.git'
-//
-//    libraryVersion = '0.9.3'
-//
-//    developerId = BINTRAY_DEVELOPER_ID
-//    developerName = BINTRAY_DEVELOPER_NAME
-//    developerEmail = BINTRAY_DEVELOPER_MAIL
-//
-//    licenseName = BINTRAY_LICENSE_NAME
-//    licenseUrl = BINTRAY_LICENSE_URL
-//    allLicenses = [BINTRAY_LICENSE_ID]
-//}
+ext {
+    bintrayRepo = BINTRAY_REPO
+    bintrayName = BINTRAY_NAME
+
+    publishedGroupId = BINTRAY_GROUP_ID
+    libraryName = LIBRARY_NAME
+    artifact = ARTIFACT_ID
+
+    libraryDescription = LIBRARY_DESCRIPTION
+
+    siteUrl = SITE_URL
+    gitUrl = GIT_URL
+
+    libraryVersion = LIBRARY_VERSION
+
+    developerId = BINTRAY_DEVELOPER_ID
+    developerName = BINTRAY_DEVELOPER_NAME
+    developerEmail = BINTRAY_DEVELOPER_MAIL
+
+    licenseName = BINTRAY_LICENSE_NAME
+    licenseUrl = BINTRAY_LICENSE_URL
+    allLicenses = [BINTRAY_LICENSE_ID]
+}
