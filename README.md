@@ -3,6 +3,12 @@ RecyclerViewDivider
 
 A simple divider for a RecyclerView used as an item decoration.
 
+Usage
+------
+```java
+yourRecyclerView.addItemDecoration(new RecyclerViewDivider(Color.BLACK, 1));
+```
+
 Gradle
 ------
 Available both on ```jCenter()``` and ```mavenCentral```
