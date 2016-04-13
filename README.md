@@ -16,7 +16,7 @@ Gradle
 Available both on ```jCenter()``` and ```mavenCentral```
 ```gradle
 dependencies {
-    compile 'com.github.fondesa:recycler-view-divider:1.0.+'
+    compile 'com.github.fondesa:recycler-view-divider:1.0.1'
 }
 ```
 
@@ -26,7 +26,7 @@ Maven
 <dependency>
   <groupId>com.github.fondesa</groupId>
   <artifactId>recycler-view-divider</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <type>pom</type>
 </dependency>
 ```
