@@ -13,7 +13,7 @@ yourRecyclerView.addItemDecoration(new RecyclerViewDivider(Color.BLACK, 1));
 
 Gradle
 ------
-Available both on ```jCenter()``` and ```mavenCentral```
+Available both on ```jcenter()``` and ```mavenCentral```
 ```gradle
 dependencies {
     compile 'com.github.fondesa:recycler-view-divider:1.0.1'
