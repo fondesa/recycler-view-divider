@@ -11,3 +11,14 @@ dependencies {
     compile 'com.github.fondesa:recycler-view-divider:1.0.+'
 }
 ```
+
+Maven
+------
+```maven
+<dependency>
+  <groupId>com.github.fondesa</groupId>
+  <artifactId>recycler-view-divider</artifactId>
+  <version>1.0.0</version>
+  <type>pom</type>
+</dependency>
+```
