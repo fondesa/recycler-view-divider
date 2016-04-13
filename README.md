@@ -1,5 +1,5 @@
-#RecyclerViewDivider
-------
+RecyclerViewDivider
+===============
 
 A simple divider for a RecyclerView used as an item decoration.
 
