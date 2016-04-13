@@ -2,6 +2,7 @@ RecyclerViewDivider
 ===============
 
 A simple divider for a RecyclerView used as an item decoration.
+![RecyclerViewDivider](https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/screenshot.png)
 
 Usage
 ------
