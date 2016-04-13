@@ -19,6 +19,7 @@ import android.view.View;
  * Class that draws a divider between RecyclerView's elements
  */
 public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
+    private static final int DEFAULT_COLOR = 0xDDDDDD;
     private Drawable mDivider;
     private int mOrientation;
 
@@ -26,7 +27,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
      * Draws a divider with the default divider's color of material design and a size of 1dp
      */
     public RecyclerViewDivider() {
-        this(Color.parseColor("#DDDDDD"));
+        this(DEFAULT_COLOR);
     }
 
     /**
