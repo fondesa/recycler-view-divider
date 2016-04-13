@@ -1,2 +1,2 @@
 //include ':app'
-include ':recycler-view-divider'
+include ':recycler-view-divider', ':sample'

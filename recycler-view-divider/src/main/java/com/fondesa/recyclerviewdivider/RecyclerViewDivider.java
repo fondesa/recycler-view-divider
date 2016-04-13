@@ -2,7 +2,6 @@ package com.fondesa.recyclerviewdivider;
 
 import android.content.res.Resources;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -18,6 +17,7 @@ import android.view.View;
  * Created by antoniolig on 07/09/15.
  * Class that draws a divider between RecyclerView's elements
  */
+@SuppressWarnings("unused")
 public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     private static final int DEFAULT_COLOR = 0xDDDDDD;
     private Drawable mDivider;
