@@ -14,7 +14,7 @@ dependencies {
 
 Maven
 ------
-```maven
+```xml
 <dependency>
   <groupId>com.github.fondesa</groupId>
   <artifactId>recycler-view-divider</artifactId>
