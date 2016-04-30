@@ -9,8 +9,35 @@ A simple divider for a RecyclerView used as an item decoration.
 
 Usage
 ------
+
+###Basic divider###
 ```java
-yourRecyclerView.addItemDecoration(new RecyclerViewDivider(Color.BLACK, 1));
+RecyclerViewDivider.with(context).addTo(recyclerView).build().show();
+```
+###Colored divider with all properties###
+```java
+RecyclerViewDivider.with(context)
+                   .addTo(recyclerView)
+                   .color(color)
+                   .size(size)
+                   .marginSize(marginSize)
+                   .build()
+                   .show();
+```
+###Custom drawable divider with all properties###
+```java
+RecyclerViewDivider.with(context)
+                   .addTo(recyclerView)
+                   .drawable(drawable)
+                   .tint(color)
+                   .size(size)
+                   .marginSize(marginSize)
+                   .build()
+                   .show();
+```
+###Simple space###
+```java
+RecyclerViewDivider.with(context).addTo(recyclerView).asSpace().build().show();
 ```
 
 Gradle
