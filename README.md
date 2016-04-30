@@ -17,6 +17,7 @@ RecyclerViewDivider.with(context).addTo(recyclerView).build().show();
 ```
 
 ###Colored divider with all properties###
+
 ```java
 RecyclerViewDivider.with(context)
                    .addTo(recyclerView)
@@ -26,7 +27,9 @@ RecyclerViewDivider.with(context)
                    .build()
                    .show();
 ```
+
 ###Custom drawable divider with all properties###
+
 ```java
 RecyclerViewDivider.with(context)
                    .addTo(recyclerView)
@@ -37,7 +40,9 @@ RecyclerViewDivider.with(context)
                    .build()
                    .show();
 ```
+
 ###Simple space###
+
 ```java
 RecyclerViewDivider.with(context).addTo(recyclerView).asSpace().build().show();
 ```
