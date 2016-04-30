@@ -37,10 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
         firstDivider = RecyclerViewDivider.with(this)
                 .addTo(mFirstRecyclerView)
-//                .color(Color.RED)
-                .drawable(ContextCompat.getDrawable(this, R.drawable.ll_horizontal_div))
+//                .color(Color.BLACK)
+//                .drawable(ContextCompat.getDrawable(this, R.drawable.ll_horizontal_div))
 //                .tint(Color.RED)
-//                .size(getResources().getDimensionPixelSize(R.dimen.custom_size))
+//                .size(getResources().getDimensionPixelSize(R.dimen.first_div_size))
 //                .marginSize(getResources().getDimensionPixelSize(R.dimen.custom_size))
                 .build();
 
@@ -48,10 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
         secondDivider = RecyclerViewDivider.with(this)
                 .addTo(mSecondRecyclerView)
-//                .color(Color.BLACK)
-                .drawable(ContextCompat.getDrawable(this, R.drawable.vertical_div))
-                .tint(Color.RED)
-//                .size(getResources().getDimensionPixelSize(R.dimen.custom_size))
+//                .color(Color.RED)
+//                .drawable(ContextCompat.getDrawable(this, R.drawable.ll_vertical_div))
+//                .tint(Color.RED)
+//                .size(getResources().getDimensionPixelSize(R.dimen.second_div_size))
 //                .asSpace()
 //                .marginSize(getResources().getDimensionPixelSize(R.dimen.custom_size))
                 .build();

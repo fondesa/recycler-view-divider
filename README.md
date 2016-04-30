@@ -11,7 +11,8 @@ Usage
 ------
 
 ###Basic divider###
-``` java
+
+```java
 RecyclerViewDivider.with(context).addTo(recyclerView).build().show();
 ```
 ###Colored divider with all properties###
