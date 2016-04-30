@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="custom_size">8dp</dimen>
+    <dimen name="custom_size">16dp</dimen>
 </resources>

@@ -5,10 +5,20 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
 /**
- * Created by antoniolig on 30/04/2016.
+ * Utilities class
  */
-public class RecyclerUtils {
-    public static int getRecyclerViewOrientation(RecyclerView recyclerView) {
+class RecyclerUtils {
+    private RecyclerUtils() {
+        // empty constructor to avoid initialization
+    }
+
+    /**
+     * Get the orientation of a RecyclerView using its layout manager
+     *
+     * @param recyclerView RecyclerView used to check orientation
+     * @return RecyclerView.VERTICAL or RecyclerView.HORIZONTAL
+     */
+    static int getRecyclerViewOrientation(RecyclerView recyclerView) {
         int orientation;
 
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
@@ -21,17 +31,4 @@ public class RecyclerUtils {
         }
         return orientation;
     }
-
-
-//    /**
-//     * Convert dp to pixels
-//     *
-//     * @param dp dp to convert
-//     * @return result pixels
-//     */
-//    private static int dpToPx(int dp) {
-//        final DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
-//        return (int) ((dp * displayMetrics.density) + 0.5);
-//    }
-
 }

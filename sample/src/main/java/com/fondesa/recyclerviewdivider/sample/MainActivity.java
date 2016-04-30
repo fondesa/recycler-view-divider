@@ -37,17 +37,21 @@ public class MainActivity extends AppCompatActivity {
 
         firstDivider = RecyclerViewDivider.with(this)
                 .addTo(mFirstRecyclerView)
-                .drawable(ContextCompat.getDrawable(this, R.drawable.ll_divider))
-                .tint(Color.RED)
+//                .color(Color.RED)
+                .drawable(ContextCompat.getDrawable(this, R.drawable.ll_horizontal_div))
+//                .tint(Color.RED)
 //                .size(getResources().getDimensionPixelSize(R.dimen.custom_size))
+//                .marginSize(getResources().getDimensionPixelSize(R.dimen.custom_size))
                 .build();
 
         firstDivider.show();
 
         secondDivider = RecyclerViewDivider.with(this)
                 .addTo(mSecondRecyclerView)
-                .color(Color.BLACK)
-                .size(getResources().getDimensionPixelSize(R.dimen.custom_size))
+//                .color(Color.RED)
+                .drawable(ContextCompat.getDrawable(this, R.drawable.vertical_div))
+                .tint(Color.RED)
+//                .size(getResources().getDimensionPixelSize(R.dimen.custom_size))
                 .marginSize(getResources().getDimensionPixelSize(R.dimen.custom_size))
                 .build();
 
@@ -87,8 +91,8 @@ public class MainActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.action_toggle_div) {
             if (dividerShown) {
-                firstDivider.hide();
-                secondDivider.hide();
+                firstDivider.remove();
+                secondDivider.remove();
             } else {
                 firstDivider.show();
                 secondDivider.show();

@@ -1,54 +1,55 @@
 package com.fondesa.recyclerviewdivider;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.DisplayMetrics;
 import android.view.View;
 
 import com.fondesa.recycler_view_divider.R;
 
 /**
- * Created by antoniolig on 07/09/15.
  * Class that draws a divider between RecyclerView's elements
  */
 public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
-    private Drawable mDivider;
-    private int mOrientation;
-
     private RecyclerViewDivider.Builder builder;
 
-    private RecyclerViewDivider(RecyclerViewDivider.Builder builder) {
+    /**
+     * Set the {@link Builder} for this {@link RecyclerViewDivider}
+     *
+     * @param builder {@link Builder} with properties initialized
+     */
+    private RecyclerViewDivider(@NonNull RecyclerViewDivider.Builder builder) {
         this.builder = builder;
-        mDivider = builder.dividerDrawable;
-        mOrientation = -1;
     }
 
-    public static Builder with(Context context) {
+    /**
+     * Creates a new {@link Builder} for the current context
+     *
+     * @param context current context
+     * @return a new {@link Builder} instance
+     */
+    public static Builder with(@NonNull Context context) {
         return new Builder(context);
     }
 
+    /**
+     * Show this divider on the RecyclerView
+     */
     public void show() {
         builder.recyclerView.addItemDecoration(this);
     }
 
-    public void hide() {
+    /**
+     * Remove this divider from the RecyclerView
+     */
+    public void remove() {
         builder.recyclerView.removeItemDecoration(this);
     }
 
@@ -60,8 +61,8 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         if (parent.getChildAdapterPosition(view) != parent.getAdapter().getItemCount() - 1) {
-            if (getRecycleOrientation(parent) == RecyclerView.VERTICAL) {
-                outRect.set(0, 0, 0,builder.size);
+            if (builder.orientation == RecyclerView.VERTICAL) {
+                outRect.set(0, 0, 0, builder.size);
             } else {
                 outRect.set(0, 0, builder.size, 0);
             }
@@ -69,13 +70,13 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     }
 
     /**
-     * Draws a divider between items
+     * Draws a divider between items based on Builder's properties
      *
      * @param c      Canvas to draw views on
-     * @param parent RecyclerView
+     * @param parent RecyclerView added to the builder
      */
     private void drawDividerBetweenItems(Canvas c, RecyclerView parent) {
-        final int orientation = getRecycleOrientation(parent);
+        final int orientation = builder.orientation;
 
         int left = 0;
         int top = 0;
@@ -103,24 +104,21 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 right = left + builder.size;
             }
 
-            mDivider.setBounds(left, top, right, bottom);
-            mDivider.draw(c);
+            builder.divider.setBounds(left, top, right, bottom);
+            builder.divider.draw(c);
         }
     }
 
     /**
-     * Get the RecyclerView orientation based on layout manager
-     *
-     * @param recyclerView RecyclerView to use
-     * @return RecyclerView.VERTICAL or RecyclerView.HORIZONTAL
+     * {@link Builder} class for {@link RecyclerViewDivider}. This class can set these custom properties:
+     * <ul>
+     * <li><b>Size:</b> {@link #size(int)}</li>
+     * <li><b>Margins:</b> {@link #marginSize(int)}</li>
+     * <li><b>Color:</b> {@link #color(int)}</li>
+     * <li><b>Drawable:</b> {@link #drawable(Drawable)}</li>
+     * <li><b>Tint of the drawable:</b> {@link #tint(int)}</li>
+     * </ul>
      */
-    private int getRecycleOrientation(RecyclerView recyclerView) {
-        if (mOrientation == -1) {
-            mOrientation = RecyclerUtils.getRecyclerViewOrientation(recyclerView);
-        }
-        return mOrientation;
-    }
-
     public static class Builder {
         private Context context;
         private RecyclerView recyclerView;
@@ -131,19 +129,36 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         private Drawable drawable;
         private int size;
         private int marginSize;
+        private int orientation;
 
-        private RecyclerViewDivider divider;
-        private Drawable dividerDrawable;
+        private Drawable divider;
 
-        public Builder(Context context) {
+        /**
+         * Initialize this {@link Builder} with a context.
+         *
+         * @param context current context
+         */
+        public Builder(@NonNull Context context) {
             this.context = context;
         }
 
+        /**
+         * Add the {@link RecyclerViewDivider} to the {@link Builder}'s instance.
+         *
+         * @param recyclerView RecyclerView on which the divider will be displayed on
+         * @return {@link Builder} instance
+         */
         public Builder addTo(@NonNull RecyclerView recyclerView) {
             this.recyclerView = recyclerView;
             return this;
         }
 
+        /**
+         * Set the divider's color. This method can't be used with {@link #drawable(Drawable)} or {@link #tint(int)}
+         *
+         * @param color resolved color for this divider, not a resource
+         * @return {@link Builder} instance
+         */
         public Builder color(@ColorInt int color) {
             if (drawable != null) {
                 throw new RuntimeException("You can specify a color or a drawable, not both. If you want to change drawable's color, use tint() instead");
@@ -152,11 +167,31 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             return this;
         }
 
+        /**
+         * Set the divider's size. The divider's final size will depend on RecyclerView's orientation:
+         * <ul>
+         * <li><b>RecyclerView.VERTICAL:</b> the height will be equal to the size and the width will be equal to container's width + {@link #marginSize(int)}</li>
+         * <li><b>RecyclerView.HORIZONTAL:</b> the width will be equal to the size and the height will be equal to container's height + {@link #marginSize(int)}</li>
+         * </ul>
+         *
+         * @param size size in pixels for this divider
+         * @return {@link Builder} instance
+         */
         public Builder size(int size) {
             this.size = size;
             return this;
         }
 
+        /**
+         * Set the divider's margins. They will depend on RecyclerView's orientation:
+         * <ul>
+         * <li><b>RecyclerView.VERTICAL:</b> margins will be added equally to the left and to the right</li>
+         * <li><b>RecyclerView.HORIZONTAL:</b> margins will be added equally to the top and to the bottom</li>
+         * </ul>
+         *
+         * @param marginSize margins' size in pixels for this divider
+         * @return {@link Builder} instance
+         */
         public Builder marginSize(int marginSize) {
             this.marginSize = marginSize;
             return this;
@@ -179,6 +214,8 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         }
 
         public RecyclerViewDivider build() {
+            orientation = RecyclerUtils.getRecyclerViewOrientation(recyclerView);
+
             if (drawable == null) {
                 if (color == 0) {
                     color = ContextCompat.getColor(context, R.color.recycler_view_divider_color);
@@ -189,10 +226,10 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 GradientDrawable gradientDrawable = new GradientDrawable();
                 gradientDrawable.setShape(GradientDrawable.RECTANGLE);
                 gradientDrawable.setColor(color);
-                dividerDrawable = gradientDrawable;
+                divider = gradientDrawable;
             } else {
                 if (size == 0) {
-                    size = drawable.getIntrinsicHeight();
+                    size = (orientation == RecyclerView.VERTICAL) ? drawable.getIntrinsicHeight() : drawable.getIntrinsicWidth();
                     if (size == -1) {
                         size = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_size);
                     }
@@ -200,13 +237,12 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 if (tint != 0) {
                     Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
                     DrawableCompat.setTint(wrappedDrawable, tint);
-                    dividerDrawable = wrappedDrawable;
+                    divider = wrappedDrawable;
                 }
-                dividerDrawable = drawable;
+                divider = drawable;
             }
 
-            divider = new RecyclerViewDivider(this);
-            return divider;
+            return new RecyclerViewDivider(this);
         }
     }
 }
