@@ -248,26 +248,37 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          * @return a new {@link RecyclerViewDivider} with these {@link Builder} configurations
          */
         public RecyclerViewDivider build() {
+            // get RecyclerView's orientation
             orientation = RecyclerUtils.getRecyclerViewOrientation(recyclerView);
 
+            // init default values
             if (drawable == null) {
+                // in this case a custom drawable wasn't specified
+                // init default color if not specified
                 if (color == 0) {
                     color = ContextCompat.getColor(context, R.color.recycler_view_divider_color);
                 }
+                // init default size if not specified
                 if (size == 0) {
                     size = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_size);
                 }
+                // creates a custom shape drawable with this color
                 GradientDrawable gradientDrawable = new GradientDrawable();
                 gradientDrawable.setShape(GradientDrawable.RECTANGLE);
                 gradientDrawable.setColor(color);
                 divider = gradientDrawable;
             } else {
+                // in this case a custom drawable will be used
+                // init default size if not specified
                 if (size == 0) {
+                    // get the size from the drawable's size
                     size = (orientation == RecyclerView.VERTICAL) ? drawable.getIntrinsicHeight() : drawable.getIntrinsicWidth();
                     if (size == -1) {
+                        // the size can't be determined so will be initialized with default value
                         size = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_size);
                     }
                 }
+                // tint drawable if specified
                 if (tint != 0) {
                     Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
                     DrawableCompat.setTint(wrappedDrawable, tint);
@@ -277,6 +288,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 }
             }
 
+            // creates divider for this builder
             return new RecyclerViewDivider(this);
         }
     }

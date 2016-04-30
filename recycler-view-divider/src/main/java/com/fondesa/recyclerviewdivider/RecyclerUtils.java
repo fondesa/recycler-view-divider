@@ -22,6 +22,7 @@ class RecyclerUtils {
         int orientation;
 
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        // default LayoutManager hasn't getOrientation() method
         if (layoutManager instanceof LinearLayoutManager) {
             orientation = ((LinearLayoutManager) layoutManager).getOrientation();
         } else if (layoutManager instanceof StaggeredGridLayoutManager) {
