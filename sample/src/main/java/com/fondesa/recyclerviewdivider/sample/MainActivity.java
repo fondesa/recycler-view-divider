@@ -48,11 +48,11 @@ public class MainActivity extends AppCompatActivity {
 
         secondDivider = RecyclerViewDivider.with(this)
                 .addTo(mSecondRecyclerView)
-//                .color(Color.RED)
-                .drawable(ContextCompat.getDrawable(this, R.drawable.vertical_div))
-                .tint(Color.RED)
-//                .size(getResources().getDimensionPixelSize(R.dimen.custom_size))
-                .marginSize(getResources().getDimensionPixelSize(R.dimen.custom_size))
+                .color(Color.BLACK)
+//                .drawable(ContextCompat.getDrawable(this, R.drawable.ll_vertical_div))
+//                .tint(Color.RED)
+                .size(getResources().getDimensionPixelSize(R.dimen.custom_size))
+//                .marginSize(getResources().getDimensionPixelSize(R.dimen.custom_size))
                 .build();
 
         secondDivider.show();
