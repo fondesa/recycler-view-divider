@@ -2,6 +2,7 @@ package com.fondesa.recyclerviewdivider;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -10,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.fondesa.recycler_view_divider.R;
@@ -18,6 +20,8 @@ import com.fondesa.recycler_view_divider.R;
  * Class that draws a divider between RecyclerView's elements
  */
 public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
+    private static final String TAG = "RecyclerViewDivider";
+
     private RecyclerViewDivider.Builder builder;
 
     /**
@@ -120,6 +124,8 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
      * </ul>
      */
     public static class Builder {
+        private static final int INT_DEF = -1;
+
         private Context context;
         private RecyclerView recyclerView;
         @ColorInt
@@ -140,6 +146,10 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          */
         public Builder(@NonNull Context context) {
             this.context = context;
+            color = INT_DEF;
+            tint = INT_DEF;
+            size = INT_DEF;
+            marginSize = INT_DEF;
         }
 
         /**
@@ -154,6 +164,27 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         }
 
         /**
+         * Draws a simple space between RecyclerView's items.
+         *
+         * @return {@link Builder} instance
+         */
+        public Builder asSpace() {
+            if (color != INT_DEF) {
+                Log.w(TAG, "asSpace() will override effects of color()");
+            }
+            if (drawable != null) {
+                drawable = null;
+                Log.w(TAG, "asSpace() will override effects of drawable()");
+            }
+            if (tint != INT_DEF) {
+                tint = INT_DEF;
+                Log.w(TAG, "asSpace() will override effects of tint()");
+            }
+            color = Color.TRANSPARENT;
+            return this;
+        }
+
+        /**
          * Set the divider's color. This method can't be used with {@link #drawable(Drawable)} or {@link #tint(int)}
          *
          * @param color resolved color for this divider, not a resource
@@ -161,9 +192,45 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          */
         public Builder color(@ColorInt int color) {
             if (drawable != null) {
-                throw new RuntimeException("You can specify a color or a drawable, not both. If you want to change drawable's color, use tint() instead");
+                drawable = null;
+                Log.w(TAG, "color() will override effects of drawable()");
             }
             this.color = color;
+            return this;
+        }
+
+        /**
+         * Set the divider's drawable. This method can't be used with {@link #color(int)}.
+         * If you want to color the drawable, you have to use {@link #tint(int)} instead.
+         *
+         * @param drawable custom drawable for this divider
+         * @return {@link Builder} instance
+         */
+        public Builder drawable(@NonNull Drawable drawable) {
+            if (color != INT_DEF) {
+                color = INT_DEF;
+                Log.w(TAG, "drawable() will override effects of color()");
+            }
+            this.drawable = drawable;
+            return this;
+        }
+
+        /**
+         * Set the divider's drawable tint color. This method can't be used with {@link #color(int)} and without {@link #drawable(Drawable)}.
+         * If you want to create a plain divider with a single color you can use {@link #color(int)} instead.
+         *
+         * @param color color that will be used as drawable's tint
+         * @return {@link Builder} instance
+         */
+        public Builder tint(@ColorInt int color) {
+            if (color != INT_DEF) {
+                color = INT_DEF;
+                Log.w(TAG, "tint() will override effects of color()");
+            }
+            if (drawable == null) {
+                Log.w(TAG, "tint() you haven't used drawable() yet so this method won't have effects");
+            }
+            tint = color;
             return this;
         }
 
@@ -198,36 +265,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         }
 
         /**
-         * Set the divider's drawable. This method can't be used with {@link #color(int)}.
-         * If you want to color the drawable, you have to use {@link #tint(int)} instead.
-         *
-         * @param drawable custom drawable for this divider
-         * @return {@link Builder} instance
-         */
-        public Builder drawable(@NonNull Drawable drawable) {
-            if (color != 0) {
-                throw new RuntimeException("You can specify a color or a drawable, not both. If you want to change drawable's color, use tint() instead");
-            }
-            this.drawable = drawable;
-            return this;
-        }
-
-        /**
-         * Set the divider's drawable tint color. This method can't be used with {@link #color(int)} and without {@link #drawable(Drawable)}.
-         * If you want to create a plain divider with a single color you can use {@link #color(int)} instead.
-         *
-         * @param color color that will be used as drawable's tint
-         * @return {@link Builder} instance
-         */
-        public Builder tint(@ColorInt int color) {
-            if (drawable == null) {
-                throw new RuntimeException("You have to specify a drawable to use tint(), if you want to set a color, use color() instead");
-            }
-            this.tint = color;
-            return this;
-        }
-
-        /**
          * Creates a new {@link RecyclerViewDivider} with given configurations and initializes default values.
          * Default values will be initialized in two different ways if the builder uses a custom Drawable or a plain divider.
          * <br>
@@ -250,16 +287,15 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         public RecyclerViewDivider build() {
             // get RecyclerView's orientation
             orientation = RecyclerUtils.getRecyclerViewOrientation(recyclerView);
-
             // init default values
             if (drawable == null) {
                 // in this case a custom drawable wasn't specified
                 // init default color if not specified
-                if (color == 0) {
+                if (color == INT_DEF) {
                     color = ContextCompat.getColor(context, R.color.recycler_view_divider_color);
                 }
                 // init default size if not specified
-                if (size == 0) {
+                if (size == INT_DEF) {
                     size = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_size);
                 }
                 // creates a custom shape drawable with this color
@@ -270,16 +306,17 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             } else {
                 // in this case a custom drawable will be used
                 // init default size if not specified
-                if (size == 0) {
+                if (size == INT_DEF) {
                     // get the size from the drawable's size
                     size = (orientation == RecyclerView.VERTICAL) ? drawable.getIntrinsicHeight() : drawable.getIntrinsicWidth();
+                    // if a drawable hasn't an intrinsic size, such as a solid color, the method in Android SDK will return -1
                     if (size == -1) {
                         // the size can't be determined so will be initialized with default value
                         size = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_size);
                     }
                 }
                 // tint drawable if specified
-                if (tint != 0) {
+                if (tint != INT_DEF) {
                     Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
                     DrawableCompat.setTint(wrappedDrawable, tint);
                     divider = wrappedDrawable;
