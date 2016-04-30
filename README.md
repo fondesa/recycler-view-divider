@@ -3,7 +3,9 @@ RecyclerViewDivider
 
 A simple divider for a RecyclerView used as an item decoration.
 
-<img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/screenshot.png" height="500">
+<img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/screenshot_1.png" height="500">
+<img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/screenshot_2.png" height="500">
+<img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/screenshot_3.png" height="500">
 
 Usage
 ------
