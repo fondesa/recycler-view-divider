@@ -197,6 +197,13 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             return this;
         }
 
+        /**
+         * Set the divider's drawable. This method can't be used with {@link #color(int)}.
+         * If you want to color the drawable, you have to use {@link #tint(int)} instead.
+         *
+         * @param drawable custom drawable for this divider
+         * @return {@link Builder} instance
+         */
         public Builder drawable(@NonNull Drawable drawable) {
             if (color != 0) {
                 throw new RuntimeException("You can specify a color or a drawable, not both. If you want to change drawable's color, use tint() instead");
@@ -205,6 +212,13 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             return this;
         }
 
+        /**
+         * Set the divider's drawable tint color. This method can't be used with {@link #color(int)} and without {@link #drawable(Drawable)}.
+         * If you want to create a plain divider with a single color you can use {@link #color(int)} instead.
+         *
+         * @param color color that will be used as drawable's tint
+         * @return {@link Builder} instance
+         */
         public Builder tint(@ColorInt int color) {
             if (drawable == null) {
                 throw new RuntimeException("You have to specify a drawable to use tint(), if you want to set a color, use color() instead");
