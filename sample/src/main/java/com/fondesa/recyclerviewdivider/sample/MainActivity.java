@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 //                .drawable(ContextCompat.getDrawable(this, R.drawable.ll_vertical_div))
 //                .tint(Color.RED)
                 .size(getResources().getDimensionPixelSize(R.dimen.custom_size))
+                .asSpace()
 //                .marginSize(getResources().getDimensionPixelSize(R.dimen.custom_size))
                 .build();
 
