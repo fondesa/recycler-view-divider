@@ -223,8 +223,8 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          * @return {@link Builder} instance
          */
         public Builder tint(@ColorInt int color) {
-            if (color != INT_DEF) {
-                color = INT_DEF;
+            if (this.color != INT_DEF) {
+                this.color = INT_DEF;
                 Log.w(TAG, "tint() will override effects of color()");
             }
             if (drawable == null) {
