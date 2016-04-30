@@ -2,10 +2,12 @@ package com.fondesa.recyclerviewdivider.sample;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -16,7 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int LIST_SIZE = 20000;
+    private static final int LIST_SIZE = 15;
+    private static final String SHOW = "SHOW";
+    private static final String REMOVE = "REMOVE";
+    boolean dividerShown;
+
+    private RecyclerViewDivider firstDivider;
+    private RecyclerViewDivider secondDivider;
 
     @SuppressWarnings("ConstantConditions")
     @Override
@@ -27,8 +35,25 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView mFirstRecyclerView = (RecyclerView) findViewById(R.id.first_recycler_view);
         RecyclerView mSecondRecyclerView = (RecyclerView) findViewById(R.id.second_recycler_view);
 
-        mFirstRecyclerView.addItemDecoration(new RecyclerViewDivider(Color.BLACK, 1));
-        mSecondRecyclerView.addItemDecoration(new RecyclerViewDivider(Color.BLACK, 1));
+        firstDivider = RecyclerViewDivider.with(this)
+                .addTo(mFirstRecyclerView)
+                .drawable(ContextCompat.getDrawable(this, R.drawable.ll_divider))
+                .tint(Color.RED)
+//                .size(getResources().getDimensionPixelSize(R.dimen.custom_size))
+                .build();
+
+        firstDivider.show();
+
+        secondDivider = RecyclerViewDivider.with(this)
+                .addTo(mSecondRecyclerView)
+                .color(Color.BLACK)
+                .size(getResources().getDimensionPixelSize(R.dimen.custom_size))
+                .marginSize(getResources().getDimensionPixelSize(R.dimen.custom_size))
+                .build();
+
+        secondDivider.show();
+
+        dividerShown = true;
 
         final List<Integer> dummyList = new ArrayList<>(LIST_SIZE);
         for (int i = 0; i < LIST_SIZE; i++) {
@@ -39,13 +64,39 @@ public class MainActivity extends AppCompatActivity {
         final DummyAdapter secondDummyAdapter = new DummyAdapter(false);
         mSecondRecyclerView.setAdapter(secondDummyAdapter);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                firstDummyAdapter.updateList(dummyList);
-                secondDummyAdapter.updateList(dummyList);
+        firstDummyAdapter.updateList(dummyList);
+        secondDummyAdapter.updateList(dummyList);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.action_toggle_div).setTitle(dividerShown ? REMOVE : SHOW);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_toggle_div) {
+            if (dividerShown) {
+                firstDivider.hide();
+                secondDivider.hide();
+            } else {
+                firstDivider.show();
+                secondDivider.show();
             }
-        }, 2000);
+            dividerShown = !dividerShown;
+            invalidateOptionsMenu();
+        }
+        return true;
     }
 
     private class DummyAdapter extends RecyclerView.Adapter {
