@@ -20,25 +20,25 @@ RecyclerViewDivider.with(context).addTo(recyclerView).build().show();
 
 ```java
 RecyclerViewDivider.with(context)
-                   .addTo(recyclerView)
-                   .color(color)
-                   .size(size)
-                   .marginSize(marginSize)
-                   .build()
-                   .show();
+                .addTo(recyclerView)
+                .color(color)
+                .size(size)
+                .marginSize(marginSize)
+                .build()
+                .show();
 ```
 
 ###Custom drawable divider with all properties###
 
 ```java
 RecyclerViewDivider.with(context)
-                   .addTo(recyclerView)
-                   .drawable(drawable)
-                   .tint(color)
-                   .size(size)
-                   .marginSize(marginSize)
-                   .build()
-                   .show();
+                .addTo(recyclerView)
+                .drawable(drawable)
+                .tint(color)
+                .size(size)
+                .marginSize(marginSize)
+                .build()
+                .show();
 ```
 
 ###Simple space###
