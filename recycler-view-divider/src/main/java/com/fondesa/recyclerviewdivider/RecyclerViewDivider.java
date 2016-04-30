@@ -227,6 +227,26 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             return this;
         }
 
+        /**
+         * Creates a new {@link RecyclerViewDivider} with given configurations and initializes default values.
+         * Default values will be initialized in two different ways if the builder uses a custom Drawable or a plain divider.
+         * <br>
+         * <b>Plain divider:</b>
+         * <ul>
+         * <li>Color: if {@link #color(int)} wasn't used, the default is #CCCCCC that can be overriden with the colors resource <i>recycler_view_divider_color</i></li>
+         * <li>Size: if {@link #size(int)} wasn't used, the default is 1dp that can be overriden with the dimens resource <i>recycler_view_divider_size</i></li>
+         * </ul>
+         * <b>Custom Drawable:</b>
+         * <ul>
+         * <li>Size: if {@link #size(int)} wasn't used, the size will be determined by Drawable's intrinsic size.
+         * If the size can't be determined yet, the default is 1dp that can be overriden with the dimens resource <i>recycler_view_divider_size</i></li>
+         * <li>Tint: if {@link #tint(int)} wasn't used, the drawable won't be tinted</li>
+         * </ul>
+         * <br>
+         * The orientation will be determined by LayoutManager's orientation
+         *
+         * @return a new {@link RecyclerViewDivider} with these {@link Builder} configurations
+         */
         public RecyclerViewDivider build() {
             orientation = RecyclerUtils.getRecyclerViewOrientation(recyclerView);
 
@@ -252,8 +272,9 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                     Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
                     DrawableCompat.setTint(wrappedDrawable, tint);
                     divider = wrappedDrawable;
+                } else {
+                    divider = drawable;
                 }
-                divider = drawable;
             }
 
             return new RecyclerViewDivider(this);

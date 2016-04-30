@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="recycler_view_divider_color">#DDDDDD</color>
+    <color name="recycler_view_divider_color">#CCCCCC</color>
 </resources>
