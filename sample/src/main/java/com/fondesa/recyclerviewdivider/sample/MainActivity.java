@@ -39,21 +39,22 @@ public class MainActivity extends AppCompatActivity {
                 .addTo(mFirstRecyclerView)
 //                .color(Color.BLACK)
 //                .drawable(ContextCompat.getDrawable(this, R.drawable.ll_horizontal_div))
-//                .tint(Color.RED)
+//                .tint(Color.BLACK)
 //                .size(getResources().getDimensionPixelSize(R.dimen.first_div_size))
-//                .marginSize(getResources().getDimensionPixelSize(R.dimen.custom_size))
+//                .marginSize(getResources().getDimensionPixelSize(R.dimen.first_div_size))
+//                .asSpace()
                 .build();
 
         firstDivider.show();
 
         secondDivider = RecyclerViewDivider.with(this)
                 .addTo(mSecondRecyclerView)
-//                .color(Color.RED)
+                .color(Color.RED)
 //                .drawable(ContextCompat.getDrawable(this, R.drawable.ll_vertical_div))
 //                .tint(Color.RED)
 //                .size(getResources().getDimensionPixelSize(R.dimen.second_div_size))
+//                .marginSize(getResources().getDimensionPixelSize(R.dimen.second_div_size))
 //                .asSpace()
-//                .marginSize(getResources().getDimensionPixelSize(R.dimen.custom_size))
                 .build();
 
         secondDivider.show();
