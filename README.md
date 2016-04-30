@@ -47,6 +47,11 @@ RecyclerViewDivider.with(context)
 RecyclerViewDivider.with(context).addTo(recyclerView).asSpace().build().show();
 ```
 
+Compatibility
+------
+
+**Android SDK**: RecyclerViewDivider requires a minimum API level of 7
+
 Gradle
 ------
 Available both on ```jcenter()``` and ```mavenCentral```
