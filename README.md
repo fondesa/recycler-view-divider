@@ -52,17 +52,21 @@ Compatibility
 
 **Android SDK**: RecyclerViewDivider requires a minimum API level of 7
 
-Gradle
+Integration
 ------
+
 Available both on ```jcenter()``` and ```mavenCentral```
+
+###Gradle###
+
 ```gradle
 dependencies {
     compile 'com.github.fondesa:recycler-view-divider:1.1.1'
 }
 ```
 
-Maven
-------
+###Maven###
+
 ```xml
 <dependency>
   <groupId>com.github.fondesa</groupId>
