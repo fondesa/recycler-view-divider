@@ -15,6 +15,7 @@ Usage
 ```java
 RecyclerViewDivider.with(context).addTo(recyclerView).build().show();
 ```
+
 ###Colored divider with all properties###
 ```java
 RecyclerViewDivider.with(context)
