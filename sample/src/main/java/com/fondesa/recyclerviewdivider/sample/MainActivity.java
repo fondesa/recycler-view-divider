@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.fondesa.recyclerviewdivider.PositionFactory;
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider;
 
 import java.util.ArrayList;
@@ -38,10 +39,16 @@ public class MainActivity extends AppCompatActivity {
         firstDivider = RecyclerViewDivider.with(this)
                 .addTo(mFirstRecyclerView)
 //                .color(Color.BLACK)
-//                .drawable(ContextCompat.getDrawable(this, R.drawable.ll_horizontal_div))
+                .drawable(ContextCompat.getDrawable(this, R.drawable.ll_horizontal_div))
 //                .tint(Color.BLACK)
-//                .size(getResources().getDimensionPixelSize(R.dimen.first_div_size))
-//                .marginSize(getResources().getDimensionPixelSize(R.dimen.first_div_size))
+                .size(getResources().getDimensionPixelSize(R.dimen.first_div_size))
+                .marginSize(getResources().getDimensionPixelSize(R.dimen.first_div_size))
+                .positionFactory(new PositionFactory() {
+                    @Override
+                    public boolean displayDividerForPosition(int listSize, int position) {
+                        return position % 2 == 0;
+                    }
+                })
 //                .asSpace()
                 .build();
 
@@ -52,8 +59,14 @@ public class MainActivity extends AppCompatActivity {
                 .color(Color.RED)
 //                .drawable(ContextCompat.getDrawable(this, R.drawable.ll_vertical_div))
 //                .tint(Color.RED)
-//                .size(getResources().getDimensionPixelSize(R.dimen.second_div_size))
-//                .marginSize(getResources().getDimensionPixelSize(R.dimen.second_div_size))
+                .size(getResources().getDimensionPixelSize(R.dimen.second_div_size))
+                .marginSize(getResources().getDimensionPixelSize(R.dimen.second_div_size))
+                .positionFactory(new PositionFactory() {
+                    @Override
+                    public boolean displayDividerForPosition(int listSize, int position) {
+                        return position % 2 == 0;
+                    }
+                })
 //                .asSpace()
                 .build();
 
