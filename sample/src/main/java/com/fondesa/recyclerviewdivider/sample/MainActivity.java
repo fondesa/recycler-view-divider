@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 .positionFactory(new PositionFactory() {
                     @Override
                     public boolean displayDividerForPosition(int listSize, int position) {
-                        return position % 2 == 0;
+                        return position != listSize -1;
                     }
                 })
 //                .asSpace()
