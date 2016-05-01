@@ -2,18 +2,23 @@ package com.fondesa.recyclerviewdivider;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import com.fondesa.recycler_view_divider.R;
@@ -158,8 +163,10 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         @ColorInt
         private int color;
         @ColorInt
-        private int tint;
         private Drawable drawable;
+        @LayoutRes
+        private int layout;
+        private int tint;
         private int size;
         private int marginSize;
         private VisibilityFactory visibilityFactory;
@@ -229,6 +236,13 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         public Builder drawable(@NonNull Drawable drawable) {
             this.drawable = drawable;
             type = TYPE_DRAWABLE;
+            return this;
+        }
+
+
+        public Builder layout(@LayoutRes int layout) {
+            this.layout = layout;
+            type = TYPE_LAYOUT;
             return this;
         }
 
@@ -337,40 +351,47 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                             if (color == INT_DEF) {
                                 color = ContextCompat.getColor(context, R.color.recycler_view_divider_color);
                             }
-                            // init default size if not specified
-                            if (size == INT_DEF) {
-                                size = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_size);
-                            }
-                            // creates a custom shape drawable with this color
-                            GradientDrawable gradientDrawable = new GradientDrawable();
-                            gradientDrawable.setShape(GradientDrawable.RECTANGLE);
-                            gradientDrawable.setColor(color);
-                            divider = gradientDrawable;
+                            // creates a custom color drawable with this color
+                            divider = new ColorDrawable(color);
                             break;
 
                         case TYPE_DRAWABLE:
-                            // in this case a custom drawable will be used
-                            // init default size if not specified
-                            if (size == INT_DEF) {
-                                // get the size from the drawable's size
-                                size = (orientation == RecyclerView.VERTICAL) ? drawable.getIntrinsicHeight() : drawable.getIntrinsicWidth();
-                                // if a drawable hasn't an intrinsic size, such as a solid color, the method in Android SDK will return -1
-                                if (size == -1) {
-                                    // the size can't be determined so will be initialized with default value
-                                    size = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_size);
-                                }
-                            }
                             // tint drawable if specified
-                            if (tint != INT_DEF) {
-                                Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
-                                DrawableCompat.setTint(wrappedDrawable, tint);
-                                divider = wrappedDrawable;
-                            } else {
-                                divider = drawable;
-                            }
+                            divider = drawable;
                             break;
                         case TYPE_LAYOUT:
+                            View view = LayoutInflater.from(context).inflate(layout, null);
+                            view.setDrawingCacheEnabled(true);
+
+                            int measureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+                            view.measure(measureSpec, measureSpec);
+
+                            view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+
+                            view.buildDrawingCache(true);
+                            Bitmap realBitmap = Bitmap.createBitmap(view.getDrawingCache());
+                            view.setDrawingCacheEnabled(false);
+
+//                            float maxImageSize =
+//                            float ratio = Math.min((float) maxImageSize / realBitmap.getWidth(), (float) maxImageSize / realBitmap.getHeight());
+//                            int width = Math.round((float) ratio * realBitmap.getWidth());
+//                            int height = Math.round((float) ratio * realBitmap.getHeight());
+//
+//                            Bitmap newBitmap = Bitmap.createScaledBitmap(realBitmap, width, height, filter);
+//                            return newBitmap;
+                            divider = new BitmapDrawable(context.getResources(), realBitmap);
                             break;
+                    }
+
+                    // init default size if not specified
+                    if (size == INT_DEF) {
+                        // get the size from the drawable's size
+                        size = (orientation == RecyclerView.VERTICAL) ? divider.getIntrinsicHeight() : divider.getIntrinsicWidth();
+                        // if a drawable hasn't an intrinsic size, such as a solid color, the method in Android SDK will return -1
+                        if (size == -1) {
+                            // the size can't be determined so will be initialized with default value
+                            size = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_size);
+                        }
                     }
 
                     // if margins arent' overriden, the divider will use the default margins factory
@@ -386,6 +407,12 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                                 }
                             };
                         }
+                    }
+
+                    if (tint != INT_DEF) {
+                        Drawable wrappedDrawable = DrawableCompat.wrap(divider);
+                        DrawableCompat.setTint(wrappedDrawable, tint);
+                        divider = wrappedDrawable;
                     }
                 }
             } else {

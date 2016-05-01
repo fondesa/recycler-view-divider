@@ -40,23 +40,24 @@ public class MainActivity extends AppCompatActivity {
         firstDivider = RecyclerViewDivider.with(this)
                 .addTo(mFirstRecyclerView)
 //                .color(Color.BLACK)
-                .drawable(ContextCompat.getDrawable(this, R.drawable.ll_horizontal_div))
-//                .tint(Color.BLACK)
-                .size(getResources().getDimensionPixelSize(R.dimen.first_div_size))
-                .marginSize(getResources().getDimensionPixelSize(R.dimen.first_div_size))
+                .layout(R.layout.dummy_layout)
+//                .drawable(ContextCompat.getDrawable(this, R.drawable.horizontal_div))
+//                .tint(Color.RED)
+//                .size(getResources().getDimensionPixelSize(R.dimen.first_div_size))
+//                .marginSize(getResources().getDimensionPixelSize(R.dimen.first_div_size))
                 .visibilityFactory(new VisibilityFactory() {
                     @Override
                     public boolean displayDividerForItem(int listSize, int position) {
                         return position != listSize -1;
                     }
                 })
-                .marginFactory(new MarginFactory() {
-                    @Override
-                    public int marginSizeForItem(int listSize, int position) {
-                        return position % 2 == 0 ? 250 : 0;
-                    }
-                })
-                .marginSize(2)
+//                .marginFactory(new MarginFactory() {
+//                    @Override
+//                    public int marginSizeForItem(int listSize, int position) {
+//                        return position % 2 == 0 ? 250 : 0;
+//                    }
+//                })
+//                .marginSize(2)
 //                .asSpace()
                 .build();
 
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 .color(Color.RED)
 //                .drawable(ContextCompat.getDrawable(this, R.drawable.ll_vertical_div))
 //                .tint(Color.RED)
+//                .tint(Color.YELLOW)
                 .size(getResources().getDimensionPixelSize(R.dimen.second_div_size))
                 .marginSize(getResources().getDimensionPixelSize(R.dimen.second_div_size))
                 .visibilityFactory(new VisibilityFactory() {
