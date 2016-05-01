@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.media.TimedText;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -60,7 +61,13 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-        drawDividerBetweenItems(c, parent);
+        // if the divider isn't a simple space, it will be drawn
+        if (!builder.isSpace) {
+            RecyclerView.Adapter adapter = parent.getAdapter();
+            if (adapter != null && adapter.getItemCount() > 0) {
+                drawDividerBetweenItems(c, parent);
+            }
+        }
     }
 
     @Override
@@ -84,39 +91,36 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
      * @param parent RecyclerView added to the builder
      */
     private void drawDividerBetweenItems(Canvas c, RecyclerView parent) {
-        final int listSize = parent.getAdapter().getItemCount();
-        if (listSize > 0) {
-            final int orientation = builder.orientation;
+        final int orientation = builder.orientation;
 
-            int left = 0;
-            int top = 0;
-            int right = 0;
-            int bottom = 0;
-            int margin = builder.marginSize;
+        int left = 0;
+        int top = 0;
+        int right = 0;
+        int bottom = 0;
+        int margin = builder.marginSize;
 
+        if (orientation == RecyclerView.VERTICAL) {
+            left = parent.getPaddingLeft() + margin;
+            right = parent.getWidth() - parent.getPaddingRight() - margin;
+        } else {
+            top = parent.getPaddingTop() + margin;
+            bottom = parent.getHeight() - parent.getPaddingBottom() - margin;
+        }
+
+        final int childCount = parent.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            final View child = parent.getChildAt(i);
+            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             if (orientation == RecyclerView.VERTICAL) {
-                left = parent.getPaddingLeft() + margin;
-                right = parent.getWidth() - parent.getPaddingRight() - margin;
+                top = child.getBottom() + params.bottomMargin;
+                bottom = top + builder.size;
             } else {
-                top = parent.getPaddingTop() + margin;
-                bottom = parent.getHeight() - parent.getPaddingBottom() - margin;
+                left = child.getRight() + params.rightMargin;
+                right = left + builder.size;
             }
 
-            final int childCount = parent.getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                final View child = parent.getChildAt(i);
-                final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-                if (orientation == RecyclerView.VERTICAL) {
-                    top = child.getBottom() + params.bottomMargin;
-                    bottom = top + builder.size;
-                } else {
-                    left = child.getRight() + params.rightMargin;
-                    right = left + builder.size;
-                }
-
-                builder.divider.setBounds(left, top, right, bottom);
-                builder.divider.draw(c);
-            }
+            builder.divider.setBounds(left, top, right, bottom);
+            builder.divider.draw(c);
         }
     }
 
@@ -144,6 +148,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         private Drawable drawable;
         private int size;
         private int marginSize;
+        private boolean isSpace;
         private PositionFactory positionFactory;
 
         private Drawable divider;
@@ -173,23 +178,22 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         }
 
         /**
-         * Draws a simple space between RecyclerView's items.
+         * Set the type of {@link RecyclerViewDivider} as a space
          *
          * @return {@link Builder} instance
          */
         public Builder asSpace() {
-            if (color != INT_DEF) {
-                Log.w(TAG, "asSpace() will override effects of color()");
-            }
-            if (drawable != null) {
-                drawable = null;
-                Log.w(TAG, "asSpace() will override effects of drawable()");
-            }
-            if (tint != INT_DEF) {
-                tint = INT_DEF;
-                Log.w(TAG, "asSpace() will override effects of tint()");
-            }
-            color = Color.TRANSPARENT;
+            isSpace = true;
+            return this;
+        }
+
+        /**
+         * Set the type of {@link RecyclerViewDivider} as a divider
+         *
+         * @return {@link Builder} instance
+         */
+        public Builder asDivider() {
+            isSpace = false;
             return this;
         }
 
@@ -200,10 +204,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          * @return {@link Builder} instance
          */
         public Builder color(@ColorInt int color) {
-            if (drawable != null) {
-                drawable = null;
-                Log.w(TAG, "color() will override effects of drawable()");
-            }
             this.color = color;
             return this;
         }
@@ -216,10 +216,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          * @return {@link Builder} instance
          */
         public Builder drawable(@NonNull Drawable drawable) {
-            if (color != INT_DEF) {
-                color = INT_DEF;
-                Log.w(TAG, "drawable() will override effects of color()");
-            }
             this.drawable = drawable;
             return this;
         }
@@ -232,13 +228,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          * @return {@link Builder} instance
          */
         public Builder tint(@ColorInt int color) {
-            if (this.color != INT_DEF) {
-                this.color = INT_DEF;
-                Log.w(TAG, "tint() will override effects of color()");
-            }
-            if (drawable == null) {
-                Log.w(TAG, "tint() you haven't used drawable() yet so this method won't have effects");
-            }
             tint = color;
             return this;
         }
@@ -308,40 +297,73 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             // get RecyclerView's orientation
             orientation = RecyclerUtils.getRecyclerViewOrientation(recyclerView);
             // init default values
-            if (drawable == null) {
-                // in this case a custom drawable wasn't specified
-                // init default color if not specified
-                if (color == INT_DEF) {
-                    color = ContextCompat.getColor(context, R.color.recycler_view_divider_color);
-                }
-                // init default size if not specified
-                if (size == INT_DEF) {
-                    size = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_size);
-                }
-                // creates a custom shape drawable with this color
-                GradientDrawable gradientDrawable = new GradientDrawable();
-                gradientDrawable.setShape(GradientDrawable.RECTANGLE);
-                gradientDrawable.setColor(color);
-                divider = gradientDrawable;
-            } else {
-                // in this case a custom drawable will be used
-                // init default size if not specified
-                if (size == INT_DEF) {
-                    // get the size from the drawable's size
-                    size = (orientation == RecyclerView.VERTICAL) ? drawable.getIntrinsicHeight() : drawable.getIntrinsicWidth();
-                    // if a drawable hasn't an intrinsic size, such as a solid color, the method in Android SDK will return -1
-                    if (size == -1) {
-                        // the size can't be determined so will be initialized with default value
+            if (!isSpace) {
+                // all drawing properties will be set if RecyclerViewDivider is used as a divider, not a space
+                if (drawable == null) {
+                    // in this case a custom drawable wasn't specified
+                    // init default color if not specified
+                    if (color == INT_DEF) {
+                        color = ContextCompat.getColor(context, R.color.recycler_view_divider_color);
+                    }
+                    // init default size if not specified
+                    if (size == INT_DEF) {
                         size = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_size);
                     }
-                }
-                // tint drawable if specified
-                if (tint != INT_DEF) {
-                    Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
-                    DrawableCompat.setTint(wrappedDrawable, tint);
-                    divider = wrappedDrawable;
+                    // creates a custom shape drawable with this color
+                    GradientDrawable gradientDrawable = new GradientDrawable();
+                    gradientDrawable.setShape(GradientDrawable.RECTANGLE);
+                    gradientDrawable.setColor(color);
+                    divider = gradientDrawable;
+                    // help GC to dealloc other values or bring them to default
+                    if (tint != INT_DEF) {
+                        tint = INT_DEF;
+                        Log.w(TAG, "You can't use tint() with color()");
+                    }
                 } else {
-                    divider = drawable;
+                    // in this case a custom drawable will be used
+                    // init default size if not specified
+                    if (size == INT_DEF) {
+                        // get the size from the drawable's size
+                        size = (orientation == RecyclerView.VERTICAL) ? drawable.getIntrinsicHeight() : drawable.getIntrinsicWidth();
+                        // if a drawable hasn't an intrinsic size, such as a solid color, the method in Android SDK will return -1
+                        if (size == -1) {
+                            // the size can't be determined so will be initialized with default value
+                            size = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_size);
+                        }
+                    }
+                    // tint drawable if specified
+                    if (tint != INT_DEF) {
+                        Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
+                        DrawableCompat.setTint(wrappedDrawable, tint);
+                        divider = wrappedDrawable;
+                    } else {
+                        divider = drawable;
+                    }
+                    // help GC to dealloc other values or bring them to default
+                    if (color != INT_DEF) {
+                        color = INT_DEF;
+                        Log.w(TAG, "You can't use color() with drawable(), if you want to color the drawable use tint() instead");
+                    }
+                }
+                // if margins arent' overriden, the default is 0
+                if (marginSize == INT_DEF) {
+                    marginSize = 0;
+                }
+            } else {
+                // help GC to dealloc other values or bring them to default
+                if (color != INT_DEF) {
+                    color = INT_DEF;
+                    Log.w(TAG, "You can't use color() with asSpace()");
+                }
+
+                if (tint != INT_DEF) {
+                    tint = INT_DEF;
+                    Log.w(TAG, "You can't use tint() with asSpace()");
+                }
+
+                if (drawable != null) {
+                    drawable = null;
+                    Log.w(TAG, "You can't use drawable() with asSpace()");
                 }
             }
             // if the PositionFactory is still null, the divider will use the default factory
