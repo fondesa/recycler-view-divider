@@ -12,8 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.fondesa.recyclerviewdivider.PositionFactory;
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider;
+import com.fondesa.recyclerviewdivider.factory.MarginFactory;
+import com.fondesa.recyclerviewdivider.factory.VisibilityFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,16 +25,14 @@ public class MainActivity extends AppCompatActivity {
     private static final String REMOVE = "REMOVE";
     boolean dividerShown;
 
-
+    private RecyclerViewDivider firstDivider;
+    private RecyclerViewDivider secondDivider;
 
     @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        RecyclerViewDivider firstDivider;
-        RecyclerViewDivider secondDivider;
 
         RecyclerView mFirstRecyclerView = (RecyclerView) findViewById(R.id.first_recycler_view);
         RecyclerView mSecondRecyclerView = (RecyclerView) findViewById(R.id.second_recycler_view);
@@ -45,12 +44,19 @@ public class MainActivity extends AppCompatActivity {
 //                .tint(Color.BLACK)
                 .size(getResources().getDimensionPixelSize(R.dimen.first_div_size))
                 .marginSize(getResources().getDimensionPixelSize(R.dimen.first_div_size))
-                .positionFactory(new PositionFactory() {
+                .visibilityFactory(new VisibilityFactory() {
                     @Override
-                    public boolean displayDividerForPosition(int listSize, int position) {
+                    public boolean displayDividerForItem(int listSize, int position) {
                         return position != listSize -1;
                     }
                 })
+                .marginFactory(new MarginFactory() {
+                    @Override
+                    public int marginSizeForItem(int listSize, int position) {
+                        return position % 2 == 0 ? 250 : 0;
+                    }
+                })
+                .marginSize(2)
 //                .asSpace()
                 .build();
 
@@ -63,10 +69,17 @@ public class MainActivity extends AppCompatActivity {
 //                .tint(Color.RED)
                 .size(getResources().getDimensionPixelSize(R.dimen.second_div_size))
                 .marginSize(getResources().getDimensionPixelSize(R.dimen.second_div_size))
-                .positionFactory(new PositionFactory() {
+                .visibilityFactory(new VisibilityFactory() {
                     @Override
-                    public boolean displayDividerForPosition(int listSize, int position) {
-                        return position % 2 == 0;
+                    public boolean displayDividerForItem(int listSize, int position) {
+//                        return position % 2 == 0;
+                        return true;
+                    }
+                })
+                .marginFactory(new MarginFactory() {
+                    @Override
+                    public int marginSizeForItem(int listSize, int position) {
+                        return position % 2 == 0 ? 150 : 0;
                     }
                 })
 //                .asSpace()
@@ -107,13 +120,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.action_toggle_div) {
-//            if (dividerShown) {
-//                firstDivider.remove();
-//                secondDivider.remove();
-//            } else {
-//                firstDivider.show();
-//                secondDivider.show();
-//            }
+            if (dividerShown) {
+                firstDivider.remove();
+                secondDivider.remove();
+            } else {
+                firstDivider.show();
+                secondDivider.show();
+            }
             dividerShown = !dividerShown;
             invalidateOptionsMenu();
         }

@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.View;
 
 import com.fondesa.recycler_view_divider.R;
+import com.fondesa.recyclerviewdivider.factory.MarginFactory;
+import com.fondesa.recyclerviewdivider.factory.VisibilityFactory;
 
 import java.lang.ref.WeakReference;
 
@@ -72,8 +74,38 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         // if the divider isn't a simple space, it will be drawn
         if (!builder.isSpace) {
             RecyclerView.Adapter adapter = parent.getAdapter();
-            if (adapter != null && adapter.getItemCount() > 0) {
-                drawDividerBetweenItems(c, parent);
+            if (adapter != null) {
+                int listSize = adapter.getItemCount();
+                if (listSize > 0) {
+                    int orientation = builder.orientation;
+
+                    int left;
+                    int top;
+                    int right;
+                    int bottom;
+
+                    int childCount = parent.getChildCount();
+                    for (int i = 0; i < childCount; i++) {
+                        final View child = parent.getChildAt(i);
+                        int margin = builder.marginFactory.marginSizeForItem(listSize, parent.getChildAdapterPosition(child));
+                        final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+
+                        if (orientation == RecyclerView.VERTICAL) {
+                            top = child.getBottom() + params.bottomMargin;
+                            bottom = top + builder.size;
+                            left = parent.getPaddingLeft() + margin;
+                            right = parent.getWidth() - parent.getPaddingRight() - margin;
+                        } else {
+                            top = parent.getPaddingTop() + margin;
+                            bottom = parent.getHeight() - parent.getPaddingBottom() - margin;
+                            left = child.getRight() + params.rightMargin;
+                            right = left + builder.size;
+                        }
+
+                        builder.divider.setBounds(left, top, right, bottom);
+                        builder.divider.draw(c);
+                    }
+                }
             }
         }
     }
@@ -82,7 +114,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         final int listSize = parent.getAdapter().getItemCount();
         if (listSize > 0) {
-            if (builder.positionFactory.displayDividerForPosition(listSize, parent.getChildAdapterPosition(view))) {
+            if (builder.visibilityFactory.displayDividerForItem(listSize, parent.getChildAdapterPosition(view))) {
                 if (builder.orientation == RecyclerView.VERTICAL) {
                     outRect.set(0, 0, 0, builder.size);
                 } else {
@@ -99,37 +131,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
      * @param parent RecyclerView added to the builder
      */
     private void drawDividerBetweenItems(Canvas c, RecyclerView parent) {
-        final int orientation = builder.orientation;
 
-        int left = 0;
-        int top = 0;
-        int right = 0;
-        int bottom = 0;
-        int margin = builder.marginSize;
-
-        if (orientation == RecyclerView.VERTICAL) {
-            left = parent.getPaddingLeft() + margin;
-            right = parent.getWidth() - parent.getPaddingRight() - margin;
-        } else {
-            top = parent.getPaddingTop() + margin;
-            bottom = parent.getHeight() - parent.getPaddingBottom() - margin;
-        }
-
-        final int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View child = parent.getChildAt(i);
-            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-            if (orientation == RecyclerView.VERTICAL) {
-                top = child.getBottom() + params.bottomMargin;
-                bottom = top + builder.size;
-            } else {
-                left = child.getRight() + params.rightMargin;
-                right = left + builder.size;
-            }
-
-            builder.divider.setBounds(left, top, right, bottom);
-            builder.divider.draw(c);
-        }
     }
 
     /**
@@ -157,7 +159,8 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         private int size;
         private int marginSize;
         private boolean isSpace;
-        private PositionFactory positionFactory;
+        private VisibilityFactory visibilityFactory;
+        private MarginFactory marginFactory;
 
         private Drawable divider;
 
@@ -273,13 +276,24 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         }
 
         /**
-         * Set the divider's custom {@link PositionFactory}
+         * Set the divider's custom {@link VisibilityFactory}
          *
-         * @param positionFactory custom {@link PositionFactory} to set
+         * @param visibilityFactory custom {@link VisibilityFactory} to set
          * @return {@link Builder} instance
          */
-        public Builder positionFactory(@Nullable PositionFactory positionFactory) {
-            this.positionFactory = positionFactory;
+        public Builder visibilityFactory(@Nullable VisibilityFactory visibilityFactory) {
+            this.visibilityFactory = visibilityFactory;
+            return this;
+        }
+
+        /**
+         * Set the divider's custom {@link MarginFactory}
+         *
+         * @param marginFactory custom {@link MarginFactory} to set
+         * @return {@link Builder} instance
+         */
+        public Builder marginFactory(@Nullable MarginFactory marginFactory) {
+            this.marginFactory = marginFactory;
             return this;
         }
 
@@ -331,11 +345,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
                         gradientDrawable.setColor(color);
                         divider = gradientDrawable;
-                        // help GC to dealloc other values or bring them to default
-                        if (tint != INT_DEF) {
-                            tint = INT_DEF;
-                            Log.w(TAG, "You can't use tint() with color()");
-                        }
                     } else {
                         // in this case a custom drawable will be used
                         // init default size if not specified
@@ -356,37 +365,47 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                         } else {
                             divider = drawable;
                         }
-                        // help GC to dealloc other values or bring them to default
-                        if (color != INT_DEF) {
-                            color = INT_DEF;
-                            Log.w(TAG, "You can't use color() with drawable(), if you want to color the drawable use tint() instead");
-                        }
                     }
-                    // if margins arent' overriden, the default is 0
-                    if (marginSize == INT_DEF) {
-                        marginSize = 0;
+                    // if margins arent' overriden, the divider will use the default margins factory
+                    if (marginFactory == null) {
+                        // if marginSize is specified, it will be used as default size for all items
+                        if (marginSize == INT_DEF) {
+                            marginFactory = MarginFactory.getDefault();
+                        } else {
+                            marginFactory = new MarginFactory() {
+                                @Override
+                                public int marginSizeForItem(int listSize, int position) {
+                                    return marginSize;
+                                }
+                            };
+                        }
                     }
                 } else {
                     // help GC to dealloc other values or bring them to default
-                    if (color != INT_DEF) {
-                        color = INT_DEF;
-                        Log.w(TAG, "You can't use color() with asSpace()");
-                    }
-
-                    if (tint != INT_DEF) {
-                        tint = INT_DEF;
-                        Log.w(TAG, "You can't use tint() with asSpace()");
-                    }
-
-                    if (drawable != null) {
-                        drawable = null;
-                        Log.w(TAG, "You can't use drawable() with asSpace()");
+                    if (marginFactory != null) {
+                        marginFactory = null;
                     }
                 }
             }
-            // if the PositionFactory is still null, the divider will use the default factory
-            if (positionFactory == null) {
-                positionFactory = new DefaultPositionFactory();
+            // if the VisibilityFactory is still null, the divider will use the default factory
+            if (visibilityFactory == null) {
+                visibilityFactory = VisibilityFactory.getDefault();
+            }
+            // help GC to dealloc other values or bring them to default
+            if (color != INT_DEF) {
+                color = INT_DEF;
+            }
+
+            if (tint != INT_DEF) {
+                tint = INT_DEF;
+            }
+
+            if (drawable != null) {
+                drawable = null;
+            }
+
+            if (marginSize != INT_DEF) {
+                marginSize = INT_DEF;
             }
 
             // creates divider for this builder
