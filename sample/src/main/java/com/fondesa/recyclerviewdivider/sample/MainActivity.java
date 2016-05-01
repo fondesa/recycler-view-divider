@@ -24,14 +24,16 @@ public class MainActivity extends AppCompatActivity {
     private static final String REMOVE = "REMOVE";
     boolean dividerShown;
 
-    private RecyclerViewDivider firstDivider;
-    private RecyclerViewDivider secondDivider;
+
 
     @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        RecyclerViewDivider firstDivider;
+        RecyclerViewDivider secondDivider;
 
         RecyclerView mFirstRecyclerView = (RecyclerView) findViewById(R.id.first_recycler_view);
         RecyclerView mSecondRecyclerView = (RecyclerView) findViewById(R.id.second_recycler_view);
@@ -105,13 +107,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.action_toggle_div) {
-            if (dividerShown) {
-                firstDivider.remove();
-                secondDivider.remove();
-            } else {
-                firstDivider.show();
-                secondDivider.show();
-            }
+//            if (dividerShown) {
+//                firstDivider.remove();
+//                secondDivider.remove();
+//            } else {
+//                firstDivider.show();
+//                secondDivider.show();
+//            }
             dividerShown = !dividerShown;
             invalidateOptionsMenu();
         }
