@@ -3,7 +3,7 @@ package com.fondesa.recyclerviewdivider.factory;
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider;
 
 /**
- * The default drawing factory for the {@link RecyclerViewDivider}
+ * The default visibility factory for the {@link RecyclerViewDivider}
  */
 final class DefaultVisibilityFactory extends VisibilityFactory {
     /**
