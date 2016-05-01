@@ -2,11 +2,9 @@ package com.fondesa.recyclerviewdivider;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.media.TimedText;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,20 +16,22 @@ import android.view.View;
 
 import com.fondesa.recycler_view_divider.R;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Class that draws a divider between RecyclerView's elements
  */
 public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     private static final String TAG = "RecyclerViewDivider";
 
-    private RecyclerViewDivider.Builder builder;
+    private Builder builder;
 
     /**
      * Set the {@link Builder} for this {@link RecyclerViewDivider}
      *
      * @param builder {@link Builder} with properties initialized
      */
-    private RecyclerViewDivider(@NonNull RecyclerViewDivider.Builder builder) {
+    private RecyclerViewDivider(@NonNull Builder builder) {
         this.builder = builder;
     }
 
@@ -49,14 +49,22 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
      * Show this divider on the RecyclerView
      */
     public void show() {
-        builder.recyclerView.addItemDecoration(this);
+        // get the value of RecyclerView from the WeakReference
+        RecyclerView recyclerView = builder.recyclerViewRef.get();
+        if (recyclerView != null) {
+            recyclerView.addItemDecoration(this);
+        }
     }
 
     /**
      * Remove this divider from the RecyclerView
      */
     public void remove() {
-        builder.recyclerView.removeItemDecoration(this);
+        // get the value of RecyclerView from the WeakReference
+        RecyclerView recyclerView = builder.recyclerViewRef.get();
+        if (recyclerView != null) {
+            recyclerView.removeItemDecoration(this);
+        }
     }
 
     @Override
@@ -137,8 +145,8 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     public static class Builder {
         private static final int INT_DEF = -1;
 
-        private Context context;
-        private RecyclerView recyclerView;
+        private WeakReference<Context> contextRef;
+        private WeakReference<RecyclerView> recyclerViewRef;
         private int orientation;
 
         @ColorInt
@@ -155,11 +163,12 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
         /**
          * Initialize this {@link Builder} with a context.
+         * The Context object will be stored in a WeakReference to avoid memory leak
          *
          * @param context current context
          */
         public Builder(@NonNull Context context) {
-            this.context = context;
+            contextRef = new WeakReference<>(context);
             color = INT_DEF;
             tint = INT_DEF;
             size = INT_DEF;
@@ -168,12 +177,13 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
         /**
          * Add the {@link RecyclerViewDivider} to the {@link Builder}'s instance.
+         * The RecyclerView object will be stored in a WeakReference to avoid memory leak
          *
          * @param recyclerView RecyclerView on which the divider will be displayed on
          * @return {@link Builder} instance
          */
         public Builder addTo(@NonNull RecyclerView recyclerView) {
-            this.recyclerView = recyclerView;
+            recyclerViewRef = new WeakReference<>(recyclerView);
             return this;
         }
 
@@ -294,76 +304,84 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          * @return a new {@link RecyclerViewDivider} with these {@link Builder} configurations
          */
         public RecyclerViewDivider build() {
-            // get RecyclerView's orientation
-            orientation = RecyclerUtils.getRecyclerViewOrientation(recyclerView);
+            // get the value of RecyclerView from the WeakReference
+            RecyclerView recyclerView = recyclerViewRef.get();
+            if (recyclerView != null) {
+                // get RecyclerView's orientation
+                orientation = RecyclerUtils.getRecyclerViewOrientation(recyclerView);
+            }
             // init default values
             if (!isSpace) {
-                // all drawing properties will be set if RecyclerViewDivider is used as a divider, not a space
-                if (drawable == null) {
-                    // in this case a custom drawable wasn't specified
-                    // init default color if not specified
-                    if (color == INT_DEF) {
-                        color = ContextCompat.getColor(context, R.color.recycler_view_divider_color);
-                    }
-                    // init default size if not specified
-                    if (size == INT_DEF) {
-                        size = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_size);
-                    }
-                    // creates a custom shape drawable with this color
-                    GradientDrawable gradientDrawable = new GradientDrawable();
-                    gradientDrawable.setShape(GradientDrawable.RECTANGLE);
-                    gradientDrawable.setColor(color);
-                    divider = gradientDrawable;
-                    // help GC to dealloc other values or bring them to default
-                    if (tint != INT_DEF) {
-                        tint = INT_DEF;
-                        Log.w(TAG, "You can't use tint() with color()");
-                    }
-                } else {
-                    // in this case a custom drawable will be used
-                    // init default size if not specified
-                    if (size == INT_DEF) {
-                        // get the size from the drawable's size
-                        size = (orientation == RecyclerView.VERTICAL) ? drawable.getIntrinsicHeight() : drawable.getIntrinsicWidth();
-                        // if a drawable hasn't an intrinsic size, such as a solid color, the method in Android SDK will return -1
-                        if (size == -1) {
-                            // the size can't be determined so will be initialized with default value
+                // get the value of Context from the WeakReference
+                Context context = contextRef.get();
+                if (context != null) {
+                    // all drawing properties will be set if RecyclerViewDivider is used as a divider, not a space
+                    if (drawable == null) {
+                        // in this case a custom drawable wasn't specified
+                        // init default color if not specified
+                        if (color == INT_DEF) {
+                            color = ContextCompat.getColor(context, R.color.recycler_view_divider_color);
+                        }
+                        // init default size if not specified
+                        if (size == INT_DEF) {
                             size = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_size);
                         }
-                    }
-                    // tint drawable if specified
-                    if (tint != INT_DEF) {
-                        Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
-                        DrawableCompat.setTint(wrappedDrawable, tint);
-                        divider = wrappedDrawable;
+                        // creates a custom shape drawable with this color
+                        GradientDrawable gradientDrawable = new GradientDrawable();
+                        gradientDrawable.setShape(GradientDrawable.RECTANGLE);
+                        gradientDrawable.setColor(color);
+                        divider = gradientDrawable;
+                        // help GC to dealloc other values or bring them to default
+                        if (tint != INT_DEF) {
+                            tint = INT_DEF;
+                            Log.w(TAG, "You can't use tint() with color()");
+                        }
                     } else {
-                        divider = drawable;
+                        // in this case a custom drawable will be used
+                        // init default size if not specified
+                        if (size == INT_DEF) {
+                            // get the size from the drawable's size
+                            size = (orientation == RecyclerView.VERTICAL) ? drawable.getIntrinsicHeight() : drawable.getIntrinsicWidth();
+                            // if a drawable hasn't an intrinsic size, such as a solid color, the method in Android SDK will return -1
+                            if (size == -1) {
+                                // the size can't be determined so will be initialized with default value
+                                size = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_size);
+                            }
+                        }
+                        // tint drawable if specified
+                        if (tint != INT_DEF) {
+                            Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
+                            DrawableCompat.setTint(wrappedDrawable, tint);
+                            divider = wrappedDrawable;
+                        } else {
+                            divider = drawable;
+                        }
+                        // help GC to dealloc other values or bring them to default
+                        if (color != INT_DEF) {
+                            color = INT_DEF;
+                            Log.w(TAG, "You can't use color() with drawable(), if you want to color the drawable use tint() instead");
+                        }
                     }
+                    // if margins arent' overriden, the default is 0
+                    if (marginSize == INT_DEF) {
+                        marginSize = 0;
+                    }
+                } else {
                     // help GC to dealloc other values or bring them to default
                     if (color != INT_DEF) {
                         color = INT_DEF;
-                        Log.w(TAG, "You can't use color() with drawable(), if you want to color the drawable use tint() instead");
+                        Log.w(TAG, "You can't use color() with asSpace()");
                     }
-                }
-                // if margins arent' overriden, the default is 0
-                if (marginSize == INT_DEF) {
-                    marginSize = 0;
-                }
-            } else {
-                // help GC to dealloc other values or bring them to default
-                if (color != INT_DEF) {
-                    color = INT_DEF;
-                    Log.w(TAG, "You can't use color() with asSpace()");
-                }
 
-                if (tint != INT_DEF) {
-                    tint = INT_DEF;
-                    Log.w(TAG, "You can't use tint() with asSpace()");
-                }
+                    if (tint != INT_DEF) {
+                        tint = INT_DEF;
+                        Log.w(TAG, "You can't use tint() with asSpace()");
+                    }
 
-                if (drawable != null) {
-                    drawable = null;
-                    Log.w(TAG, "You can't use drawable() with asSpace()");
+                    if (drawable != null) {
+                        drawable = null;
+                        Log.w(TAG, "You can't use drawable() with asSpace()");
+                    }
                 }
             }
             // if the PositionFactory is still null, the divider will use the default factory
