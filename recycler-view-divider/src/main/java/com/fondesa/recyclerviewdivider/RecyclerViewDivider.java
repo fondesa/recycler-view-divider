@@ -1,11 +1,13 @@
 package com.fondesa.recyclerviewdivider;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.ColorInt;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +20,8 @@ import com.fondesa.recycler_view_divider.R;
 import com.fondesa.recyclerviewdivider.factory.MarginFactory;
 import com.fondesa.recyclerviewdivider.factory.VisibilityFactory;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
 
 /**
@@ -72,7 +76,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         // if the divider isn't a simple space, it will be drawn
-        if (!builder.isSpace) {
+        if (builder.type != TYPE_SPACE) {
             RecyclerView.Adapter adapter = parent.getAdapter();
             if (adapter != null) {
                 int listSize = adapter.getItemCount();
@@ -158,9 +162,11 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         private Drawable drawable;
         private int size;
         private int marginSize;
-        private boolean isSpace;
         private VisibilityFactory visibilityFactory;
         private MarginFactory marginFactory;
+
+        @Type
+        private int type;
 
         private Drawable divider;
 
@@ -176,6 +182,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             tint = INT_DEF;
             size = INT_DEF;
             marginSize = INT_DEF;
+            type = TYPE_COLOR;
         }
 
         /**
@@ -196,17 +203,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          * @return {@link Builder} instance
          */
         public Builder asSpace() {
-            isSpace = true;
-            return this;
-        }
-
-        /**
-         * Set the type of {@link RecyclerViewDivider} as a divider
-         *
-         * @return {@link Builder} instance
-         */
-        public Builder asDivider() {
-            isSpace = false;
+            type = TYPE_SPACE;
             return this;
         }
 
@@ -218,6 +215,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          */
         public Builder color(@ColorInt int color) {
             this.color = color;
+            type = TYPE_COLOR;
             return this;
         }
 
@@ -230,6 +228,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          */
         public Builder drawable(@NonNull Drawable drawable) {
             this.drawable = drawable;
+            type = TYPE_DRAWABLE;
             return this;
         }
 
@@ -317,6 +316,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          *
          * @return a new {@link RecyclerViewDivider} with these {@link Builder} configurations
          */
+        @SuppressLint("SwitchIntDef")
         public RecyclerViewDivider build() {
             // get the value of RecyclerView from the WeakReference
             RecyclerView recyclerView = recyclerViewRef.get();
@@ -325,52 +325,59 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 orientation = RecyclerUtils.getRecyclerViewOrientation(recyclerView);
             }
             // init default values
-            if (!isSpace) {
+            if (type != TYPE_SPACE) {
                 // get the value of Context from the WeakReference
                 Context context = contextRef.get();
                 if (context != null) {
                     // all drawing properties will be set if RecyclerViewDivider is used as a divider, not a space
-                    if (drawable == null) {
-                        // in this case a custom drawable wasn't specified
-                        // init default color if not specified
-                        if (color == INT_DEF) {
-                            color = ContextCompat.getColor(context, R.color.recycler_view_divider_color);
-                        }
-                        // init default size if not specified
-                        if (size == INT_DEF) {
-                            size = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_size);
-                        }
-                        // creates a custom shape drawable with this color
-                        GradientDrawable gradientDrawable = new GradientDrawable();
-                        gradientDrawable.setShape(GradientDrawable.RECTANGLE);
-                        gradientDrawable.setColor(color);
-                        divider = gradientDrawable;
-                    } else {
-                        // in this case a custom drawable will be used
-                        // init default size if not specified
-                        if (size == INT_DEF) {
-                            // get the size from the drawable's size
-                            size = (orientation == RecyclerView.VERTICAL) ? drawable.getIntrinsicHeight() : drawable.getIntrinsicWidth();
-                            // if a drawable hasn't an intrinsic size, such as a solid color, the method in Android SDK will return -1
-                            if (size == -1) {
-                                // the size can't be determined so will be initialized with default value
+                    switch (type) {
+                        case TYPE_COLOR:
+                            // in this case a custom drawable wasn't specified
+                            // init default color if not specified
+                            if (color == INT_DEF) {
+                                color = ContextCompat.getColor(context, R.color.recycler_view_divider_color);
+                            }
+                            // init default size if not specified
+                            if (size == INT_DEF) {
                                 size = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_size);
                             }
-                        }
-                        // tint drawable if specified
-                        if (tint != INT_DEF) {
-                            Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
-                            DrawableCompat.setTint(wrappedDrawable, tint);
-                            divider = wrappedDrawable;
-                        } else {
-                            divider = drawable;
-                        }
+                            // creates a custom shape drawable with this color
+                            GradientDrawable gradientDrawable = new GradientDrawable();
+                            gradientDrawable.setShape(GradientDrawable.RECTANGLE);
+                            gradientDrawable.setColor(color);
+                            divider = gradientDrawable;
+                            break;
+
+                        case TYPE_DRAWABLE:
+                            // in this case a custom drawable will be used
+                            // init default size if not specified
+                            if (size == INT_DEF) {
+                                // get the size from the drawable's size
+                                size = (orientation == RecyclerView.VERTICAL) ? drawable.getIntrinsicHeight() : drawable.getIntrinsicWidth();
+                                // if a drawable hasn't an intrinsic size, such as a solid color, the method in Android SDK will return -1
+                                if (size == -1) {
+                                    // the size can't be determined so will be initialized with default value
+                                    size = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_size);
+                                }
+                            }
+                            // tint drawable if specified
+                            if (tint != INT_DEF) {
+                                Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
+                                DrawableCompat.setTint(wrappedDrawable, tint);
+                                divider = wrappedDrawable;
+                            } else {
+                                divider = drawable;
+                            }
+                            break;
+                        case TYPE_LAYOUT:
+                            break;
                     }
+
                     // if margins arent' overriden, the divider will use the default margins factory
                     if (marginFactory == null) {
                         // if marginSize is specified, it will be used as default size for all items
                         if (marginSize == INT_DEF) {
-                            marginFactory = MarginFactory.getDefault();
+                            marginFactory = MarginFactory.getDefault(context);
                         } else {
                             marginFactory = new MarginFactory() {
                                 @Override
@@ -380,11 +387,11 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                             };
                         }
                     }
-                } else {
-                    // help GC to dealloc other values or bring them to default
-                    if (marginFactory != null) {
-                        marginFactory = null;
-                    }
+                }
+            } else {
+                // help GC to dealloc other values or bring them to default
+                if (marginFactory != null) {
+                    marginFactory = null;
                 }
             }
             // if the VisibilityFactory is still null, the divider will use the default factory
@@ -403,13 +410,18 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             if (drawable != null) {
                 drawable = null;
             }
-
-            if (marginSize != INT_DEF) {
-                marginSize = INT_DEF;
-            }
-
             // creates divider for this builder
             return new RecyclerViewDivider(this);
         }
+    }
+
+    public static final int TYPE_COLOR = 0;
+    public static final int TYPE_DRAWABLE = 1;
+    public static final int TYPE_LAYOUT = 2;
+    public static final int TYPE_SPACE = 3;
+
+    @IntDef({TYPE_COLOR, TYPE_DRAWABLE, TYPE_LAYOUT, TYPE_SPACE})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Type {
     }
 }

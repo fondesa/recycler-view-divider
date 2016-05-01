@@ -1,5 +1,8 @@
 package com.fondesa.recyclerviewdivider.factory;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider;
 
 /**
@@ -15,9 +18,9 @@ public abstract class MarginFactory {
      *
      * @return default {@link MarginFactory} factory of the system
      */
-    public static synchronized MarginFactory getDefault() {
+    public static synchronized MarginFactory getDefault(@NonNull Context context) {
         if (defaultFactory == null) {
-            defaultFactory = new DefaultMarginFactory();
+            defaultFactory = new DefaultMarginFactory(context);
         }
         return defaultFactory;
     }
