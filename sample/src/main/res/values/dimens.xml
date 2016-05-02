@@ -4,5 +4,5 @@
     <dimen name="second_div_size">16dp</dimen>
 
     <!--<dimen name="recycler_view_divider_size">26dp</dimen>-->
-    <dimen name="recycler_view_divider_margin_size">35dp</dimen>
+    <!--<dimen name="recycler_view_divider_margin_size">35dp</dimen>-->
 </resources>
