@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.fondesa.recycler_view_divider.R;
+import com.fondesa.recyclerviewdivider.factory.DrawableFactory;
 import com.fondesa.recyclerviewdivider.factory.MarginFactory;
 import com.fondesa.recyclerviewdivider.factory.VisibilityFactory;
 
@@ -86,8 +87,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             if (adapter != null) {
                 int listSize = adapter.getItemCount();
                 if (listSize > 0) {
-                    int orientation = builder.orientation;
-
                     int left;
                     int top;
                     int right;
@@ -99,7 +98,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                         int margin = builder.marginFactory.marginSizeForItem(listSize, parent.getChildAdapterPosition(child));
                         final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
 
-                        if (orientation == RecyclerView.VERTICAL) {
+                        if (builder.orientation == RecyclerView.VERTICAL) {
                             top = child.getBottom() + params.bottomMargin;
                             bottom = top + builder.size;
                             left = parent.getPaddingLeft() + margin;
@@ -171,6 +170,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         private int marginSize;
         private VisibilityFactory visibilityFactory;
         private MarginFactory marginFactory;
+        private DrawableFactory drawableFactory;
 
         @Type
         private int type;
@@ -310,6 +310,11 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             return this;
         }
 
+        public Builder drawableFactory(@Nullable DrawableFactory drawableFactory) {
+            this.drawableFactory = drawableFactory;
+            return this;
+        }
+
         /**
          * Creates a new {@link RecyclerViewDivider} with given configurations and initializes default values.
          * Default values will be initialized in two different ways if the builder uses a custom Drawable or a plain divider.
@@ -372,13 +377,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                             Bitmap realBitmap = Bitmap.createBitmap(view.getDrawingCache());
                             view.setDrawingCacheEnabled(false);
 
-//                            float maxImageSize =
-//                            float ratio = Math.min((float) maxImageSize / realBitmap.getWidth(), (float) maxImageSize / realBitmap.getHeight());
-//                            int width = Math.round((float) ratio * realBitmap.getWidth());
-//                            int height = Math.round((float) ratio * realBitmap.getHeight());
-//
-//                            Bitmap newBitmap = Bitmap.createScaledBitmap(realBitmap, width, height, filter);
-//                            return newBitmap;
                             divider = new BitmapDrawable(context.getResources(), realBitmap);
                             break;
                     }
@@ -387,9 +385,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                     if (size == INT_DEF) {
                         // get the size from the drawable's size
                         size = (orientation == RecyclerView.VERTICAL) ? divider.getIntrinsicHeight() : divider.getIntrinsicWidth();
-                        // if a drawable hasn't an intrinsic size, such as a solid color, the method in Android SDK will return -1
                         if (size == -1) {
-                            // the size can't be determined so will be initialized with default value
                             size = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_size);
                         }
                     }
