@@ -1,5 +1,8 @@
 package com.fondesa.recyclerviewdivider.factory;
 
+import android.content.Context;
+
+import com.fondesa.recycler_view_divider.R;
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider;
 
 /**
@@ -7,16 +10,16 @@ import com.fondesa.recyclerviewdivider.RecyclerViewDivider;
  */
 public abstract class VisibilityFactory {
 
-    private static DefaultVisibilityFactory defaultFactory;
+    private static VisibilityFactory defaultFactory;
 
     /**
-     * Creates a new instance of {@link DefaultVisibilityFactory} if system hasn't initialized it yet.
+     * Creates a new instance of {@link Default} if system hasn't initialized it yet.
      *
      * @return default {@link VisibilityFactory} factory of the system
      */
     public static synchronized VisibilityFactory getDefault() {
         if (defaultFactory == null) {
-            defaultFactory = new DefaultVisibilityFactory();
+            defaultFactory = new Default();
         }
         return defaultFactory;
     }
@@ -29,4 +32,11 @@ public abstract class VisibilityFactory {
      * @return true if the divider will be displayed at the bottom/left of the current position, false instead
      */
     public abstract boolean displayDividerForItem(int listSize, int position);
+
+    private static class Default extends VisibilityFactory {
+        @Override
+        public boolean displayDividerForItem(int listSize, int position) {
+            return true;
+        }
+    }
 }

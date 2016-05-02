@@ -1,6 +1,7 @@
 package com.fondesa.recyclerviewdivider.sample;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider;
 import com.fondesa.recyclerviewdivider.factory.MarginFactory;
+import com.fondesa.recyclerviewdivider.factory.SizeFactory;
 import com.fondesa.recyclerviewdivider.factory.VisibilityFactory;
 
 import java.util.ArrayList;
@@ -40,17 +42,23 @@ public class MainActivity extends AppCompatActivity {
         firstDivider = RecyclerViewDivider.with(this)
                 .addTo(mFirstRecyclerView)
 //                .color(Color.BLACK)
-                .layout(R.layout.dummy_layout)
+//                .layout(R.layout.dummy_layout)
 //                .drawable(ContextCompat.getDrawable(this, R.drawable.horizontal_div))
 //                .tint(Color.RED)
 //                .size(getResources().getDimensionPixelSize(R.dimen.first_div_size))
-//                .marginSize(getResources().getDimensionPixelSize(R.dimen.first_div_size))
-                .visibilityFactory(new VisibilityFactory() {
+                .sizeFactory(new SizeFactory() {
                     @Override
-                    public boolean displayDividerForItem(int listSize, int position) {
-                        return position != listSize -1;
+                    public int sizeForItem(Drawable drawable, int orientation, int listSize, int position) {
+                        return position % 2 == 0 ? 120 : 60;
                     }
                 })
+//                .marginSize(getResources().getDimensionPixelSize(R.dimen.first_div_size))
+//                .visibilityFactory(new VisibilityFactory() {
+//                    @Override
+//                    public boolean displayDividerForItem(int listSize, int position) {
+//                        return position != listSize -1;
+//                    }
+//                })
 //                .marginFactory(new MarginFactory() {
 //                    @Override
 //                    public int marginSizeForItem(int listSize, int position) {
