@@ -33,6 +33,16 @@ public abstract class SizeFactory {
     }
 
     /**
+     * Creates a new {@link SizeFactory} with equal size for all dividers
+     *
+     * @param size dividers' size
+     * @return factory with same values for each divider
+     */
+    public static SizeFactory getGeneralFactory(int size) {
+        return new General(size);
+    }
+
+    /**
      * Defines a custom size for each divider
      *
      * @param drawable    current divider's drawable
@@ -60,6 +70,22 @@ public abstract class SizeFactory {
             if (size == -1) {
                 size = defaultSize;
             }
+            return size;
+        }
+    }
+
+    /**
+     * General instance of a {@link SizeFactory} used when the size is set with {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder#size(int)}
+     */
+    private static class General extends SizeFactory {
+        private int size;
+
+        General(int size) {
+            this.size = size;
+        }
+
+        @Override
+        public int sizeForItem(Drawable drawable, int orientation, int listSize, int position) {
             return size;
         }
     }

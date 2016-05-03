@@ -31,6 +31,16 @@ public abstract class MarginFactory {
     }
 
     /**
+     * Creates a new {@link MarginFactory} with equal margin size for all dividers
+     *
+     * @param marginSize margins' size of the dividers
+     * @return factory with same values for each divider
+     */
+    public static MarginFactory getGeneralFactory(int marginSize) {
+        return new General(marginSize);
+    }
+
+    /**
      * Defines a custom margin size for each divider
      *
      * @param listSize size of the list in the adapter
@@ -52,6 +62,22 @@ public abstract class MarginFactory {
         @Override
         public int marginSizeForItem(int listSize, int position) {
             return defaultMarginSize;
+        }
+    }
+
+    /**
+     * General instance of a {@link MarginFactory} used when the margin's size is set with {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder#marginSize(int)}
+     */
+    private static class General extends MarginFactory {
+        private int marginSize;
+
+        General(int marginSize) {
+            this.marginSize = marginSize;
+        }
+
+        @Override
+        public int marginSizeForItem(int listSize, int position) {
+            return marginSize;
         }
     }
 }

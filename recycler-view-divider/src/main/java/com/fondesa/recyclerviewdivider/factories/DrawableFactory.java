@@ -32,6 +32,16 @@ public abstract class DrawableFactory {
     }
 
     /**
+     * Creates a new {@link DrawableFactory} with equal drawable resource for all dividers
+     *
+     * @param drawable resource for all dividers
+     * @return factory with same values for each divider
+     */
+    public static DrawableFactory getGeneralFactory(@NonNull Drawable drawable) {
+        return new General(drawable);
+    }
+
+    /**
      * Defines a custom Drawable for each divider
      *
      * @param listSize size of the list in the adapter
@@ -53,6 +63,23 @@ public abstract class DrawableFactory {
         @Override
         public Drawable drawableForItem(int listSize, int position) {
             return defaultDrawable;
+        }
+    }
+
+    /**
+     * General instance of a {@link DrawableFactory} used when the drawable is set with {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder#color(int)}
+     * or with {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder#drawable(Drawable)}
+     */
+    private static class General extends DrawableFactory {
+        private Drawable drawable;
+
+        General(@NonNull Drawable drawable) {
+            this.drawable = drawable;
+        }
+
+        @Override
+        public Drawable drawableForItem(int listSize, int position) {
+            return drawable;
         }
     }
 }

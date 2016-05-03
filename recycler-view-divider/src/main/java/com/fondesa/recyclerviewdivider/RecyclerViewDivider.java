@@ -31,6 +31,8 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
     private Builder builder;
 
+    private boolean isDividerAdded;
+
     /**
      * Set the {@link Builder} for this {@link RecyclerViewDivider}
      *
@@ -57,7 +59,12 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         // get the value of RecyclerView from the WeakReference
         RecyclerView recyclerView = builder.recyclerViewRef.get();
         if (recyclerView != null) {
-            recyclerView.addItemDecoration(this);
+            if (!isDividerAdded) {
+                recyclerView.addItemDecoration(this);
+                isDividerAdded = true;
+            } else {
+                recyclerView.invalidateItemDecorations();
+            }
         }
     }
 
@@ -68,7 +75,10 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         // get the value of RecyclerView from the WeakReference
         RecyclerView recyclerView = builder.recyclerViewRef.get();
         if (recyclerView != null) {
-            recyclerView.removeItemDecoration(this);
+            if (isDividerAdded) {
+                recyclerView.removeItemDecoration(this);
+                isDividerAdded = false;
+            }
         }
     }
 
@@ -143,13 +153,24 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     }
 
     /**
-     * {@link Builder} class for {@link RecyclerViewDivider}. This class can set these custom properties:
+     * {@link Builder} class for {@link RecyclerViewDivider}.
+     * <br>
+     * This class can set these custom properties:
      * <ul>
      * <li><b>Size:</b> {@link #size(int)}</li>
      * <li><b>Margins:</b> {@link #marginSize(int)}</li>
      * <li><b>Color:</b> {@link #color(int)}</li>
      * <li><b>Drawable:</b> {@link #drawable(Drawable)}</li>
      * <li><b>Tint of the drawable:</b> {@link #tint(int)}</li>
+     * </ul>
+     * <br>
+     * And use these custom factories:
+     * <ul>
+     * <li><b>{@link VisibilityFactory}:</b> {@link #visibilityFactory(VisibilityFactory)}</li>
+     * <li><b>{@link DrawableFactory}:</b> {@link #drawableFactory(DrawableFactory)}</li>
+     * <li><b>{@link TintFactory}:</b> {@link #tintFactory(TintFactory)}</li>
+     * <li><b>{@link SizeFactory}:</b> {@link #sizeFactory(SizeFactory)}</li>
+     * <li><b>{@link MarginFactory}:</b> {@link #marginFactory}</li>
      * </ul>
      */
     public static class Builder {
@@ -166,11 +187,12 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         private int tint;
         private int size;
         private int marginSize;
+
         private VisibilityFactory visibilityFactory;
-        private MarginFactory marginFactory;
         private DrawableFactory drawableFactory;
-        private SizeFactory sizeFactory;
         private TintFactory tintFactory;
+        private SizeFactory sizeFactory;
+        private MarginFactory marginFactory;
 
         @Type
         private int type;
@@ -203,7 +225,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         }
 
         /**
-         * Set the type of {@link RecyclerViewDivider} as a space
+         * Set the type of the divider as a space
          *
          * @return {@link Builder} instance
          */
@@ -213,7 +235,9 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         }
 
         /**
-         * Set the divider's color. This method can't be used with {@link #drawable(Drawable)} or {@link #tint(int)}
+         * Set the color of all dividers. This method can't be used with {@link #drawable(Drawable)} or {@link #tint(int)}
+         * <br>
+         * To set a custom color for each divider use {@link #drawableFactory(DrawableFactory)} instead
          *
          * @param color resolved color for this divider, not a resource
          * @return {@link Builder} instance
@@ -225,8 +249,10 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         }
 
         /**
-         * Set the divider's drawable. This method can't be used with {@link #color(int)}.
+         * Set the drawable of all dividers. This method can't be used with {@link #color(int)}.
          * If you want to color the drawable, you have to use {@link #tint(int)} instead.
+         * <br>
+         * To set a custom drawable for each divider use {@link #drawableFactory(DrawableFactory)} instead
          *
          * @param drawable custom drawable for this divider
          * @return {@link Builder} instance
@@ -238,8 +264,10 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         }
 
         /**
-         * Set the divider's drawable tint color. This method can't be used with {@link #color(int)} and without {@link #drawable(Drawable)}.
-         * If you want to create a plain divider with a single color you can use {@link #color(int)} instead.
+         * Set the tint color of all dividers' drawables.
+         * If you want to create a plain divider with a single color, {@link #color(int)} is recommended.
+         * <br>
+         * To set a custom tint color for each divider's drawable use {@link #tintFactory(TintFactory)} instead
          *
          * @param color color that will be used as drawable's tint
          * @return {@link Builder} instance
@@ -250,11 +278,13 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         }
 
         /**
-         * Set the divider's size. The divider's final size will depend on RecyclerView's orientation:
+         * Set the size of all dividers. The divider's final size will depend on RecyclerView's orientation:
          * <ul>
-         * <li><b>RecyclerView.VERTICAL:</b> the height will be equal to the size and the width will be equal to container's width + {@link #marginSize(int)}</li>
-         * <li><b>RecyclerView.HORIZONTAL:</b> the width will be equal to the size and the height will be equal to container's height + {@link #marginSize(int)}</li>
+         * <li><b>RecyclerView.VERTICAL:</b> the height will be equal to the size and the width will be equal to the sum of container's width and the margin size</li>
+         * <li><b>RecyclerView.HORIZONTAL:</b> the width will be equal to the size and the height will be equal to the sum of container's height and the margin size</li>
          * </ul>
+         * <br>
+         * To set a custom size for each divider use {@link #sizeFactory(SizeFactory)} instead.
          *
          * @param size size in pixels for this divider
          * @return {@link Builder} instance
@@ -265,11 +295,13 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         }
 
         /**
-         * Set the divider's margins. They will depend on RecyclerView's orientation:
+         * Set the margin size for all dividers. They will depend on RecyclerView's orientation:
          * <ul>
          * <li><b>RecyclerView.VERTICAL:</b> margins will be added equally to the left and to the right</li>
          * <li><b>RecyclerView.HORIZONTAL:</b> margins will be added equally to the top and to the bottom</li>
          * </ul>
+         * <br>
+         * To set a custom margin size for each divider use {@link #sizeFactory(SizeFactory)} instead.
          *
          * @param marginSize margins' size in pixels for this divider
          * @return {@link Builder} instance
@@ -291,6 +323,40 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         }
 
         /**
+         * Set the divider's custom {@link DrawableFactory}
+         *
+         * @param drawableFactory custom {@link DrawableFactory} to set
+         * @return {@link Builder} instance
+         */
+        public Builder drawableFactory(@Nullable DrawableFactory drawableFactory) {
+            this.drawableFactory = drawableFactory;
+            return this;
+        }
+
+        /**
+         * Set the divider's custom {@link TintFactory}
+         *
+         * @param tintFactory custom {@link TintFactory} to set
+         * @return {@link Builder} instance
+         */
+        public Builder tintFactory(@Nullable TintFactory tintFactory) {
+            this.tintFactory = tintFactory;
+            return this;
+        }
+
+        /**
+         * Set the divider's custom {@link SizeFactory}
+         *
+         * @param sizeFactory custom {@link SizeFactory} to set
+         * @return {@link Builder} instance
+         */
+        public Builder sizeFactory(@Nullable SizeFactory sizeFactory) {
+            this.sizeFactory = sizeFactory;
+            return this;
+        }
+
+
+        /**
          * Set the divider's custom {@link MarginFactory}
          *
          * @param marginFactory custom {@link MarginFactory} to set
@@ -301,38 +367,14 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             return this;
         }
 
-        public Builder drawableFactory(@Nullable DrawableFactory drawableFactory) {
-            this.drawableFactory = drawableFactory;
-            return this;
-        }
-
-        public Builder sizeFactory(@Nullable SizeFactory sizeFactory) {
-            this.sizeFactory = sizeFactory;
-            return this;
-        }
-
-        public Builder tintFactory(@Nullable TintFactory tintFactory) {
-            this.tintFactory = tintFactory;
-            return this;
-        }
-
         /**
-         * Creates a new {@link RecyclerViewDivider} with given configurations and initializes default values.
-         * Default values will be initialized in two different ways if the builder uses a custom Drawable or a plain divider.
-         * <br>
-         * <b>Plain divider:</b>
+         * Creates a new {@link RecyclerViewDivider} with given configurations and initializes all values.
+         * There are three common cases in the choice of factories:
          * <ul>
-         * <li>Color: if {@link #color(int)} wasn't used, the default is #CCCCCC that can be overriden with the colors resource <i>recycler_view_divider_color</i></li>
-         * <li>Size: if {@link #size(int)} wasn't used, the default is 1dp that can be overriden with the dimens resource <i>recycler_view_divider_size</i></li>
+         * <li><b>Property not set</b>: the default factory will be used</li>
+         * <li><b>Property set for all divider</b>: the general factory will be used</li>
+         * <li><b>Property set differently for each divider</b>: the custom factory will be used</li>
          * </ul>
-         * <b>Custom Drawable:</b>
-         * <ul>
-         * <li>Size: if {@link #size(int)} wasn't used, the size will be determined by Drawable's intrinsic size.
-         * If the size can't be determined yet, the default is 1dp that can be overriden with the dimens resource <i>recycler_view_divider_size</i></li>
-         * <li>Tint: if {@link #tint(int)} wasn't used, the drawable won't be tinted</li>
-         * </ul>
-         * <br>
-         * The orientation will be determined by LayoutManager's orientation
          *
          * @return a new {@link RecyclerViewDivider} with these {@link Builder} configurations
          */
@@ -347,7 +389,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
             /* -------------------- VISIBILITY FACTORY -------------------- */
 
-            // if the VisibilityFactory is still null, the divider will use the default factory
             if (visibilityFactory == null) {
                 visibilityFactory = VisibilityFactory.getDefault();
             }
@@ -362,11 +403,10 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
                     if (drawableFactory == null) {
                         Drawable currDrawable = null;
-                        // all drawing properties will be set if RecyclerViewDivider is used as a divider, not a space
+                        // all drawing properties will be set if RecyclerViewDivider is used as a divider, not as a space
                         switch (type) {
                             case TYPE_COLOR:
                                 if (color != INT_DEF) {
-                                    // creates a custom color drawable with this color
                                     currDrawable = RecyclerViewDividerUtils.colorToDrawable(color);
                                 }
                                 break;
@@ -380,13 +420,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                         if (currDrawable == null) {
                             drawableFactory = DrawableFactory.getDefault(context);
                         } else {
-                            final Drawable finalCurrDrawable = currDrawable;
-                            drawableFactory = new DrawableFactory() {
-                                @Override
-                                public Drawable drawableForItem(int listSize, int position) {
-                                    return finalCurrDrawable;
-                                }
-                            };
+                            drawableFactory = DrawableFactory.getGeneralFactory(currDrawable);
                         }
                     }
 
@@ -394,45 +428,27 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
                     if (tintFactory == null) {
                         if (tint != INT_DEF) {
-                            tintFactory = new TintFactory() {
-                                @Override
-                                public int tintForItem(int listSize, int position) {
-                                    return tint;
-                                }
-                            };
+                            tintFactory = TintFactory.getGeneralFactory(tint);
                         }
                     }
 
                     /* -------------------- SIZE FACTORY -------------------- */
 
-                    // init default size if not specified
                     if (sizeFactory == null) {
                         if (size == INT_DEF) {
                             sizeFactory = SizeFactory.getDefault(context);
                         } else {
-                            sizeFactory = new SizeFactory() {
-                                @Override
-                                public int sizeForItem(Drawable drawable, int orientation, int listSize, int position) {
-                                    return size;
-                                }
-                            };
+                            sizeFactory = SizeFactory.getGeneralFactory(size);
                         }
                     }
 
                     /* -------------------- MARGIN FACTORY -------------------- */
 
-                    // if margins arent' overriden, the divider will use the default margins factory
                     if (marginFactory == null) {
-                        // if marginSize is specified, it will be used as default size for all items
                         if (marginSize == INT_DEF) {
                             marginFactory = MarginFactory.getDefault(context);
                         } else {
-                            marginFactory = new MarginFactory() {
-                                @Override
-                                public int marginSizeForItem(int listSize, int position) {
-                                    return marginSize;
-                                }
-                            };
+                            marginFactory = MarginFactory.getGeneralFactory(marginSize);
                         }
                     }
                 }
@@ -456,13 +472,20 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         }
     }
 
-    public static final int TYPE_COLOR = 0;
-    public static final int TYPE_DRAWABLE = 1;
-    public static final int TYPE_LAYOUT = 2;
-    public static final int TYPE_SPACE = 3;
+    private static final int TYPE_SPACE = -1;
+    private static final int TYPE_COLOR = 0;
+    private static final int TYPE_DRAWABLE = 1;
 
-    @IntDef({TYPE_COLOR, TYPE_DRAWABLE, TYPE_LAYOUT, TYPE_SPACE})
+    /**
+     * Source annotation used to define different dividers' types.
+     * <ul>
+     * <li><b>TYPE_SPACE</b>: divider used only as a space</li>
+     * <li><b>TYPE_COLOR</b>: plain divider with one color</li>
+     * <li><b>TYPE_DRAWABLE</b>: divider with a drawable resource</li>
+     * </ul>
+     */
+    @IntDef({TYPE_SPACE, TYPE_COLOR, TYPE_DRAWABLE})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface Type {
+    private @interface Type {
     }
 }
