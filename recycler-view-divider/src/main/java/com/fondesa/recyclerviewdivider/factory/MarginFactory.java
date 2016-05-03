@@ -1,25 +1,27 @@
 package com.fondesa.recyclerviewdivider.factory;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 
 import com.fondesa.recycler_view_divider.R;
-import com.fondesa.recyclerviewdivider.RecyclerViewDivider;
 
 /**
- * Used to define a custom drawing logic for the left/right margins in an horizontal {@link RecyclerViewDivider}
- * and top/bottom margins in a vertical {@link RecyclerViewDivider} based on its position
+ * Factory used to specify a custom logic to set different margins to the divider.
+ * <br>
+ * Custom margins will be set equally right/left with horizontal divider and top/bottom with vertical divider.
+ * <br>
+ * You can add a custom {@link MarginFactory} in your {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder} using
+ * {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder#marginFactory(MarginFactory)} method
  */
 public abstract class MarginFactory {
 
     private static MarginFactory defaultFactory;
 
     /**
-     * Creates a new instance of {@link Default} if system hasn't initialized it yet.
+     * Creates a singleton instance of a default {@link MarginFactory} to avoid multiple instance of the same class
      *
-     * @return default {@link MarginFactory} factory of the system
+     * @param context current context
+     * @return factory with default values
      */
     public static synchronized MarginFactory getDefault(@NonNull Context context) {
         if (defaultFactory == null) {
@@ -29,14 +31,17 @@ public abstract class MarginFactory {
     }
 
     /**
-     * Factory method called for each item in RecyclerView's Adapter
+     * Defines a custom margin size for each divider
      *
-     * @param listSize list's total size
+     * @param listSize size of the list in the adapter
      * @param position current position
-     * @return left/right margins in an horizontal {@link RecyclerViewDivider} and top/bottom margins in a vertical {@link RecyclerViewDivider}
+     * @return right/left margin with horizontal divider or top/bottom margin with vertical divider
      */
     public abstract int marginSizeForItem(int listSize, int position);
 
+    /**
+     * Default instance of a {@link MarginFactory}
+     */
     private static class Default extends MarginFactory {
         private int defaultMarginSize;
 
