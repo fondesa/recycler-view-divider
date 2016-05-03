@@ -24,7 +24,7 @@ RecyclerViewDivider.with(context)
                 .color(color)
                 .size(size)
                 .marginSize(marginSize)
-                .visibilityFactory(new VisibilityFactory() {
+                .positionFactory(new PositionFactory() {
                     @Override
                     public boolean displayDividerForItem(int listSize, int position) {
                         // the divider will be not displayed after the last list's item
@@ -44,7 +44,7 @@ RecyclerViewDivider.with(context)
                 .tint(color)
                 .size(size)
                 .marginSize(marginSize)
-                .visibilityFactory(new VisibilityFactory() {
+                .positionFactory(new PositionFactory() {
                     @Override
                     public boolean displayDividerForItem(int listSize, int position) {
                         // the divider will be not displayed after the last list's item
