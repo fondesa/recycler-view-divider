@@ -99,34 +99,36 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                     for (int i = 0; i < childCount; i++) {
                         final View child = parent.getChildAt(i);
                         int position = parent.getChildAdapterPosition(child);
-                        final int orientation = builder.orientation;
-                        final int margin = builder.marginFactory.marginSizeForItem(listSize, position);
                         Drawable divider = builder.drawableFactory.drawableForItem(listSize, position);
-                        final int size = builder.sizeFactory.sizeForItem(divider, orientation, listSize, position);
-                        TintFactory tintFactory = builder.tintFactory;
-                        if (tintFactory != null) {
-                            final int tint = tintFactory.tintForItem(listSize, position);
-                            Drawable wrappedDrawable = DrawableCompat.wrap(divider);
-                            DrawableCompat.setTint(wrappedDrawable, tint);
-                            divider = wrappedDrawable;
+                        if (divider != null) {
+                            final int orientation = builder.orientation;
+                            final int margin = builder.marginFactory.marginSizeForItem(listSize, position);
+                            final int size = builder.sizeFactory.sizeForItem(divider, orientation, listSize, position);
+                            TintFactory tintFactory = builder.tintFactory;
+                            if (tintFactory != null) {
+                                final int tint = tintFactory.tintForItem(listSize, position);
+                                Drawable wrappedDrawable = DrawableCompat.wrap(divider);
+                                DrawableCompat.setTint(wrappedDrawable, tint);
+                                divider = wrappedDrawable;
+                            }
+
+                            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+
+                            if (orientation == RecyclerView.VERTICAL) {
+                                top = child.getBottom() + params.bottomMargin;
+                                bottom = top + size;
+                                left = parent.getPaddingLeft() + margin;
+                                right = parent.getWidth() - parent.getPaddingRight() - margin;
+                            } else {
+                                top = parent.getPaddingTop() + margin;
+                                bottom = parent.getHeight() - parent.getPaddingBottom() - margin;
+                                left = child.getRight() + params.rightMargin;
+                                right = left + size;
+                            }
+
+                            divider.setBounds(left, top, right, bottom);
+                            divider.draw(c);
                         }
-
-                        final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-
-                        if (orientation == RecyclerView.VERTICAL) {
-                            top = child.getBottom() + params.bottomMargin;
-                            bottom = top + size;
-                            left = parent.getPaddingLeft() + margin;
-                            right = parent.getWidth() - parent.getPaddingRight() - margin;
-                        } else {
-                            top = parent.getPaddingTop() + margin;
-                            bottom = parent.getHeight() - parent.getPaddingBottom() - margin;
-                            left = child.getRight() + params.rightMargin;
-                            right = left + size;
-                        }
-
-                        divider.setBounds(left, top, right, bottom);
-                        divider.draw(c);
                     }
                 }
             }
