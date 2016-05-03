@@ -3,6 +3,8 @@ package com.fondesa.recyclerviewdivider.sample;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,8 +15,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider;
+import com.fondesa.recyclerviewdivider.RecyclerViewDividerUtils;
+import com.fondesa.recyclerviewdivider.factories.DrawableFactory;
 import com.fondesa.recyclerviewdivider.factories.MarginFactory;
 import com.fondesa.recyclerviewdivider.factories.SizeFactory;
+import com.fondesa.recyclerviewdivider.factories.TintFactory;
 import com.fondesa.recyclerviewdivider.factories.VisibilityFactory;
 
 import java.util.ArrayList;
@@ -40,14 +45,12 @@ public class MainActivity extends AppCompatActivity {
 
         firstDivider = RecyclerViewDivider.with(this)
                 .addTo(mFirstRecyclerView)
-                .asSpace()
                 .build();
 
         firstDivider.show();
 
         secondDivider = RecyclerViewDivider.with(this)
                 .addTo(mSecondRecyclerView)
-                .asSpace()
                 .build();
 
         secondDivider.show();
