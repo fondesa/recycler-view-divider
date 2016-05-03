@@ -342,7 +342,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             RecyclerView recyclerView = recyclerViewRef.get();
             if (recyclerView != null) {
                 // get RecyclerView's orientation
-                orientation = RecyclerUtils.getRecyclerViewOrientation(recyclerView);
+                orientation = RecyclerViewDividerUtils.getRecyclerViewOrientation(recyclerView);
             }
 
             /* -------------------- VISIBILITY FACTORY -------------------- */
@@ -367,7 +367,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                             case TYPE_COLOR:
                                 if (color != INT_DEF) {
                                     // creates a custom color drawable with this color
-                                    currDrawable = RecyclerUtils.colorToDrawable(color);
+                                    currDrawable = RecyclerViewDividerUtils.colorToDrawable(color);
                                 }
                                 break;
 

@@ -11,8 +11,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 /**
  * Utilities class
  */
-public final class RecyclerUtils {
-    private RecyclerUtils() {
+public final class RecyclerViewDividerUtils {
+    private RecyclerViewDividerUtils() {
         // empty constructor to avoid initialization
     }
 
@@ -37,6 +37,12 @@ public final class RecyclerUtils {
         return orientation;
     }
 
+    /**
+     * Converts a color to a Drawable
+     *
+     * @param color color to convert
+     * @return ColorDrawable from color
+     */
     public static Drawable colorToDrawable(@ColorInt int color) {
         return new ColorDrawable(color);
     }
