@@ -1,5 +1,8 @@
 package com.fondesa.recyclerviewdivider;
 
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -7,7 +10,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 /**
  * Utilities class
  */
-class RecyclerUtils {
+public final class RecyclerUtils {
     private RecyclerUtils() {
         // empty constructor to avoid initialization
     }
@@ -31,5 +34,9 @@ class RecyclerUtils {
             orientation = RecyclerView.VERTICAL;
         }
         return orientation;
+    }
+
+    public static Drawable colorToDrawable(@ColorInt int color) {
+        return new ColorDrawable(color);
     }
 }

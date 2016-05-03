@@ -1,8 +1,5 @@
 package com.fondesa.recyclerviewdivider.factory;
 
-import android.content.Context;
-
-import com.fondesa.recycler_view_divider.R;
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider;
 
 /**

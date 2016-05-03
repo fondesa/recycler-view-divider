@@ -25,6 +25,7 @@ import com.fondesa.recycler_view_divider.R;
 import com.fondesa.recyclerviewdivider.factory.DrawableFactory;
 import com.fondesa.recyclerviewdivider.factory.MarginFactory;
 import com.fondesa.recyclerviewdivider.factory.SizeFactory;
+import com.fondesa.recyclerviewdivider.factory.TintFactory;
 import com.fondesa.recyclerviewdivider.factory.VisibilityFactory;
 
 import java.lang.annotation.Retention;
@@ -99,8 +100,15 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                         int position = parent.getChildAdapterPosition(child);
                         final int orientation = builder.orientation;
                         final int margin = builder.marginFactory.marginSizeForItem(listSize, position);
-                        final Drawable divider = builder.drawableFactory.drawableForItem(listSize, position);
+                        Drawable divider = builder.drawableFactory.drawableForItem(listSize, position);
                         final int size = builder.sizeFactory.sizeForItem(divider, orientation, listSize, position);
+                        TintFactory tintFactory = builder.tintFactory;
+                        if (tintFactory != null) {
+                            final int tint = tintFactory.tintForItem(listSize, position);
+                            Drawable wrappedDrawable = DrawableCompat.wrap(divider);
+                            DrawableCompat.setTint(wrappedDrawable, tint);
+                            divider = wrappedDrawable;
+                        }
 
                         final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
 
@@ -171,6 +179,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         private MarginFactory marginFactory;
         private DrawableFactory drawableFactory;
         private SizeFactory sizeFactory;
+        private TintFactory tintFactory;
 
         @Type
         private int type;
@@ -311,6 +320,11 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             return this;
         }
 
+        public Builder tintFactory(@Nullable TintFactory tintFactory) {
+            this.tintFactory = tintFactory;
+            return this;
+        }
+
         /**
          * Creates a new {@link RecyclerViewDivider} with given configurations and initializes default values.
          * Default values will be initialized in two different ways if the builder uses a custom Drawable or a plain divider.
@@ -339,11 +353,22 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 // get RecyclerView's orientation
                 orientation = RecyclerUtils.getRecyclerViewOrientation(recyclerView);
             }
+
+            /* -------------------- VISIBILITY FACTORY -------------------- */
+
+            // if the VisibilityFactory is still null, the divider will use the default factory
+            if (visibilityFactory == null) {
+                visibilityFactory = VisibilityFactory.getDefault();
+            }
+
             // init default values
             if (type != TYPE_SPACE) {
                 // get the value of Context from the WeakReference
                 Context context = contextRef.get();
                 if (context != null) {
+
+                    /* -------------------- DRAWABLE FACTORY -------------------- */
+
                     if (drawableFactory == null) {
                         Drawable currDrawable = null;
                         // all drawing properties will be set if RecyclerViewDivider is used as a divider, not a space
@@ -351,7 +376,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                             case TYPE_COLOR:
                                 if (color != INT_DEF) {
                                     // creates a custom color drawable with this color
-                                    currDrawable = new ColorDrawable(color);
+                                    currDrawable = RecyclerUtils.colorToDrawable(color);
                                 }
                                 break;
 
@@ -374,6 +399,20 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                         }
                     }
 
+                    /* -------------------- TINT FACTORY -------------------- */
+
+                    if (tintFactory == null) {
+                        if (tint != INT_DEF) {
+                            tintFactory = new TintFactory() {
+                                @Override
+                                public int tintForItem(int listSize, int position) {
+                                    return tint;
+                                }
+                            };
+                        }
+                    }
+
+                    /* -------------------- SIZE FACTORY -------------------- */
 
                     // init default size if not specified
                     if (sizeFactory == null) {
@@ -389,6 +428,8 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                         }
                     }
 
+                    /* -------------------- MARGIN FACTORY -------------------- */
+
                     // if margins arent' overriden, the divider will use the default margins factory
                     if (marginFactory == null) {
                         // if marginSize is specified, it will be used as default size for all items
@@ -403,25 +444,22 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                             };
                         }
                     }
-
-//                    if (tint != INT_DEF) {
-//                        Drawable wrappedDrawable = DrawableCompat.wrap(divider);
-//                        DrawableCompat.setTint(wrappedDrawable, tint);
-//                        divider = wrappedDrawable;
-//                    }
                 }
             } else {
                 // help GC to dealloc other values or bring them to default
+                if (drawableFactory != null) {
+                    drawableFactory = null;
+                }
+
+                if (tintFactory != null) {
+                    tintFactory = null;
+                }
+
                 if (marginFactory != null) {
                     marginFactory = null;
                 }
+            }
 
-                // TODO: 03/05/2016 dealloc other factories
-            }
-            // if the VisibilityFactory is still null, the divider will use the default factory
-            if (visibilityFactory == null) {
-                visibilityFactory = VisibilityFactory.getDefault();
-            }
             // creates divider for this builder
             return new RecyclerViewDivider(this);
         }
