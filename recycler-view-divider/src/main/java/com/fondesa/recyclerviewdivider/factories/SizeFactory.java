@@ -3,6 +3,7 @@ package com.fondesa.recyclerviewdivider.factories;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 
 import com.fondesa.recycler_view_divider.R;
@@ -51,7 +52,7 @@ public abstract class SizeFactory {
      * @param position    current position
      * @return height for an horizontal divider, width for a vertical divider
      */
-    public abstract int sizeForItem(Drawable drawable, int orientation, int listSize, int position);
+    public abstract int sizeForItem(@Nullable Drawable drawable, int orientation, int listSize, int position);
 
     /**
      * Default instance of a {@link SizeFactory}
@@ -64,9 +65,14 @@ public abstract class SizeFactory {
         }
 
         @Override
-        public int sizeForItem(Drawable drawable, int orientation, int listSize, int position) {
-            int size = (orientation == RecyclerView.VERTICAL) ? drawable.getIntrinsicHeight() : drawable.getIntrinsicWidth();
-            // if the intrinsic size method returns -1, it means that the drawable's sizes can't be defined, e.g. ColorDrawable
+        public int sizeForItem(@Nullable Drawable drawable, int orientation, int listSize, int position) {
+            int size;
+            if (drawable != null) {
+                size = (orientation == RecyclerView.VERTICAL) ? drawable.getIntrinsicHeight() : drawable.getIntrinsicWidth();
+            } else {
+                size = -1;
+            }
+            // if the size is equals to -1, it means that the drawable is null or drawable's sizes can't be defined, e.g. ColorDrawable
             if (size == -1) {
                 size = defaultSize;
             }
@@ -85,7 +91,7 @@ public abstract class SizeFactory {
         }
 
         @Override
-        public int sizeForItem(Drawable drawable, int orientation, int listSize, int position) {
+        public int sizeForItem(@Nullable Drawable drawable, int orientation, int listSize, int position) {
             return size;
         }
     }

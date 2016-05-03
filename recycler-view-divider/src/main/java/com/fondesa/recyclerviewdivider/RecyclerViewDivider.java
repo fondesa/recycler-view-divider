@@ -387,17 +387,28 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 orientation = RecyclerViewDividerUtils.getRecyclerViewOrientation(recyclerView);
             }
 
-            /* -------------------- VISIBILITY FACTORY -------------------- */
+            // get the value of Context from the WeakReference
+            Context context = contextRef.get();
+            if (context != null) {
 
-            if (visibilityFactory == null) {
-                visibilityFactory = VisibilityFactory.getDefault();
-            }
+                 /* -------------------- VISIBILITY FACTORY -------------------- */
 
-            // init default values
-            if (type != TYPE_SPACE) {
-                // get the value of Context from the WeakReference
-                Context context = contextRef.get();
-                if (context != null) {
+                if (visibilityFactory == null) {
+                    visibilityFactory = VisibilityFactory.getDefault();
+                }
+
+                 /* -------------------- SIZE FACTORY -------------------- */
+
+                if (sizeFactory == null) {
+                    if (size == INT_DEF) {
+                        sizeFactory = SizeFactory.getDefault(context);
+                    } else {
+                        sizeFactory = SizeFactory.getGeneralFactory(size);
+                    }
+                }
+
+                // init default values
+                if (type != TYPE_SPACE) {
 
                     /* -------------------- DRAWABLE FACTORY -------------------- */
 
@@ -432,16 +443,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                         }
                     }
 
-                    /* -------------------- SIZE FACTORY -------------------- */
-
-                    if (sizeFactory == null) {
-                        if (size == INT_DEF) {
-                            sizeFactory = SizeFactory.getDefault(context);
-                        } else {
-                            sizeFactory = SizeFactory.getGeneralFactory(size);
-                        }
-                    }
-
                     /* -------------------- MARGIN FACTORY -------------------- */
 
                     if (marginFactory == null) {
@@ -451,19 +452,20 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                             marginFactory = MarginFactory.getGeneralFactory(marginSize);
                         }
                     }
-                }
-            } else {
-                // help GC to dealloc other values or bring them to default
-                if (drawableFactory != null) {
-                    drawableFactory = null;
-                }
+                } else {
 
-                if (tintFactory != null) {
-                    tintFactory = null;
-                }
+                    /* -------------------- DRAWABLE FACTORY -------------------- */
 
-                if (marginFactory != null) {
-                    marginFactory = null;
+                    drawableFactory = DrawableFactory.getDefault(context);
+
+                    // help GC to dealloc other values or bring them to default
+                    if (tintFactory != null) {
+                        tintFactory = null;
+                    }
+
+                    if (marginFactory != null) {
+                        marginFactory = null;
+                    }
                 }
             }
 

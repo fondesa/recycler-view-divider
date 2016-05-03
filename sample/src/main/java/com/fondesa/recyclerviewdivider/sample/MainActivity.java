@@ -40,58 +40,14 @@ public class MainActivity extends AppCompatActivity {
 
         firstDivider = RecyclerViewDivider.with(this)
                 .addTo(mFirstRecyclerView)
-//                .color(Color.BLACK)
-//                .layout(R.layout.dummy_layout)
-//                .drawable(ContextCompat.getDrawable(this, R.drawable.horizontal_div))
-//                .tint(Color.RED)
-//                .size(getResources().getDimensionPixelSize(R.dimen.first_div_size))
-                .sizeFactory(new SizeFactory() {
-                    @Override
-                    public int sizeForItem(Drawable drawable, int orientation, int listSize, int position) {
-                        return position % 2 == 0 ? 120 : 60;
-                    }
-                })
-//                .marginSize(getResources().getDimensionPixelSize(R.dimen.first_div_size))
-//                .visibilityFactory(new VisibilityFactory() {
-//                    @Override
-//                    public boolean displayDividerForItem(int listSize, int position) {
-//                        return position != listSize -1;
-//                    }
-//                })
-//                .marginFactory(new MarginFactory() {
-//                    @Override
-//                    public int marginSizeForItem(int listSize, int position) {
-//                        return position % 2 == 0 ? 250 : 0;
-//                    }
-//                })
-//                .marginSize(2)
-//                .asSpace()
+                .asSpace()
                 .build();
 
         firstDivider.show();
 
         secondDivider = RecyclerViewDivider.with(this)
                 .addTo(mSecondRecyclerView)
-                .color(Color.RED)
-//                .drawable(ContextCompat.getDrawable(this, R.drawable.ll_vertical_div))
-//                .tint(Color.RED)
-//                .tint(Color.YELLOW)
-                .size(getResources().getDimensionPixelSize(R.dimen.second_div_size))
-                .marginSize(getResources().getDimensionPixelSize(R.dimen.second_div_size))
-                .visibilityFactory(new VisibilityFactory() {
-                    @Override
-                    public boolean displayDividerForItem(int listSize, int position) {
-//                        return position % 2 == 0;
-                        return true;
-                    }
-                })
-                .marginFactory(new MarginFactory() {
-                    @Override
-                    public int marginSizeForItem(int listSize, int position) {
-                        return position % 2 == 0 ? 150 : 0;
-                    }
-                })
-//                .asSpace()
+                .asSpace()
                 .build();
 
         secondDivider.show();
