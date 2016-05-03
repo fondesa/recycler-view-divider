@@ -1,4 +1,4 @@
-package com.fondesa.recyclerviewdivider.factory;
+package com.fondesa.recyclerviewdivider.factories;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

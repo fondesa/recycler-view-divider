@@ -3,6 +3,7 @@ package com.fondesa.recyclerviewdivider;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -21,7 +22,7 @@ public final class RecyclerUtils {
      * @param recyclerView RecyclerView used to check orientation
      * @return RecyclerView.VERTICAL or RecyclerView.HORIZONTAL
      */
-    static int getRecyclerViewOrientation(RecyclerView recyclerView) {
+    static int getRecyclerViewOrientation(@NonNull RecyclerView recyclerView) {
         int orientation;
 
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();

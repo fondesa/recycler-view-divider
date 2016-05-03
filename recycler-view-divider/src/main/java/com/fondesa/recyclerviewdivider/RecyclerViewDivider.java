@@ -2,31 +2,22 @@ package com.fondesa.recyclerviewdivider;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 
-import com.fondesa.recycler_view_divider.R;
-import com.fondesa.recyclerviewdivider.factory.DrawableFactory;
-import com.fondesa.recyclerviewdivider.factory.MarginFactory;
-import com.fondesa.recyclerviewdivider.factory.SizeFactory;
-import com.fondesa.recyclerviewdivider.factory.TintFactory;
-import com.fondesa.recyclerviewdivider.factory.VisibilityFactory;
+import com.fondesa.recyclerviewdivider.factories.DrawableFactory;
+import com.fondesa.recyclerviewdivider.factories.MarginFactory;
+import com.fondesa.recyclerviewdivider.factories.SizeFactory;
+import com.fondesa.recyclerviewdivider.factories.TintFactory;
+import com.fondesa.recyclerviewdivider.factories.VisibilityFactory;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

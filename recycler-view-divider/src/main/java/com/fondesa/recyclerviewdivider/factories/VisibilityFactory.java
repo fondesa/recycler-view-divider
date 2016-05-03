@@ -1,4 +1,4 @@
-package com.fondesa.recyclerviewdivider.factory;
+package com.fondesa.recyclerviewdivider.factories;
 
 /**
  * Factory used to specify a custom logic to set visibility for each divider.
