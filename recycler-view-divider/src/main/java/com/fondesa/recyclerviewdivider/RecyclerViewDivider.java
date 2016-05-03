@@ -183,10 +183,10 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         private int orientation;
 
         @ColorInt
-        private int color;
+        private Integer color;
         @ColorInt
         private Drawable drawable;
-        private int tint;
+        private Integer tint;
         private int size;
         private int marginSize;
 
@@ -207,8 +207,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          */
         public Builder(@NonNull Context context) {
             contextRef = new WeakReference<>(context);
-            color = INT_DEF;
-            tint = INT_DEF;
             size = INT_DEF;
             marginSize = INT_DEF;
             type = TYPE_COLOR;
@@ -419,7 +417,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                         // all drawing properties will be set if RecyclerViewDivider is used as a divider, not as a space
                         switch (type) {
                             case TYPE_COLOR:
-                                if (color != INT_DEF) {
+                                if (color != null) {
                                     currDrawable = RecyclerViewDividerUtils.colorToDrawable(color);
                                 }
                                 break;
@@ -440,7 +438,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                     /* -------------------- TINT FACTORY -------------------- */
 
                     if (tintFactory == null) {
-                        if (tint != INT_DEF) {
+                        if (tint != null) {
                             tintFactory = TintFactory.getGeneralFactory(tint);
                         }
                     }
