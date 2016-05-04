@@ -1,4 +1,4 @@
 In order of relevance
 ------
 
-1. Add drawable factory to have a different drawable for each item
+1. Add possibility to use a layout as divider's drawable resource
