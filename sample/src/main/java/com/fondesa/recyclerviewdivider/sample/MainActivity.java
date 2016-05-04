@@ -1,10 +1,7 @@
 package com.fondesa.recyclerviewdivider.sample;
 
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,12 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider;
-import com.fondesa.recyclerviewdivider.RecyclerViewDividerUtils;
-import com.fondesa.recyclerviewdivider.factories.DrawableFactory;
-import com.fondesa.recyclerviewdivider.factories.MarginFactory;
-import com.fondesa.recyclerviewdivider.factories.SizeFactory;
-import com.fondesa.recyclerviewdivider.factories.TintFactory;
-import com.fondesa.recyclerviewdivider.factories.VisibilityFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,14 +38,14 @@ public class MainActivity extends AppCompatActivity {
                 .addTo(mFirstRecyclerView)
                 .build();
 
-        firstDivider.show();
+        firstDivider.attach();
 
         secondDivider = RecyclerViewDivider.with(this)
                 .addTo(mSecondRecyclerView)
                 .color(Color.WHITE)
                 .build();
 
-        secondDivider.show();
+        secondDivider.attach();
 
         dividerShown = true;
 
@@ -90,11 +81,11 @@ public class MainActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.action_toggle_div) {
             if (dividerShown) {
-                firstDivider.remove();
-                secondDivider.remove();
+                firstDivider.detach();
+                secondDivider.detach();
             } else {
-                firstDivider.show();
-                secondDivider.show();
+                firstDivider.attach();
+                secondDivider.attach();
             }
             dividerShown = !dividerShown;
             invalidateOptionsMenu();

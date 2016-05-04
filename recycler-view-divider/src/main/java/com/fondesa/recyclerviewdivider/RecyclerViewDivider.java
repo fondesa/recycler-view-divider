@@ -53,9 +53,9 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     }
 
     /**
-     * Show this divider on the RecyclerView
+     * Add this divider on the RecyclerView
      */
-    public void show() {
+    public void attach() {
         // get the value of RecyclerView from the WeakReference
         RecyclerView recyclerView = builder.recyclerViewRef.get();
         if (recyclerView != null) {
@@ -71,7 +71,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     /**
      * Remove this divider from the RecyclerView
      */
-    public void remove() {
+    public void detach() {
         // get the value of RecyclerView from the WeakReference
         RecyclerView recyclerView = builder.recyclerViewRef.get();
         if (recyclerView != null) {
