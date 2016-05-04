@@ -159,11 +159,11 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
      * <br>
      * This class can set these custom properties:
      * <ul>
-     * <li><b>Size:</b> {@link #size(int)}</li>
-     * <li><b>Margins:</b> {@link #marginSize(int)}</li>
      * <li><b>Color:</b> {@link #color(int)}</li>
      * <li><b>Drawable:</b> {@link #drawable(Drawable)}</li>
      * <li><b>Tint of the drawable:</b> {@link #tint(int)}</li>
+     * <li><b>Size:</b> {@link #size(int)}</li>
+     * <li><b>Margins:</b> {@link #marginSize(int)}</li>
      * </ul>
      * <br>
      * And use these custom factories:
@@ -172,7 +172,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
      * <li><b>{@link DrawableFactory}:</b> {@link #drawableFactory(DrawableFactory)}</li>
      * <li><b>{@link TintFactory}:</b> {@link #tintFactory(TintFactory)}</li>
      * <li><b>{@link SizeFactory}:</b> {@link #sizeFactory(SizeFactory)}</li>
-     * <li><b>{@link MarginFactory}:</b> {@link #marginFactory}</li>
+     * <li><b>{@link MarginFactory}:</b> {@link #marginFactory(MarginFactory)}</li>
      * </ul>
      */
     public static class Builder {
