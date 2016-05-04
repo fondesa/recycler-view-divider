@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider;
+import com.fondesa.recyclerviewdivider.factories.VisibilityFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
 
         firstDivider = RecyclerViewDivider.with(this)
                 .addTo(mFirstRecyclerView)
+                .visibilityFactory(new VisibilityFactory() {
+                    @Override
+                    public boolean displayDividerForItem(int listSize, int position) {
+                        return false;
+                    }
+                })
                 .build();
 
         firstDivider.attach();
