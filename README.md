@@ -1,7 +1,7 @@
 RecyclerViewDivider
 ===============
 
-A simple divider for a RecyclerView used as an item decoration.
+A RecyclerView's divider that can be customized with simple properties or advanced ones.
 
 <img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/screenshots/screenshot_1.png" height="500">
 <img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/screenshots/screenshot_2.png" height="500">
