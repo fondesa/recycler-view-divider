@@ -56,7 +56,7 @@ It can also use custom factories to have a different logic for each divider:
 <li><i>marginFactory(MarginFactory)</i> → set margin</li>
 </ul>
 
-#####Example will all factories set:#####
+#####Example with all factories set:#####
 
 ```java
 RecyclerViewDivider.with(context)
