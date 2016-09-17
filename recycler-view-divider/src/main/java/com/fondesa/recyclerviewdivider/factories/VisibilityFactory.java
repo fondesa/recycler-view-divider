@@ -1,5 +1,10 @@
 package com.fondesa.recyclerviewdivider.factories;
 
+import android.support.annotation.IntDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * Factory used to specify a custom logic to set visibility for each divider.
  * <br>
@@ -7,6 +12,15 @@ package com.fondesa.recyclerviewdivider.factories;
  * {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder#visibilityFactory(VisibilityFactory)} method
  */
 public abstract class VisibilityFactory {
+
+    @IntDef({Show.ALL, Show.ITEMS_ONLY, Show.GROUP_ONLY, Show.NONE})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Show {
+        int NONE = 0;
+        int ITEMS_ONLY = 1;
+        int GROUP_ONLY = 2;
+        int ALL = 3;
+    }
 
     private static VisibilityFactory defaultFactory;
 
@@ -29,7 +43,9 @@ public abstract class VisibilityFactory {
      * @param position current position
      * @return true if the divider will be visible, false instead
      */
-    public abstract boolean displayDividerForItem(int listSize, int position);
+    public abstract
+    @Show
+    int displayDividerForItem(int listSize, int position);
 
     /**
      * Default instance of a {@link VisibilityFactory}
@@ -40,8 +56,10 @@ public abstract class VisibilityFactory {
         }
 
         @Override
-        public boolean displayDividerForItem(int listSize, int position) {
-            return true;
+        public
+        @Show
+        int displayDividerForItem(int listSize, int position) {
+            return Show.ALL;
         }
     }
 }

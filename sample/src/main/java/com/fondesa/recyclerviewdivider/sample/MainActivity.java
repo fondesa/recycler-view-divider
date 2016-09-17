@@ -3,7 +3,10 @@ package com.fondesa.recyclerviewdivider.sample;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,8 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int LIST_SIZE = 15;
-    private static final String SHOW = "SHOW";
+    private static final int LIST_SIZE = 16;
+    private static final int SPAN_COUNT = 2;
+    private static final String SHOW = "ALL";
     private static final String REMOVE = "REMOVE";
     boolean dividerShown;
 
@@ -33,23 +37,41 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         RecyclerView mFirstRecyclerView = (RecyclerView) findViewById(R.id.first_recycler_view);
+        ((GridLayoutManager) mFirstRecyclerView.getLayoutManager()).setSpanCount(SPAN_COUNT);
+
         RecyclerView mSecondRecyclerView = (RecyclerView) findViewById(R.id.second_recycler_view);
+        ((GridLayoutManager) mSecondRecyclerView.getLayoutManager()).setSpanCount(SPAN_COUNT);
 
         firstDivider = RecyclerViewDivider.with(this)
                 .addTo(mFirstRecyclerView)
                 .visibilityFactory(new VisibilityFactory() {
                     @Override
-                    public boolean displayDividerForItem(int listSize, int position) {
-                        return false;
+                    public int displayDividerForItem(int listSize, int position) {
+//                        if (position != listSize - 1) {
+//                            return ALL;
+//                        }
+                        return Show.ALL;
                     }
                 })
+                .color(Color.RED)
+                .size(20)
                 .build();
 
         firstDivider.attach();
 
         secondDivider = RecyclerViewDivider.with(this)
                 .addTo(mSecondRecyclerView)
-                .color(Color.WHITE)
+                .visibilityFactory(new VisibilityFactory() {
+                    @Override
+                    public int displayDividerForItem(int listSize, int position) {
+//                        if (position != listSize - 1) {
+//                            return ALL;
+//                        }
+                        return Show.ALL;
+                    }
+                })
+                .color(Color.RED)
+                .size(20)
                 .build();
 
         secondDivider.attach();

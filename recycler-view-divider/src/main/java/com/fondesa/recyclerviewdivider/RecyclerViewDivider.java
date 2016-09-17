@@ -10,7 +10,10 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 
 import com.fondesa.recyclerviewdivider.factories.DrawableFactory;
@@ -139,16 +142,47 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         final int listSize = parent.getAdapter().getItemCount();
         if (listSize > 0) {
-            final int orientation = builder.orientation;
-            final int position = parent.getChildAdapterPosition(view);
-            if (builder.visibilityFactory.displayDividerForItem(listSize, position)) {
-                final Drawable divider = builder.drawableFactory.drawableForItem(listSize, position);
-                final int size = builder.sizeFactory.sizeForItem(divider, orientation, listSize, position);
+            int itemPosition = parent.getChildAdapterPosition(view);
+            final int groupPosition = RecyclerViewDividerUtils.getGroupPosition(parent, itemPosition);
+            final int groupCount = RecyclerViewDividerUtils.getGroupCount(parent, listSize);
+
+            @VisibilityFactory.Show int showDivider = builder.visibilityFactory.displayDividerForItem(groupCount, groupPosition);
+            if (showDivider != VisibilityFactory.Show.NONE) {
+                final int orientation = builder.orientation;
+                final int spanCount = builder.spanCount;
+                final int spanSize = RecyclerViewDividerUtils.getSpanSize(parent, groupPosition);
+
+                final Drawable divider = builder.drawableFactory.drawableForItem(listSize, groupPosition);
+                int size = builder.sizeFactory.sizeForItem(divider, orientation, listSize, groupPosition);
+
+                final int remainderInSpan = (itemPosition + spanSize) % spanCount;
+                int halfSize = size / 2;
+
+                size = showDivider == VisibilityFactory.Show.ITEMS_ONLY ? 0 : size;
+                halfSize = showDivider == VisibilityFactory.Show.GROUP_ONLY ? 0 : halfSize;
 
                 if (orientation == RecyclerView.VERTICAL) {
-                    outRect.set(0, 0, 0, size);
+                    if (remainderInSpan == 1) {
+                        // first
+                        outRect.set(0, 0, halfSize, size);
+                    } else if (remainderInSpan == 0) {
+                        // last
+                        outRect.set(halfSize, 0, 0, size);
+                    } else {
+                        // middle
+                        outRect.set(halfSize, 0, halfSize, size);
+                    }
                 } else {
-                    outRect.set(0, 0, size, 0);
+                    if (remainderInSpan == 1) {
+                        // first
+                        outRect.set(0, 0, size, halfSize);
+                    } else if (remainderInSpan == 0) {
+                        // last
+                        outRect.set(0, halfSize, size, 0);
+                    } else {
+                        // middle
+                        outRect.set(0, halfSize, size, halfSize);
+                    }
                 }
             }
         }
@@ -181,6 +215,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         private WeakReference<Context> contextRef;
         private WeakReference<RecyclerView> recyclerViewRef;
         private int orientation;
+        private int spanCount;
 
         @ColorInt
         private Integer color;
@@ -384,7 +419,8 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             RecyclerView recyclerView = recyclerViewRef.get();
             if (recyclerView != null) {
                 // get RecyclerView's orientation
-                orientation = RecyclerViewDividerUtils.getRecyclerViewOrientation(recyclerView);
+                orientation = RecyclerViewDividerUtils.getOrientation(recyclerView);
+                spanCount = RecyclerViewDividerUtils.getSpanCount(recyclerView);
             }
 
             // get the value of Context from the WeakReference
