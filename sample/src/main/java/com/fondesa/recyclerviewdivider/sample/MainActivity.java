@@ -28,7 +28,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final int LIST_SIZE = 18;
-    private static final int SPAN_COUNT = 3;
+    private static final int SPAN_COUNT = 2;
     private static final String SHOW = "ALL";
     private static final String REMOVE = "REMOVE";
     boolean dividerShown;
@@ -72,7 +72,9 @@ public class MainActivity extends AppCompatActivity {
 //                    }
 //                })
                 .color(Color.RED)
-                .size(getResources().getDimensionPixelSize(R.dimen.first_div_size))
+//                .size(getResources().getDimensionPixelSize(R.dimen.first_div_size))
+                .size(20)
+//                .marginSize(20)
                 .build();
 
         firstDivider.attach();
@@ -82,9 +84,9 @@ public class MainActivity extends AppCompatActivity {
                 .visibilityFactory(new VisibilityFactory() {
                     @Override
                     public int displayDividerForItem(int groupCount, int groupIndex) {
-                        if (groupIndex == groupCount - 1) {
-                            return SHOW_ITEMS_ONLY;
-                        }
+//                        if (groupIndex == groupCount - 1) {
+//                            return SHOW_ITEMS_ONLY;
+//                        }
                         return SHOW_ALL;
                     }
                 })
@@ -102,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
 //                })
                 .color(Color.RED)
                 .size(20)
+                .marginSize(20)
                 .build();
 
         secondDivider.attach();

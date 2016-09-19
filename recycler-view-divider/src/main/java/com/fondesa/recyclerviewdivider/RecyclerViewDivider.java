@@ -2,6 +2,7 @@ package com.fondesa.recyclerviewdivider;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -151,7 +152,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 top = childBottom + params.bottomMargin;
                 bottom = top + size;
                 left = childLeft + margin;
-                right = left + width - margin;
+                right = childRight - margin;
 
                 divider.setBounds(left, top, right, bottom);
                 divider.draw(c);
@@ -160,18 +161,28 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
                 top = childTop + margin;
                 // size is added to draw filling point between horizontal and vertical dividers
-                bottom = top + height + size;
+                bottom = childBottom - margin;
+
+                if (margin == 0) {
+                    if (groupIndex > 0) {
+                        top -= params.topMargin;
+                    }
+                    if (groupIndex < groupCount - 1 || size > 0) {
+                        bottom += params.bottomMargin;
+                    }
+                    bottom += size;
+                }
 
                 if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
                     // first
-                    left = childRight + margin;
+                    left = childRight + margin + params.rightMargin;
                     right = left + lastElementInSpanSize;
 
                     divider.setBounds(left, top, right, bottom);
                     divider.draw(c);
                 } else if (remainderInSpan == REMAINDER_LAST_ELEMENT) {
                     // last
-                    right = childLeft - margin;
+                    right = childLeft - margin - params.leftMargin;
                     left = right - halfSize;
 
                     divider.setBounds(left, top, right, bottom);
@@ -179,14 +190,14 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 } else {
                     // middle
                     // left half divider
-                    right = childLeft - margin;
+                    right = childLeft - margin - params.leftMargin;
                     left = right - halfSize;
 
                     divider.setBounds(left, top, right, bottom);
                     divider.draw(c);
 
                     // right half divider
-                    left = childRight + margin;
+                    left = childRight + margin + params.rightMargin;
                     right = left + lastElementInSpanSize;
 
                     divider.setBounds(left, top, right, bottom);
@@ -195,7 +206,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             } else {
                 // draw right divider
                 top = childTop + margin;
-                bottom = top + height - margin;
+                bottom = childBottom - margin;
                 left = childRight + params.rightMargin;
                 right = left + size;
 
@@ -206,18 +217,27 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
                 left = childLeft + margin;
                 // size is added to draw filling point between horizontal and vertical dividers
-                right = left + width + size;
+                right = childRight - margin;
+                if (margin == 0) {
+                    if (groupIndex > 0) {
+                        left -= params.leftMargin;
+                    }
+                    if (groupIndex < groupCount - 1 || size > 0) {
+                        right += params.rightMargin;
+                    }
+                    right += size;
+                }
 
                 if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
                     // first
-                    top = childBottom + margin;
+                    top = childBottom + margin + params.bottomMargin;
                     bottom = top + lastElementInSpanSize;
 
                     divider.setBounds(left, top, right, bottom);
                     divider.draw(c);
                 } else if (remainderInSpan == REMAINDER_LAST_ELEMENT) {
                     // last
-                    bottom = childTop - margin;
+                    bottom = childTop - margin - params.topMargin;
                     top = bottom - halfSize;
 
                     divider.setBounds(left, top, right, bottom);
@@ -225,14 +245,14 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 } else {
                     // middle
                     // top half divider
-                    bottom = childTop - margin;
+                    bottom = childTop - margin - params.topMargin;
                     top = bottom - halfSize;
 
                     divider.setBounds(left, top, right, bottom);
                     divider.draw(c);
 
                     // bottom half divider
-                    top = childBottom + margin;
+                    top = childBottom + margin + params.bottomMargin;
                     bottom = top + lastElementInSpanSize;
 
                     divider.setBounds(left, top, right, bottom);
@@ -258,9 +278,10 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
                 final Drawable divider = mBuilder.drawableFactory.drawableForItem(groupCount, groupPosition);
                 int size = mBuilder.sizeFactory.sizeForItem(divider, orientation, groupCount, groupPosition);
+                int marginSize = mBuilder.marginFactory.marginSizeForItem(groupCount, groupPosition);
 
                 final int remainderInSpan = (itemPosition + spanSize) % spanCount;
-                int halfSize = size / 2;
+                int halfSize = size / 2 + marginSize;
 
                 size = showDivider == VisibilityFactory.SHOW_ITEMS_ONLY ? 0 : size;
                 halfSize = showDivider == VisibilityFactory.SHOW_GROUP_ONLY ? 0 : halfSize;
