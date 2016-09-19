@@ -23,11 +23,11 @@ public abstract class TintFactory {
     /**
      * Defines a custom tint color for each divider's drawable
      *
-     * @param listSize size of the list in the adapter
-     * @param position current position
+     * @param groupCount size of the list in the adapter
+     * @param groupIndex current position
      * @return tint color for the divider's drawable in the current position
      */
-    public abstract int tintForItem(int listSize, int position);
+    public abstract int tintForItem(int groupCount, int groupIndex);
 
     /**
      * General instance of a {@link TintFactory} used when the tint color is set with {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder#tint(int)}
@@ -41,7 +41,7 @@ public abstract class TintFactory {
         }
 
         @Override
-        public int tintForItem(int listSize, int position) {
+        public int tintForItem(int groupCount, int groupIndex) {
             return tint;
         }
     }

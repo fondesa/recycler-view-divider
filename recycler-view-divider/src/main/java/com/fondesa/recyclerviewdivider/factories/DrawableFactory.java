@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 
 import com.fondesa.recycler_view_divider.R;
+import com.fondesa.recyclerviewdivider.RecyclerViewDividerUtils;
 
 /**
  * Factory used to specify a custom logic to use different drawables as divider.
@@ -57,7 +58,7 @@ public abstract class DrawableFactory {
         private Drawable defaultDrawable;
 
         Default(@NonNull Context context) {
-            defaultDrawable = new ColorDrawable(ContextCompat.getColor(context, R.color.recycler_view_divider_color));
+            defaultDrawable = RecyclerViewDividerUtils.colorToDrawable(ContextCompat.getColor(context, R.color.recycler_view_divider_color));
         }
 
         @Override

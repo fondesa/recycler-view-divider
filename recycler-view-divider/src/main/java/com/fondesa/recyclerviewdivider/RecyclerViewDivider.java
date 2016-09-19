@@ -10,9 +10,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
 
@@ -31,12 +29,12 @@ import java.lang.ref.WeakReference;
  */
 public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     private static final String TAG = "RecyclerViewDivider";
+
     private static final int REMAINDER_FIRST_ELEMENT = 1;
     private static final int REMAINDER_LAST_ELEMENT = 0;
 
-    private Builder builder;
-
-    private boolean isDividerAdded;
+    private Builder mBuilder;
+    private boolean mIsDividerAdded;
 
     /**
      * Set the {@link Builder} for this {@link RecyclerViewDivider}
@@ -44,7 +42,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
      * @param builder {@link Builder} with properties initialized
      */
     private RecyclerViewDivider(@NonNull Builder builder) {
-        this.builder = builder;
+        mBuilder = builder;
     }
 
     /**
@@ -62,11 +60,11 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
      */
     public void attach() {
         // get the value of RecyclerView from the WeakReference
-        RecyclerView recyclerView = builder.recyclerViewRef.get();
+        RecyclerView recyclerView = mBuilder.recyclerViewRef.get();
         if (recyclerView != null) {
-            if (!isDividerAdded) {
+            if (!mIsDividerAdded) {
                 recyclerView.addItemDecoration(this);
-                isDividerAdded = true;
+                mIsDividerAdded = true;
             } else {
                 recyclerView.invalidateItemDecorations();
             }
@@ -78,11 +76,11 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
      */
     public void detach() {
         // get the value of RecyclerView from the WeakReference
-        RecyclerView recyclerView = builder.recyclerViewRef.get();
+        RecyclerView recyclerView = mBuilder.recyclerViewRef.get();
         if (recyclerView != null) {
-            if (isDividerAdded) {
+            if (mIsDividerAdded) {
                 recyclerView.removeItemDecoration(this);
-                isDividerAdded = false;
+                mIsDividerAdded = false;
             }
         }
     }
@@ -93,7 +91,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         final int listSize;
 
         // if the divider isn't a simple space, it will be drawn
-        if (builder.type == TYPE_SPACE || adapter == null || (listSize = adapter.getItemCount()) == 0)
+        if (mBuilder.type == TYPE_SPACE || adapter == null || (listSize = adapter.getItemCount()) == 0)
             return;
 
         int left;
@@ -105,23 +103,23 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
             int itemPosition = parent.getChildAdapterPosition(child);
-            final int groupPosition = RecyclerViewDividerUtils.getGroupPosition(parent, itemPosition);
+            final int groupIndex = RecyclerViewDividerUtils.getGroupPosition(parent, itemPosition);
             final int groupCount = RecyclerViewDividerUtils.getGroupCount(parent, listSize);
 
-            Drawable divider = builder.drawableFactory.drawableForItem(groupCount, groupPosition);
+            Drawable divider = mBuilder.drawableFactory.drawableForItem(groupCount, groupIndex);
+            @VisibilityFactory.Show int showDivider = mBuilder.visibilityFactory.displayDividerForItem(groupCount, groupIndex);
 
-            if (divider == null) continue;
+            if (divider == null || showDivider == VisibilityFactory.SHOW_NONE) continue;
 
-            @VisibilityFactory.Show int showDivider = builder.visibilityFactory.displayDividerForItem(groupCount, groupPosition);
-            final int orientation = builder.orientation;
-            final int spanCount = builder.spanCount;
-            final int spanSize = RecyclerViewDividerUtils.getSpanSize(parent, groupPosition);
+            final int orientation = mBuilder.orientation;
+            final int spanCount = mBuilder.spanCount;
+            final int spanSize = RecyclerViewDividerUtils.getSpanSize(parent, groupIndex);
 
-            final int margin = builder.marginFactory.marginSizeForItem(groupCount, groupPosition);
-            int size = builder.sizeFactory.sizeForItem(divider, orientation, groupCount, groupPosition);
-            TintFactory tintFactory = builder.tintFactory;
+            final int margin = mBuilder.marginFactory.marginSizeForItem(groupCount, groupIndex);
+            int size = mBuilder.sizeFactory.sizeForItem(divider, orientation, groupCount, groupIndex);
+            TintFactory tintFactory = mBuilder.tintFactory;
             if (tintFactory != null) {
-                final int tint = tintFactory.tintForItem(groupCount, groupPosition);
+                final int tint = tintFactory.tintForItem(groupCount, groupIndex);
                 Drawable wrappedDrawable = DrawableCompat.wrap(divider);
                 DrawableCompat.setTint(wrappedDrawable, tint);
                 divider = wrappedDrawable;
@@ -129,10 +127,10 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
 
-            int halfSize = size / 2;
+            int halfSize = size < 2 ? size : size / 2;
 
-            size = showDivider == VisibilityFactory.Show.ITEMS_ONLY ? 0 : size;
-            halfSize = showDivider == VisibilityFactory.Show.GROUP_ONLY ? 0 : halfSize;
+            size = showDivider == VisibilityFactory.SHOW_ITEMS_ONLY ? 0 : size;
+            halfSize = showDivider == VisibilityFactory.SHOW_GROUP_ONLY ? 0 : halfSize;
 
             final int remainderInSpan = (itemPosition + spanSize) % spanCount;
 
@@ -143,6 +141,10 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             final int childTop = child.getTop();
             final int childRight = child.getRight();
             final int childLeft = child.getLeft();
+
+            // if the last element in the span doesn't complete the span count, its size will be full, not the half
+            // halfSize * 2 is used instead of size to handle the case Show.ITEMS_ONLY in which size will be == 0
+            final int lastElementInSpanSize = itemPosition == listSize - 1 ? halfSize * 2 : halfSize;
 
             if (orientation == RecyclerView.VERTICAL) {
                 // draw bottom divider
@@ -163,7 +165,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
                     // first
                     left = childRight + margin;
-                    right = left + halfSize;
+                    right = left + lastElementInSpanSize;
 
                     divider.setBounds(left, top, right, bottom);
                     divider.draw(c);
@@ -185,7 +187,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
                     // right half divider
                     left = childRight + margin;
-                    right = left + halfSize;
+                    right = left + lastElementInSpanSize;
 
                     divider.setBounds(left, top, right, bottom);
                     divider.draw(c);
@@ -209,7 +211,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
                     // first
                     top = childBottom + margin;
-                    bottom = top + halfSize;
+                    bottom = top + lastElementInSpanSize;
 
                     divider.setBounds(left, top, right, bottom);
                     divider.draw(c);
@@ -231,7 +233,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
                     // bottom half divider
                     top = childBottom + margin;
-                    bottom = top + halfSize;
+                    bottom = top + lastElementInSpanSize;
 
                     divider.setBounds(left, top, right, bottom);
                     divider.draw(c);
@@ -248,20 +250,20 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             final int groupPosition = RecyclerViewDividerUtils.getGroupPosition(parent, itemPosition);
             final int groupCount = RecyclerViewDividerUtils.getGroupCount(parent, listSize);
 
-            @VisibilityFactory.Show int showDivider = builder.visibilityFactory.displayDividerForItem(groupCount, groupPosition);
-            if (showDivider != VisibilityFactory.Show.NONE) {
-                final int orientation = builder.orientation;
-                final int spanCount = builder.spanCount;
+            @VisibilityFactory.Show int showDivider = mBuilder.visibilityFactory.displayDividerForItem(groupCount, groupPosition);
+            if (showDivider != VisibilityFactory.SHOW_NONE) {
+                final int orientation = mBuilder.orientation;
+                final int spanCount = mBuilder.spanCount;
                 final int spanSize = RecyclerViewDividerUtils.getSpanSize(parent, groupPosition);
 
-                final Drawable divider = builder.drawableFactory.drawableForItem(groupCount, groupPosition);
-                int size = builder.sizeFactory.sizeForItem(divider, orientation, groupCount, groupPosition);
+                final Drawable divider = mBuilder.drawableFactory.drawableForItem(groupCount, groupPosition);
+                int size = mBuilder.sizeFactory.sizeForItem(divider, orientation, groupCount, groupPosition);
 
                 final int remainderInSpan = (itemPosition + spanSize) % spanCount;
                 int halfSize = size / 2;
 
-                size = showDivider == VisibilityFactory.Show.ITEMS_ONLY ? 0 : size;
-                halfSize = showDivider == VisibilityFactory.Show.GROUP_ONLY ? 0 : halfSize;
+                size = showDivider == VisibilityFactory.SHOW_ITEMS_ONLY ? 0 : size;
+                halfSize = showDivider == VisibilityFactory.SHOW_GROUP_ONLY ? 0 : halfSize;
 
                 if (orientation == RecyclerView.VERTICAL) {
                     if (spanCount == 1) {
@@ -347,6 +349,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          *
          * @param context current context
          */
+        @SuppressWarnings("WeakerAccess")
         public Builder(@NonNull Context context) {
             contextRef = new WeakReference<>(context);
             size = INT_DEF;
@@ -567,6 +570,9 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
                             case TYPE_DRAWABLE:
                                 if (drawable != null) {
+                                    if (spanCount > 1) {
+                                        Log.e(TAG, "if your span count is major than 1, the drawable won't be shown correctly");
+                                    }
                                     currDrawable = drawable;
                                 }
                                 break;
@@ -612,7 +618,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 }
             }
 
-            // creates divider for this builder
+            // creates divider for this mBuilder
             return new RecyclerViewDivider(this);
         }
     }
@@ -632,5 +638,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     @IntDef({TYPE_SPACE, TYPE_COLOR, TYPE_DRAWABLE})
     @Retention(RetentionPolicy.SOURCE)
     private @interface Type {
+        // empty annotation body
     }
 }

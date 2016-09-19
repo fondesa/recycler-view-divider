@@ -43,11 +43,11 @@ public abstract class MarginFactory {
     /**
      * Defines a custom margin size for each divider
      *
-     * @param listSize size of the list in the adapter
-     * @param position current position
+     * @param groupCount size of the list in the adapter
+     * @param groupIndex current position
      * @return right/left margin with horizontal divider or top/bottom margin with vertical divider
      */
-    public abstract int marginSizeForItem(int listSize, int position);
+    public abstract int marginSizeForItem(int groupCount, int groupIndex);
 
     /**
      * Default instance of a {@link MarginFactory}
@@ -60,7 +60,7 @@ public abstract class MarginFactory {
         }
 
         @Override
-        public int marginSizeForItem(int listSize, int position) {
+        public int marginSizeForItem(int groupCount, int groupIndex) {
             return defaultMarginSize;
         }
     }
@@ -76,7 +76,7 @@ public abstract class MarginFactory {
         }
 
         @Override
-        public int marginSizeForItem(int listSize, int position) {
+        public int marginSizeForItem(int groupCount, int groupIndex) {
             return marginSize;
         }
     }

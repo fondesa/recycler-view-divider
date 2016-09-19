@@ -11,15 +11,18 @@ import java.lang.annotation.RetentionPolicy;
  * You can add a custom {@link VisibilityFactory} in your {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder} using
  * {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder#visibilityFactory(VisibilityFactory)} method
  */
+@SuppressWarnings("WeakerAccess")
 public abstract class VisibilityFactory {
 
-    @IntDef({Show.ALL, Show.ITEMS_ONLY, Show.GROUP_ONLY, Show.NONE})
+    public static final int SHOW_NONE = 0;
+    public static final int SHOW_ITEMS_ONLY = 1;
+    public static final int SHOW_GROUP_ONLY = 2;
+    public static final int SHOW_ALL = 3;
+
+    @IntDef({SHOW_NONE, SHOW_ITEMS_ONLY, SHOW_GROUP_ONLY, SHOW_ALL})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Show {
-        int NONE = 0;
-        int ITEMS_ONLY = 1;
-        int GROUP_ONLY = 2;
-        int ALL = 3;
+        // empty annotation body
     }
 
     private static VisibilityFactory defaultFactory;
@@ -37,15 +40,15 @@ public abstract class VisibilityFactory {
     }
 
     /**
-     * Defines a visibility for each divider
+     * Defines a visibility for each group of divider
      *
-     * @param listSize size of the list in the adapter
-     * @param position current position
+     * @param groupCount size of the list in the adapter
+     * @param groupIndex current position
      * @return true if the divider will be visible, false instead
      */
     public abstract
     @Show
-    int displayDividerForItem(int listSize, int position);
+    int displayDividerForItem(int groupCount, int groupIndex);
 
     /**
      * Default instance of a {@link VisibilityFactory}
@@ -58,8 +61,8 @@ public abstract class VisibilityFactory {
         @Override
         public
         @Show
-        int displayDividerForItem(int listSize, int position) {
-            return Show.ALL;
+        int displayDividerForItem(int groupCount, int groupIndex) {
+            return SHOW_ALL;
         }
     }
 }

@@ -1,7 +1,10 @@
 package com.fondesa.recyclerviewdivider.sample;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,13 +18,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider;
+import com.fondesa.recyclerviewdivider.factories.MarginFactory;
+import com.fondesa.recyclerviewdivider.factories.SizeFactory;
+import com.fondesa.recyclerviewdivider.factories.TintFactory;
 import com.fondesa.recyclerviewdivider.factories.VisibilityFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int LIST_SIZE = 16;
+    private static final int LIST_SIZE = 18;
     private static final int SPAN_COUNT = 3;
     private static final String SHOW = "ALL";
     private static final String REMOVE = "REMOVE";
@@ -46,15 +52,27 @@ public class MainActivity extends AppCompatActivity {
                 .addTo(mFirstRecyclerView)
                 .visibilityFactory(new VisibilityFactory() {
                     @Override
-                    public int displayDividerForItem(int listSize, int position) {
-//                        if (position != listSize - 1) {
-//                            return ALL;
-//                        }
-                        return Show.ALL;
+                    public int displayDividerForItem(int groupCount, int groupIndex) {
+                        if (groupIndex == groupCount - 1) {
+                            return SHOW_ITEMS_ONLY;
+                        }
+                        return SHOW_ALL;
                     }
                 })
+//                .sizeFactory(new SizeFactory() {
+//                    @Override
+//                    public int sizeForItem(@Nullable Drawable drawable, int orientation, int listSize, int position) {
+//                        return position % 2 == 0 ? 40 : 10;
+//                    }
+//                })
+//                .tintFactory(new TintFactory() {
+//                    @Override
+//                    public int tintForItem(int listSize, int position) {
+//                        return position % 3 == 0 ? Color.RED : Color.GREEN;
+//                    }
+//                })
                 .color(Color.RED)
-                .size(20)
+                .size(getResources().getDimensionPixelSize(R.dimen.first_div_size))
                 .build();
 
         firstDivider.attach();
@@ -63,13 +81,25 @@ public class MainActivity extends AppCompatActivity {
                 .addTo(mSecondRecyclerView)
                 .visibilityFactory(new VisibilityFactory() {
                     @Override
-                    public int displayDividerForItem(int listSize, int position) {
-//                        if (position != listSize - 1) {
-//                            return ALL;
-//                        }
-                        return Show.ALL;
+                    public int displayDividerForItem(int groupCount, int groupIndex) {
+                        if (groupIndex == groupCount - 1) {
+                            return SHOW_ITEMS_ONLY;
+                        }
+                        return SHOW_ALL;
                     }
                 })
+//                .sizeFactory(new SizeFactory() {
+//                    @Override
+//                    public int sizeForItem(@Nullable Drawable drawable, int orientation, int listSize, int position) {
+//                        return position % 2 == 0 ? 40 : 10;
+//                    }
+//                })
+//                .tintFactory(new TintFactory() {
+//                    @Override
+//                    public int tintForItem(int listSize, int position) {
+//                        return position % 3 == 0 ? Color.RED : Color.GREEN;
+//                    }
+//                })
                 .color(Color.RED)
                 .size(20)
                 .build();

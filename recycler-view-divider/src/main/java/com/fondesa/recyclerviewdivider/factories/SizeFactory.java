@@ -48,11 +48,11 @@ public abstract class SizeFactory {
      *
      * @param drawable    current divider's drawable
      * @param orientation RecyclerView.VERTICAL or RecyclerView.HORIZONTAL
-     * @param listSize    size of the list in the adapter
-     * @param position    current position
+     * @param groupCount    size of the list in the adapter
+     * @param groupIndex    current position
      * @return height for an horizontal divider, width for a vertical divider
      */
-    public abstract int sizeForItem(@Nullable Drawable drawable, int orientation, int listSize, int position);
+    public abstract int sizeForItem(@Nullable Drawable drawable, int orientation, int groupCount, int groupIndex);
 
     /**
      * Default instance of a {@link SizeFactory}
@@ -65,7 +65,7 @@ public abstract class SizeFactory {
         }
 
         @Override
-        public int sizeForItem(@Nullable Drawable drawable, int orientation, int listSize, int position) {
+        public int sizeForItem(@Nullable Drawable drawable, int orientation, int groupCount, int groupIndex) {
             int size;
             if (drawable != null) {
                 size = (orientation == RecyclerView.VERTICAL) ? drawable.getIntrinsicHeight() : drawable.getIntrinsicWidth();
@@ -91,7 +91,7 @@ public abstract class SizeFactory {
         }
 
         @Override
-        public int sizeForItem(@Nullable Drawable drawable, int orientation, int listSize, int position) {
+        public int sizeForItem(@Nullable Drawable drawable, int orientation, int groupCount, int groupIndex) {
             return size;
         }
     }

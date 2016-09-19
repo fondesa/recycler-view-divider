@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="first_div_size">8dp</dimen>
+    <dimen name="first_div_size">16dp</dimen>
     <dimen name="second_div_size">16dp</dimen>
 
     <!--<dimen name="recycler_view_divider_size">26dp</dimen>-->
