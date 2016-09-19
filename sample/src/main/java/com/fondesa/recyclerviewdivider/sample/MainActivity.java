@@ -22,7 +22,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final int LIST_SIZE = 16;
-    private static final int SPAN_COUNT = 2;
+    private static final int SPAN_COUNT = 3;
     private static final String SHOW = "ALL";
     private static final String REMOVE = "REMOVE";
     boolean dividerShown;

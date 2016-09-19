@@ -31,6 +31,8 @@ import java.lang.ref.WeakReference;
  */
 public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     private static final String TAG = "RecyclerViewDivider";
+    private static final int REMAINDER_FIRST_ELEMENT = 1;
+    private static final int REMAINDER_LAST_ELEMENT = 0;
 
     private Builder builder;
 
@@ -87,52 +89,152 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+        final RecyclerView.Adapter adapter = parent.getAdapter();
+        final int listSize;
+
         // if the divider isn't a simple space, it will be drawn
-        if (builder.type != TYPE_SPACE) {
-            RecyclerView.Adapter adapter = parent.getAdapter();
-            if (adapter != null) {
-                int listSize = adapter.getItemCount();
-                if (listSize > 0) {
-                    int left;
-                    int top;
-                    int right;
-                    int bottom;
+        if (builder.type == TYPE_SPACE || adapter == null || (listSize = adapter.getItemCount()) == 0)
+            return;
 
-                    int childCount = parent.getChildCount();
-                    for (int i = 0; i < childCount; i++) {
-                        final View child = parent.getChildAt(i);
-                        int position = parent.getChildAdapterPosition(child);
-                        Drawable divider = builder.drawableFactory.drawableForItem(listSize, position);
-                        if (divider != null) {
-                            final int orientation = builder.orientation;
-                            final int margin = builder.marginFactory.marginSizeForItem(listSize, position);
-                            final int size = builder.sizeFactory.sizeForItem(divider, orientation, listSize, position);
-                            TintFactory tintFactory = builder.tintFactory;
-                            if (tintFactory != null) {
-                                final int tint = tintFactory.tintForItem(listSize, position);
-                                Drawable wrappedDrawable = DrawableCompat.wrap(divider);
-                                DrawableCompat.setTint(wrappedDrawable, tint);
-                                divider = wrappedDrawable;
-                            }
+        int left;
+        int top;
+        int right;
+        int bottom;
 
-                            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+        int childCount = parent.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            final View child = parent.getChildAt(i);
+            int itemPosition = parent.getChildAdapterPosition(child);
+            final int groupPosition = RecyclerViewDividerUtils.getGroupPosition(parent, itemPosition);
+            final int groupCount = RecyclerViewDividerUtils.getGroupCount(parent, listSize);
 
-                            if (orientation == RecyclerView.VERTICAL) {
-                                top = child.getBottom() + params.bottomMargin;
-                                bottom = top + size;
-                                left = parent.getPaddingLeft() + margin;
-                                right = parent.getWidth() - parent.getPaddingRight() - margin;
-                            } else {
-                                top = parent.getPaddingTop() + margin;
-                                bottom = parent.getHeight() - parent.getPaddingBottom() - margin;
-                                left = child.getRight() + params.rightMargin;
-                                right = left + size;
-                            }
+            Drawable divider = builder.drawableFactory.drawableForItem(groupCount, groupPosition);
 
-                            divider.setBounds(left, top, right, bottom);
-                            divider.draw(c);
-                        }
-                    }
+            if (divider == null) continue;
+
+            @VisibilityFactory.Show int showDivider = builder.visibilityFactory.displayDividerForItem(groupCount, groupPosition);
+            final int orientation = builder.orientation;
+            final int spanCount = builder.spanCount;
+            final int spanSize = RecyclerViewDividerUtils.getSpanSize(parent, groupPosition);
+
+            final int margin = builder.marginFactory.marginSizeForItem(groupCount, groupPosition);
+            int size = builder.sizeFactory.sizeForItem(divider, orientation, groupCount, groupPosition);
+            TintFactory tintFactory = builder.tintFactory;
+            if (tintFactory != null) {
+                final int tint = tintFactory.tintForItem(groupCount, groupPosition);
+                Drawable wrappedDrawable = DrawableCompat.wrap(divider);
+                DrawableCompat.setTint(wrappedDrawable, tint);
+                divider = wrappedDrawable;
+            }
+
+            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+
+            int halfSize = size / 2;
+
+            size = showDivider == VisibilityFactory.Show.ITEMS_ONLY ? 0 : size;
+            halfSize = showDivider == VisibilityFactory.Show.GROUP_ONLY ? 0 : halfSize;
+
+            final int remainderInSpan = (itemPosition + spanSize) % spanCount;
+
+            final int width = child.getWidth();
+            final int height = child.getHeight();
+
+            final int childBottom = child.getBottom();
+            final int childTop = child.getTop();
+            final int childRight = child.getRight();
+            final int childLeft = child.getLeft();
+
+            if (orientation == RecyclerView.VERTICAL) {
+                // draw bottom divider
+                top = childBottom + params.bottomMargin;
+                bottom = top + size;
+                left = childLeft + margin;
+                right = left + width - margin;
+
+                divider.setBounds(left, top, right, bottom);
+                divider.draw(c);
+
+                if (spanCount == 1) continue;
+
+                top = childTop + margin;
+                // size is added to draw filling point between horizontal and vertical dividers
+                bottom = top + height + size;
+
+                if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
+                    // first
+                    left = childRight + margin;
+                    right = left + halfSize;
+
+                    divider.setBounds(left, top, right, bottom);
+                    divider.draw(c);
+                } else if (remainderInSpan == REMAINDER_LAST_ELEMENT) {
+                    // last
+                    right = childLeft - margin;
+                    left = right - halfSize;
+
+                    divider.setBounds(left, top, right, bottom);
+                    divider.draw(c);
+                } else {
+                    // middle
+                    // left half divider
+                    right = childLeft - margin;
+                    left = right - halfSize;
+
+                    divider.setBounds(left, top, right, bottom);
+                    divider.draw(c);
+
+                    // right half divider
+                    left = childRight + margin;
+                    right = left + halfSize;
+
+                    divider.setBounds(left, top, right, bottom);
+                    divider.draw(c);
+                }
+            } else {
+                // draw right divider
+                top = childTop + margin;
+                bottom = top + height - margin;
+                left = childRight + params.rightMargin;
+                right = left + size;
+
+                divider.setBounds(left, top, right, bottom);
+                divider.draw(c);
+
+                if (spanCount == 1) continue;
+
+                left = childLeft + margin;
+                // size is added to draw filling point between horizontal and vertical dividers
+                right = left + width + size;
+
+                if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
+                    // first
+                    top = childBottom + margin;
+                    bottom = top + halfSize;
+
+                    divider.setBounds(left, top, right, bottom);
+                    divider.draw(c);
+                } else if (remainderInSpan == REMAINDER_LAST_ELEMENT) {
+                    // last
+                    bottom = childTop - margin;
+                    top = bottom - halfSize;
+
+                    divider.setBounds(left, top, right, bottom);
+                    divider.draw(c);
+                } else {
+                    // middle
+                    // top half divider
+                    bottom = childTop - margin;
+                    top = bottom - halfSize;
+
+                    divider.setBounds(left, top, right, bottom);
+                    divider.draw(c);
+
+                    // bottom half divider
+                    top = childBottom + margin;
+                    bottom = top + halfSize;
+
+                    divider.setBounds(left, top, right, bottom);
+                    divider.draw(c);
                 }
             }
         }
@@ -152,8 +254,8 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 final int spanCount = builder.spanCount;
                 final int spanSize = RecyclerViewDividerUtils.getSpanSize(parent, groupPosition);
 
-                final Drawable divider = builder.drawableFactory.drawableForItem(listSize, groupPosition);
-                int size = builder.sizeFactory.sizeForItem(divider, orientation, listSize, groupPosition);
+                final Drawable divider = builder.drawableFactory.drawableForItem(groupCount, groupPosition);
+                int size = builder.sizeFactory.sizeForItem(divider, orientation, groupCount, groupPosition);
 
                 final int remainderInSpan = (itemPosition + spanSize) % spanCount;
                 int halfSize = size / 2;
@@ -162,10 +264,13 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 halfSize = showDivider == VisibilityFactory.Show.GROUP_ONLY ? 0 : halfSize;
 
                 if (orientation == RecyclerView.VERTICAL) {
-                    if (remainderInSpan == 1) {
+                    if (spanCount == 1) {
+                        // LinearLayoutManager or GridLayoutManager with 1 column
+                        outRect.set(0, 0, 0, size);
+                    } else if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
                         // first
                         outRect.set(0, 0, halfSize, size);
-                    } else if (remainderInSpan == 0) {
+                    } else if (remainderInSpan == REMAINDER_LAST_ELEMENT) {
                         // last
                         outRect.set(halfSize, 0, 0, size);
                     } else {
@@ -173,10 +278,13 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                         outRect.set(halfSize, 0, halfSize, size);
                     }
                 } else {
-                    if (remainderInSpan == 1) {
+                    if (spanCount == 1) {
+                        // LinearLayoutManager or GridLayoutManager with 1 row
+                        outRect.set(0, 0, size, 0);
+                    } else if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
                         // first
                         outRect.set(0, 0, size, halfSize);
-                    } else if (remainderInSpan == 0) {
+                    } else if (remainderInSpan == REMAINDER_LAST_ELEMENT) {
                         // last
                         outRect.set(0, halfSize, size, 0);
                     } else {
@@ -219,7 +327,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
         @ColorInt
         private Integer color;
-        @ColorInt
         private Drawable drawable;
         private Integer tint;
         private int size;
