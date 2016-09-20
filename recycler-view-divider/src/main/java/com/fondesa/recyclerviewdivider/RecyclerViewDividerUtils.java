@@ -38,6 +38,14 @@ public final class RecyclerViewDividerUtils {
         return orientation;
     }
 
+    /**
+     * Get the span count of a RecyclerView.
+     * <br/>
+     * If the layout manager hasn't a span count (like LinearLayoutManager), the span count will be 1
+     *
+     * @param recyclerView RecyclerView with the attached divider
+     * @return span count of the RecyclerView
+     */
     static int getSpanCount(@NonNull RecyclerView recyclerView) {
         int spanCount;
 
@@ -53,26 +61,40 @@ public final class RecyclerViewDividerUtils {
         return spanCount;
     }
 
-    static int getSpanSize(@NonNull RecyclerView recyclerView, int position) {
+    /**
+     * Check the span size of the current item.
+     * <br/>
+     * The span size will be minor than or equal to the span count.
+     *
+     * @param recyclerView RecyclerView with the attached divider
+     * @param itemPosition position of the current item
+     * @return span size of the current item
+     */
+    static int getSpanSize(@NonNull RecyclerView recyclerView, int itemPosition) {
         int spanSize;
 
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         // default LayoutManager hasn't getOrientation() method
         if (layoutManager instanceof GridLayoutManager) {
-            spanSize = ((GridLayoutManager) layoutManager).getSpanSizeLookup().getSpanSize(position);
+            spanSize = ((GridLayoutManager) layoutManager).getSpanSizeLookup().getSpanSize(itemPosition);
         } else {
             spanSize = 1;
         }
         return spanSize;
     }
 
+    /**
+     *
+     * @param recyclerView RecyclerView with the attached divider
+     * @param itemPosition position of the current item
+     * @return
+     */
     static int getGroupPosition(@NonNull RecyclerView recyclerView, int itemPosition) {
-        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        final RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         // default LayoutManager hasn't getOrientation() method
         if (layoutManager instanceof GridLayoutManager) {
             GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
-            GridLayoutManager.SpanSizeLookup spanSizeLookup = gridLayoutManager.getSpanSizeLookup();
-            itemPosition = spanSizeLookup.getSpanGroupIndex(itemPosition, gridLayoutManager.getSpanCount());
+            itemPosition = gridLayoutManager.getSpanSizeLookup().getSpanGroupIndex(itemPosition, gridLayoutManager.getSpanCount());
         }
 
         return itemPosition;
