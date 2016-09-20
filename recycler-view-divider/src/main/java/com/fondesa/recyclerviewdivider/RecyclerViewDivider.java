@@ -135,9 +135,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
             final int remainderInSpan = (itemPosition + spanSize) % spanCount;
 
-            final int width = child.getWidth();
-            final int height = child.getHeight();
-
             final int childBottom = child.getBottom();
             final int childTop = child.getTop();
             final int childRight = child.getRight();
@@ -147,117 +144,149 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             // halfSize * 2 is used instead of size to handle the case Show.ITEMS_ONLY in which size will be == 0
             final int lastElementInSpanSize = itemPosition == listSize - 1 ? halfSize * 2 : halfSize;
 
+            final boolean useCellMargin = margin == 0;
+
+            int marginToAddBefore, marginToAddAfter;
+            marginToAddBefore = marginToAddAfter = 0;
+
             if (orientation == RecyclerView.VERTICAL) {
+                if (spanCount > 1) {
+                    top = childTop + margin;
+                    // size is added to draw filling point between horizontal and vertical dividers
+                    bottom = childBottom - margin;
+
+                    if (useCellMargin) {
+                        if (groupIndex > 0) {
+                            top -= params.topMargin;
+                        }
+                        if (groupIndex < groupCount - 1 || size > 0) {
+                            bottom += params.bottomMargin;
+                        }
+                        bottom += size;
+                    }
+
+                    if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
+                        // first
+                        left = childRight + margin + params.rightMargin;
+                        right = left + lastElementInSpanSize;
+
+                        divider.setBounds(left, top, right, bottom);
+                        divider.draw(c);
+
+                        if (useCellMargin) {
+                            marginToAddAfter = params.rightMargin;
+                        }
+                    } else if (remainderInSpan == REMAINDER_LAST_ELEMENT) {
+                        // last
+                        right = childLeft - margin - params.leftMargin;
+                        left = right - halfSize;
+
+                        divider.setBounds(left, top, right, bottom);
+                        divider.draw(c);
+
+                        if (useCellMargin) {
+                            marginToAddBefore = params.leftMargin;
+                        }
+                    } else {
+                        // middle
+                        // left half divider
+                        right = childLeft - margin - params.leftMargin;
+                        left = right - halfSize;
+
+                        divider.setBounds(left, top, right, bottom);
+                        divider.draw(c);
+
+                        // right half divider
+                        left = childRight + margin + params.rightMargin;
+                        right = left + lastElementInSpanSize;
+
+                        divider.setBounds(left, top, right, bottom);
+                        divider.draw(c);
+
+                        if (useCellMargin) {
+                            marginToAddAfter = params.rightMargin;
+                            marginToAddBefore = params.leftMargin;
+                        }
+                    }
+                }
+
                 // draw bottom divider
                 top = childBottom + params.bottomMargin;
                 bottom = top + size;
-                left = childLeft + margin;
-                right = childRight - margin;
+                left = childLeft + margin - marginToAddBefore;
+                right = childRight - margin + marginToAddAfter;
 
                 divider.setBounds(left, top, right, bottom);
                 divider.draw(c);
 
-                if (spanCount == 1) continue;
-
-                top = childTop + margin;
-                // size is added to draw filling point between horizontal and vertical dividers
-                bottom = childBottom - margin;
-
-                if (margin == 0) {
-                    if (groupIndex > 0) {
-                        top -= params.topMargin;
-                    }
-                    if (groupIndex < groupCount - 1 || size > 0) {
-                        bottom += params.bottomMargin;
-                    }
-                    bottom += size;
-                }
-
-                if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
-                    // first
-                    left = childRight + margin + params.rightMargin;
-                    right = left + lastElementInSpanSize;
-
-                    divider.setBounds(left, top, right, bottom);
-                    divider.draw(c);
-                } else if (remainderInSpan == REMAINDER_LAST_ELEMENT) {
-                    // last
-                    right = childLeft - margin - params.leftMargin;
-                    left = right - halfSize;
-
-                    divider.setBounds(left, top, right, bottom);
-                    divider.draw(c);
-                } else {
-                    // middle
-                    // left half divider
-                    right = childLeft - margin - params.leftMargin;
-                    left = right - halfSize;
-
-                    divider.setBounds(left, top, right, bottom);
-                    divider.draw(c);
-
-                    // right half divider
-                    left = childRight + margin + params.rightMargin;
-                    right = left + lastElementInSpanSize;
-
-                    divider.setBounds(left, top, right, bottom);
-                    divider.draw(c);
-                }
             } else {
+                if (spanCount > 1) {
+                    left = childLeft + margin;
+                    // size is added to draw filling point between horizontal and vertical dividers
+                    right = childRight - margin;
+                    if (useCellMargin) {
+                        if (groupIndex > 0) {
+                            left -= params.leftMargin;
+                        }
+                        if (groupIndex < groupCount - 1 || size > 0) {
+                            right += params.rightMargin;
+                        }
+                        right += size;
+                    }
+
+                    if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
+                        // first
+                        top = childBottom + margin + params.bottomMargin;
+                        bottom = top + lastElementInSpanSize;
+
+                        divider.setBounds(left, top, right, bottom);
+                        divider.draw(c);
+
+                        if (useCellMargin) {
+                            marginToAddAfter = params.bottomMargin;
+                        }
+                    } else if (remainderInSpan == REMAINDER_LAST_ELEMENT) {
+                        // last
+                        bottom = childTop - margin - params.topMargin;
+                        top = bottom - halfSize;
+
+                        divider.setBounds(left, top, right, bottom);
+                        divider.draw(c);
+
+                        if (useCellMargin) {
+                            marginToAddBefore = params.topMargin;
+                        }
+                    } else {
+                        // middle
+                        // top half divider
+                        bottom = childTop - margin - params.topMargin;
+                        top = bottom - halfSize;
+
+                        divider.setBounds(left, top, right, bottom);
+                        divider.draw(c);
+
+                        // bottom half divider
+                        top = childBottom + margin + params.bottomMargin;
+                        bottom = top + lastElementInSpanSize;
+
+                        divider.setBounds(left, top, right, bottom);
+                        divider.draw(c);
+
+                        if (useCellMargin) {
+                            marginToAddAfter = params.bottomMargin;
+                            marginToAddBefore = params.topMargin;
+                        }
+                    }
+                }
+
                 // draw right divider
-                top = childTop + margin;
-                bottom = childBottom - margin;
+                bottom = childBottom - margin + marginToAddAfter;
+                top = childTop + margin - marginToAddBefore;
                 left = childRight + params.rightMargin;
                 right = left + size;
 
                 divider.setBounds(left, top, right, bottom);
                 divider.draw(c);
-
-                if (spanCount == 1) continue;
-
-                left = childLeft + margin;
-                // size is added to draw filling point between horizontal and vertical dividers
-                right = childRight - margin;
-                if (margin == 0) {
-                    if (groupIndex > 0) {
-                        left -= params.leftMargin;
-                    }
-                    if (groupIndex < groupCount - 1 || size > 0) {
-                        right += params.rightMargin;
-                    }
-                    right += size;
-                }
-
-                if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
-                    // first
-                    top = childBottom + margin + params.bottomMargin;
-                    bottom = top + lastElementInSpanSize;
-
-                    divider.setBounds(left, top, right, bottom);
-                    divider.draw(c);
-                } else if (remainderInSpan == REMAINDER_LAST_ELEMENT) {
-                    // last
-                    bottom = childTop - margin - params.topMargin;
-                    top = bottom - halfSize;
-
-                    divider.setBounds(left, top, right, bottom);
-                    divider.draw(c);
-                } else {
-                    // middle
-                    // top half divider
-                    bottom = childTop - margin - params.topMargin;
-                    top = bottom - halfSize;
-
-                    divider.setBounds(left, top, right, bottom);
-                    divider.draw(c);
-
-                    // bottom half divider
-                    top = childBottom + margin + params.bottomMargin;
-                    bottom = top + lastElementInSpanSize;
-
-                    divider.setBounds(left, top, right, bottom);
-                    divider.draw(c);
-                }
             }
         }
     }
