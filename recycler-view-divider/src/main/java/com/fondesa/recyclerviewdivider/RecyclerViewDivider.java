@@ -394,6 +394,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         private Integer tint;
         private int size;
         private int marginSize;
+        private boolean hideLastDivider;
 
         private VisibilityFactory visibilityFactory;
         private DrawableFactory drawableFactory;
@@ -458,7 +459,9 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          * Set the drawable of all dividers. This method can't be used with {@link #color(int)}.
          * If you want to color the drawable, you have to use {@link #tint(int)} instead.
          * <br>
-         * To set a custom drawable for each divider use {@link #drawableFactory(DrawableFactory)} instead
+         * To set a custom drawable for each divider use {@link #drawableFactory(DrawableFactory)} instead.
+         * <br/>
+         * Warning: if the span count is major than one and the drawable can't be mirrored, the drawable will not be shown correctly.
          *
          * @param drawable custom drawable for this divider
          * @return {@link Builder} instance
@@ -518,7 +521,23 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         }
 
         /**
+         * Hide the divider after the last group of items.
+         * <br/>
+         * Warning: when the spanCount is > 1 (e.g. LinearLayoutManager), only the divider after the last group will be hidden, the items' dividers, instead, will be shown.
+         * <br/>
+         * If you want to specify a more flexible behaviour, use {@link #visibilityFactory(VisibilityFactory)} instead.
+         *
+         * @return {@link Builder} instance
+         */
+        public Builder hideLastDivider() {
+            this.hideLastDivider = true;
+            return this;
+        }
+
+        /**
          * Set the divider's custom {@link VisibilityFactory}
+         * <br/>
+         * If you want to hide only the last divider use {@link #hideLastDivider()} instead.
          *
          * @param visibilityFactory custom {@link VisibilityFactory} to set
          * @return {@link Builder} instance
@@ -530,6 +549,8 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
         /**
          * Set the divider's custom {@link DrawableFactory}
+         * <br/>
+         * Warning: if the span count is major than one and the drawable can't be mirrored, the drawable will not be shown correctly.
          *
          * @param drawableFactory custom {@link DrawableFactory} to set
          * @return {@link Builder} instance
@@ -601,7 +622,11 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                  /* -------------------- VISIBILITY FACTORY -------------------- */
 
                 if (visibilityFactory == null) {
-                    visibilityFactory = VisibilityFactory.getDefault();
+                    if (hideLastDivider) {
+                        visibilityFactory = VisibilityFactory.getLastItemInvisibleFactory();
+                    } else {
+                        visibilityFactory = VisibilityFactory.getDefault();
+                    }
                 }
 
                  /* -------------------- SIZE FACTORY -------------------- */
@@ -632,7 +657,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                             case TYPE_DRAWABLE:
                                 if (drawable != null) {
                                     if (spanCount > 1) {
-                                        Log.e(TAG, "if your span count is major than 1, the drawable won't be shown correctly");
+                                        Log.e(TAG, "if your span count is major than 1 and the drawable can't be mirrored, it won't be shown correctly");
                                     }
                                     currDrawable = drawable;
                                 }

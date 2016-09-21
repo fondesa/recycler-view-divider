@@ -54,15 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         mFirstBuilder =  RecyclerViewDivider.with(this)
                 .addTo(mFirstRecyclerView)
-                .visibilityFactory(new VisibilityFactory() {
-                    @Override
-                    public int displayDividerForItem(int groupCount, int groupIndex) {
-//                        if (groupIndex == groupCount - 1) {
-//                            return SHOW_ITEMS_ONLY;
-//                        }
-                        return SHOW_ALL;
-                    }
-                })
+                .hideLastDivider()
                 .color(Color.RED)
                 .size(20);
 
@@ -72,30 +64,9 @@ public class MainActivity extends AppCompatActivity {
 
         secondDivider = RecyclerViewDivider.with(this)
                 .addTo(mSecondRecyclerView)
-                .visibilityFactory(new VisibilityFactory() {
-                    @Override
-                    public int displayDividerForItem(int groupCount, int groupIndex) {
-//                        if (groupIndex == groupCount - 1) {
-//                            return SHOW_ITEMS_ONLY;
-//                        }
-                        return SHOW_ALL;
-                    }
-                })
-//                .sizeFactory(new SizeFactory() {
-//                    @Override
-//                    public int sizeForItem(@Nullable Drawable drawable, int orientation, int listSize, int position) {
-//                        return position % 2 == 0 ? 40 : 10;
-//                    }
-//                })
-//                .tintFactory(new TintFactory() {
-//                    @Override
-//                    public int tintForItem(int listSize, int position) {
-//                        return position % 3 == 0 ? Color.RED : Color.GREEN;
-//                    }
-//                })
+                .hideLastDivider()
                 .color(Color.RED)
                 .size(20)
-//                .marginSize(20)
                 .build();
 
         secondDivider.attach();
@@ -134,20 +105,11 @@ public class MainActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.action_toggle_div) {
             if (dividerShown) {
-                mFirstBuilder.color(Color.GREEN);
-                firstDivider.invalidate();
-//                firstDivider.detach();
-//                secondDivider.detach();
+                firstDivider.detach();
+                secondDivider.detach();
             } else {
-                mFirstBuilder.drawableFactory(new DrawableFactory() {
-                    @Override
-                    public Drawable drawableForItem(int groupCount, int groupIndex) {
-                        return RecyclerViewDividerUtils.colorToDrawable(Color.BLUE);
-                    }
-                });
-                firstDivider.invalidate();
-//                firstDivider.attach();
-//                secondDivider.attach();
+                firstDivider.attach();
+                secondDivider.attach();
             }
             dividerShown = !dividerShown;
             invalidateOptionsMenu();

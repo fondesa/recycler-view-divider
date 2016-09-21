@@ -7,10 +7,12 @@ android {
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 24
+        return true
     }
 }
 
 dependencies {
+    compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
 }
 

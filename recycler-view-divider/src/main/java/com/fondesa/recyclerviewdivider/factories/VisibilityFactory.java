@@ -51,6 +51,13 @@ public abstract class VisibilityFactory {
     }
 
     /**
+     * @return a new {@link VisibilityFactory} that will now show last divider.
+     */
+    public static VisibilityFactory getLastItemInvisibleFactory() {
+        return new LastItemInvisible();
+    }
+
+    /**
      * Defines a visibility for each group of divider
      *
      * @param groupCount number of groups in a list.
@@ -76,6 +83,24 @@ public abstract class VisibilityFactory {
         @Show
         int displayDividerForItem(int groupCount, int groupIndex) {
             return SHOW_ALL;
+        }
+    }
+
+    /**
+     * Convenient instance to hide the last divider.
+     * <br/>
+     * Warning: when the spanCount is > 1, only the divider after the last group will be hidden. This factory will not affect items' dividers.
+     */
+    private static class LastItemInvisible extends VisibilityFactory {
+        LastItemInvisible() {
+            // empty constructor
+        }
+
+        @Override
+        public
+        @Show
+        int displayDividerForItem(int groupCount, int groupIndex) {
+            return groupIndex == groupCount - 1 ? SHOW_ITEMS_ONLY : SHOW_ALL;
         }
     }
 }

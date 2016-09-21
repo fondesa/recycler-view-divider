@@ -1,7 +1,6 @@
 package com.fondesa.recyclerviewdivider.factories;
 
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -15,7 +14,7 @@ import com.fondesa.recyclerviewdivider.RecyclerViewDividerUtils;
  * You can add a custom {@link DrawableFactory} in your {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder} using
  * {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder#drawableFactory(DrawableFactory)} method
  */
-public abstract class DrawableFactory extends Factory {
+public abstract class DrawableFactory {
 
     private static DrawableFactory defaultFactory;
 
