@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider;
+import com.fondesa.recyclerviewdivider.RecyclerViewDividerUtils;
+import com.fondesa.recyclerviewdivider.factories.DrawableFactory;
 import com.fondesa.recyclerviewdivider.factories.MarginFactory;
 import com.fondesa.recyclerviewdivider.factories.SizeFactory;
 import com.fondesa.recyclerviewdivider.factories.TintFactory;
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerViewDivider firstDivider;
     private RecyclerViewDivider secondDivider;
 
+    RecyclerViewDivider.Builder mFirstBuilder;
+
     @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView mSecondRecyclerView = (RecyclerView) findViewById(R.id.second_recycler_view);
         ((GridLayoutManager) mSecondRecyclerView.getLayoutManager()).setSpanCount(SPAN_COUNT);
 
-        firstDivider = RecyclerViewDivider.with(this)
+        mFirstBuilder =  RecyclerViewDivider.with(this)
                 .addTo(mFirstRecyclerView)
                 .visibilityFactory(new VisibilityFactory() {
                     @Override
@@ -59,23 +63,10 @@ public class MainActivity extends AppCompatActivity {
                         return SHOW_ALL;
                     }
                 })
-//                .sizeFactory(new SizeFactory() {
-//                    @Override
-//                    public int sizeForItem(@Nullable Drawable drawable, int orientation, int listSize, int position) {
-//                        return position % 2 == 0 ? 40 : 10;
-//                    }
-//                })
-//                .tintFactory(new TintFactory() {
-//                    @Override
-//                    public int tintForItem(int listSize, int position) {
-//                        return position % 3 == 0 ? Color.RED : Color.GREEN;
-//                    }
-//                })
                 .color(Color.RED)
-//                .size(getResources().getDimensionPixelSize(R.dimen.first_div_size))
-                .size(20)
-//                .marginSize(20)
-                .build();
+                .size(20);
+
+        firstDivider = mFirstBuilder.build();
 
         firstDivider.attach();
 
@@ -143,11 +134,20 @@ public class MainActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.action_toggle_div) {
             if (dividerShown) {
-                firstDivider.detach();
-                secondDivider.detach();
+                mFirstBuilder.color(Color.GREEN);
+                firstDivider.invalidate();
+//                firstDivider.detach();
+//                secondDivider.detach();
             } else {
-                firstDivider.attach();
-                secondDivider.attach();
+                mFirstBuilder.drawableFactory(new DrawableFactory() {
+                    @Override
+                    public Drawable drawableForItem(int groupCount, int groupIndex) {
+                        return RecyclerViewDividerUtils.colorToDrawable(Color.BLUE);
+                    }
+                });
+                firstDivider.invalidate();
+//                firstDivider.attach();
+//                secondDivider.attach();
             }
             dividerShown = !dividerShown;
             invalidateOptionsMenu();

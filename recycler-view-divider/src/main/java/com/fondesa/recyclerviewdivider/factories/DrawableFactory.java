@@ -15,7 +15,7 @@ import com.fondesa.recyclerviewdivider.RecyclerViewDividerUtils;
  * You can add a custom {@link DrawableFactory} in your {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder} using
  * {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder#drawableFactory(DrawableFactory)} method
  */
-public abstract class DrawableFactory {
+public abstract class DrawableFactory extends Factory {
 
     private static DrawableFactory defaultFactory;
 
@@ -43,13 +43,15 @@ public abstract class DrawableFactory {
     }
 
     /**
-     * Defines a custom Drawable for each divider
+     * Defines a custom Drawable for each group of divider
      *
-     * @param listSize size of the list in the adapter
-     * @param position current position
+     * @param groupCount number of groups in a list.
+     *                   The groupCount value is equal to the list size when the span count is 1 (e.g. LinearLayoutManager).
+     * @param groupIndex position of the group. The value is between 0 and groupCount - 1.
+     *                   The groupIndex is equal to the item position when the span count is 1 (e.g. LinearLayoutManager).
      * @return Drawable resource for the divider int the current position
      */
-    public abstract Drawable drawableForItem(int listSize, int position);
+    public abstract Drawable drawableForItem(int groupCount, int groupIndex);
 
     /**
      * Default instance of a {@link DrawableFactory}
@@ -62,7 +64,7 @@ public abstract class DrawableFactory {
         }
 
         @Override
-        public Drawable drawableForItem(int listSize, int position) {
+        public Drawable drawableForItem(int groupCount, int groupIndex) {
             return defaultDrawable;
         }
     }
@@ -79,7 +81,7 @@ public abstract class DrawableFactory {
         }
 
         @Override
-        public Drawable drawableForItem(int listSize, int position) {
+        public Drawable drawableForItem(int groupCount, int groupIndex) {
             return drawable;
         }
     }

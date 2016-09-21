@@ -41,10 +41,12 @@ public abstract class MarginFactory {
     }
 
     /**
-     * Defines a custom margin size for each divider
+     * Defines a custom margin size for each group of divider
      *
-     * @param groupCount size of the list in the adapter
-     * @param groupIndex current position
+     * @param groupCount number of groups in a list.
+     *                   The groupCount value is equal to the list size when the span count is 1 (e.g. LinearLayoutManager).
+     * @param groupIndex position of the group. The value is between 0 and groupCount - 1.
+     *                   The groupIndex is equal to the item position when the span count is 1 (e.g. LinearLayoutManager).
      * @return right/left margin with horizontal divider or top/bottom margin with vertical divider
      */
     public abstract int marginSizeForItem(int groupCount, int groupIndex);

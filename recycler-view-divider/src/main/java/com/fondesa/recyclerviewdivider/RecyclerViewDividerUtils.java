@@ -84,12 +84,15 @@ public final class RecyclerViewDividerUtils {
     }
 
     /**
+     * Calculate the group in which the item is.
+     * <br/>
+     * This value is between 0 and {@link #getGroupCount(RecyclerView, int)} - 1
      *
      * @param recyclerView RecyclerView with the attached divider
      * @param itemPosition position of the current item
-     * @return
+     * @return the index of the group
      */
-    static int getGroupPosition(@NonNull RecyclerView recyclerView, int itemPosition) {
+    static int getGroupIndex(@NonNull RecyclerView recyclerView, int itemPosition) {
         final RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         // default LayoutManager hasn't getOrientation() method
         if (layoutManager instanceof GridLayoutManager) {
@@ -100,6 +103,15 @@ public final class RecyclerViewDividerUtils {
         return itemPosition;
     }
 
+    /**
+     * Calculate the number of items' group in a list.
+     * <br/>
+     * If the span count is 1 (for example when the layout manager is a LinearLayoutManager), the group count will be equal to the span count.
+     *
+     * @param recyclerView RecyclerView with the attached divider
+     * @param itemCount    number of items in the list
+     * @return the number of groups
+     */
     static int getGroupCount(@NonNull RecyclerView recyclerView, int itemCount) {
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         // default LayoutManager hasn't getOrientation() method

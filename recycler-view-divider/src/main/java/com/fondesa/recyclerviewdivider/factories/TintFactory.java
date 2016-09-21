@@ -21,10 +21,12 @@ public abstract class TintFactory {
     }
 
     /**
-     * Defines a custom tint color for each divider's drawable
+     * Defines a custom tint color for each group of divider
      *
-     * @param groupCount size of the list in the adapter
-     * @param groupIndex current position
+     * @param groupCount number of groups in a list.
+     *                   The groupCount value is equal to the list size when the span count is 1 (e.g. LinearLayoutManager).
+     * @param groupIndex position of the group. The value is between 0 and groupCount - 1.
+     *                   The groupIndex is equal to the item position when the span count is 1 (e.g. LinearLayoutManager).
      * @return tint color for the divider's drawable in the current position
      */
     public abstract int tintForItem(int groupCount, int groupIndex);

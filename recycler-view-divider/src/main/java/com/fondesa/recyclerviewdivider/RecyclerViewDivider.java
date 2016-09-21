@@ -2,7 +2,6 @@ package com.fondesa.recyclerviewdivider;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.IntentFilter;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -30,6 +29,10 @@ import java.lang.ref.WeakReference;
  */
 public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     private static final String TAG = "RecyclerViewDivider";
+
+    private static final int TYPE_SPACE = -1;
+    private static final int TYPE_COLOR = 0;
+    private static final int TYPE_DRAWABLE = 1;
 
     private static final int REMAINDER_FIRST_ELEMENT = 1;
     private static final int REMAINDER_LAST_ELEMENT = 0;
@@ -104,7 +107,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
             int itemPosition = parent.getChildAdapterPosition(child);
-            final int groupIndex = RecyclerViewDividerUtils.getGroupPosition(parent, itemPosition);
+            final int groupIndex = RecyclerViewDividerUtils.getGroupIndex(parent, itemPosition);
             final int groupCount = RecyclerViewDividerUtils.getGroupCount(parent, listSize);
 
             Drawable divider = mBuilder.drawableFactory.drawableForItem(groupCount, groupIndex);
@@ -133,6 +136,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             size = showDivider == VisibilityFactory.SHOW_ITEMS_ONLY ? 0 : size;
             halfSize = showDivider == VisibilityFactory.SHOW_GROUP_ONLY ? 0 : halfSize;
 
+            // the remainder is calculated to know where the item is inside the group
             final int remainderInSpan = (itemPosition + spanSize) % spanCount;
 
             final int childBottom = child.getBottom();
@@ -166,42 +170,38 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                     }
 
                     if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
-                        // first
+                        // first element in the group
                         left = childRight + margin + params.rightMargin;
                         right = left + lastElementInSpanSize;
 
-                        divider.setBounds(left, top, right, bottom);
-                        divider.draw(c);
+                        setBoundsAndDraw(divider, c, left, top, right, bottom);
 
                         if (useCellMargin) {
                             marginToAddAfter = params.rightMargin;
                         }
                     } else if (remainderInSpan == REMAINDER_LAST_ELEMENT) {
-                        // last
+                        // last element in the group
                         right = childLeft - margin - params.leftMargin;
                         left = right - halfSize;
 
-                        divider.setBounds(left, top, right, bottom);
-                        divider.draw(c);
+                        setBoundsAndDraw(divider, c, left, top, right, bottom);
 
                         if (useCellMargin) {
                             marginToAddBefore = params.leftMargin;
                         }
                     } else {
-                        // middle
+                        // element in the middle
                         // left half divider
                         right = childLeft - margin - params.leftMargin;
                         left = right - halfSize;
 
-                        divider.setBounds(left, top, right, bottom);
-                        divider.draw(c);
+                        setBoundsAndDraw(divider, c, left, top, right, bottom);
 
                         // right half divider
                         left = childRight + margin + params.rightMargin;
                         right = left + lastElementInSpanSize;
 
-                        divider.setBounds(left, top, right, bottom);
-                        divider.draw(c);
+                        setBoundsAndDraw(divider, c, left, top, right, bottom);
 
                         if (useCellMargin) {
                             marginToAddAfter = params.rightMargin;
@@ -216,8 +216,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 left = childLeft + margin - marginToAddBefore;
                 right = childRight - margin + marginToAddAfter;
 
-                divider.setBounds(left, top, right, bottom);
-                divider.draw(c);
+                setBoundsAndDraw(divider, c, left, top, right, bottom);
 
             } else {
                 if (spanCount > 1) {
@@ -235,29 +234,27 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                     }
 
                     if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
-                        // first
+                        // first element in the group
                         top = childBottom + margin + params.bottomMargin;
                         bottom = top + lastElementInSpanSize;
 
-                        divider.setBounds(left, top, right, bottom);
-                        divider.draw(c);
+                        setBoundsAndDraw(divider, c, left, top, right, bottom);
 
                         if (useCellMargin) {
                             marginToAddAfter = params.bottomMargin;
                         }
                     } else if (remainderInSpan == REMAINDER_LAST_ELEMENT) {
-                        // last
+                        // last element in the group
                         bottom = childTop - margin - params.topMargin;
                         top = bottom - halfSize;
 
-                        divider.setBounds(left, top, right, bottom);
-                        divider.draw(c);
+                        setBoundsAndDraw(divider, c, left, top, right, bottom);
 
                         if (useCellMargin) {
                             marginToAddBefore = params.topMargin;
                         }
                     } else {
-                        // middle
+                        // element in the middle
                         // top half divider
                         bottom = childTop - margin - params.topMargin;
                         top = bottom - halfSize;
@@ -269,8 +266,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                         top = childBottom + margin + params.bottomMargin;
                         bottom = top + lastElementInSpanSize;
 
-                        divider.setBounds(left, top, right, bottom);
-                        divider.draw(c);
+                        setBoundsAndDraw(divider, c, left, top, right, bottom);
 
                         if (useCellMargin) {
                             marginToAddAfter = params.bottomMargin;
@@ -285,10 +281,24 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 left = childRight + params.rightMargin;
                 right = left + size;
 
-                divider.setBounds(left, top, right, bottom);
-                divider.draw(c);
+                setBoundsAndDraw(divider, c, left, top, right, bottom);
             }
         }
+    }
+
+    /**
+     * Set the Drawable's bounds and draw it on a Canvas
+     *
+     * @param drawable Drawable to draw
+     * @param canvas   Canvas used to show the Drawable
+     * @param left     left position in px
+     * @param top      top position in px
+     * @param right    right position in px
+     * @param bottom   bottom position in px
+     */
+    private void setBoundsAndDraw(@NonNull Drawable drawable, @NonNull Canvas canvas, int left, int top, int right, int bottom) {
+        drawable.setBounds(left, top, right, bottom);
+        drawable.draw(canvas);
     }
 
     @Override
@@ -296,7 +306,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         final int listSize = parent.getAdapter().getItemCount();
         if (listSize > 0) {
             int itemPosition = parent.getChildAdapterPosition(view);
-            final int groupPosition = RecyclerViewDividerUtils.getGroupPosition(parent, itemPosition);
+            final int groupPosition = RecyclerViewDividerUtils.getGroupIndex(parent, itemPosition);
             final int groupCount = RecyclerViewDividerUtils.getGroupCount(parent, listSize);
 
             @VisibilityFactory.Show int showDivider = mBuilder.visibilityFactory.displayDividerForItem(groupCount, groupPosition);
@@ -309,6 +319,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 int size = mBuilder.sizeFactory.sizeForItem(divider, orientation, groupCount, groupPosition);
                 int marginSize = mBuilder.marginFactory.marginSizeForItem(groupCount, groupPosition);
 
+                // the remainder is calculated to know where the item is inside the group
                 final int remainderInSpan = (itemPosition + spanSize) % spanCount;
                 int halfSize = size / 2 + marginSize;
 
@@ -320,13 +331,13 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                         // LinearLayoutManager or GridLayoutManager with 1 column
                         outRect.set(0, 0, 0, size);
                     } else if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
-                        // first
+                        // first element in the group
                         outRect.set(0, 0, halfSize, size);
                     } else if (remainderInSpan == REMAINDER_LAST_ELEMENT) {
-                        // last
+                        // last element in the group
                         outRect.set(halfSize, 0, 0, size);
                     } else {
-                        // middle
+                        // element in the middle
                         outRect.set(halfSize, 0, halfSize, size);
                     }
                 } else {
@@ -334,13 +345,13 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                         // LinearLayoutManager or GridLayoutManager with 1 row
                         outRect.set(0, 0, size, 0);
                     } else if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
-                        // first
+                        // first element in the group
                         outRect.set(0, 0, size, halfSize);
                     } else if (remainderInSpan == REMAINDER_LAST_ELEMENT) {
-                        // last
+                        // last element in the group
                         outRect.set(0, halfSize, size, 0);
                     } else {
-                        // middle
+                        // element in the middle
                         outRect.set(0, halfSize, size, halfSize);
                     }
                 }
@@ -658,13 +669,8 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                     drawableFactory = DrawableFactory.getDefault(context);
 
                     // help GC to dealloc other values or bring them to default
-                    if (tintFactory != null) {
-                        tintFactory = null;
-                    }
-
-                    if (marginFactory != null) {
-                        marginFactory = null;
-                    }
+                    tintFactory = null;
+                    marginFactory = null;
                 }
             }
 
@@ -672,10 +678,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             return new RecyclerViewDivider(this);
         }
     }
-
-    private static final int TYPE_SPACE = -1;
-    private static final int TYPE_COLOR = 0;
-    private static final int TYPE_DRAWABLE = 1;
 
     /**
      * Source annotation used to define different dividers' types.
