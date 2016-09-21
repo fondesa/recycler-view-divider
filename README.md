@@ -106,7 +106,7 @@ RecyclerViewDivider.with(context).addTo(recyclerView).asSpace().build().attach()
 Compatibility
 ------
 
-**Android SDK**: RecyclerViewDivider requires a minimum API level of 7
+**Android SDK**: RecyclerViewDivider requires a minimum API level of 9
 
 Integration
 ------
