@@ -519,7 +519,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         /**
          * Hide the divider after the last group of items.
          * <br>
-         * Warning: when the spanCount is > 1 (e.g. LinearLayoutManager), only the divider after the last group will be hidden, the items' dividers, instead, will be shown.
+         * Warning: when the spanCount is major than 1 (e.g. LinearLayoutManager), only the divider after the last group will be hidden, the items' dividers, instead, will be shown.
          * <br>
          * If you want to specify a more flexible behaviour, use {@link #visibilityFactory(VisibilityFactory)} instead.
          *
