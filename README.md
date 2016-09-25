@@ -1,5 +1,6 @@
 RecyclerViewDivider
 ===============
+[ ![Download](https://api.bintray.com/packages/fondesa/maven/recycler-view-divider/images/download.svg) ](https://bintray.com/fondesa/maven/recycler-view-divider/_latestVersion)
 
 A RecyclerView's divider that can be customized with simple properties or advanced ones.
 
