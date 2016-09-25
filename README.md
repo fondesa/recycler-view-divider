@@ -7,7 +7,7 @@ A RecyclerView's divider that can be customized with simple properties or advanc
 <img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/screenshots/screenshot_2.png" height="500">
 <img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/screenshots/screenshot_3.png" height="500">
 
-It supports completely LinearLayoutManager and GridLayoutManager, partially StaggeredGridManager.
+It supports completely LinearLayoutManager, GridLayoutManager and StaggeredGridLayoutManager.
 
 Usage
 ------
@@ -66,8 +66,11 @@ RecyclerViewDivider.with(context)
                 .addTo(recyclerView)
                 .visibilityFactory(new VisibilityFactory() {
                     @Override
-                    public boolean displayDividerForItem(int groupCount, int groupIndex) {
-                        return position != 1;
+                    public int displayDividerForItem(int groupCount, int groupIndex) {
+                        if (groupCount % groupIndex == 0) {
+                            return SHOW_ITEMS_ONLY;
+                        }
+                        return SHOW_ALL;
                     }
                 })
                 .drawableFactory(new DrawableFactory() {
@@ -120,7 +123,7 @@ Available both on ```jcenter()``` and ```mavenCentral```
 
 ```gradle
 dependencies {
-    compile 'com.github.fondesa:recycler-view-divider:1.1.3'
+    compile 'com.github.fondesa:recycler-view-divider:1.2.0'
 }
 ```
 
@@ -130,7 +133,7 @@ dependencies {
 <dependency>
   <groupId>com.github.fondesa</groupId>
   <artifactId>recycler-view-divider</artifactId>
-  <version>1.1.3</version>
+  <version>1.2.0</version>
   <type>pom</type>
 </dependency>
 ```
