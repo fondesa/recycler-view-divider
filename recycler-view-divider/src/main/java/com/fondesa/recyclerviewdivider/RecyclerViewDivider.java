@@ -456,7 +456,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          * If you want to color the drawable, you have to use {@link #tint(int)} instead.
          * <br>
          * To set a custom drawable for each divider use {@link #drawableFactory(DrawableFactory)} instead.
-         * <br/>
+         * <br>
          * Warning: if the span count is major than one and the drawable can't be mirrored, the drawable will not be shown correctly.
          *
          * @param drawable custom drawable for this divider
@@ -518,9 +518,9 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
         /**
          * Hide the divider after the last group of items.
-         * <br/>
+         * <br>
          * Warning: when the spanCount is > 1 (e.g. LinearLayoutManager), only the divider after the last group will be hidden, the items' dividers, instead, will be shown.
-         * <br/>
+         * <br>
          * If you want to specify a more flexible behaviour, use {@link #visibilityFactory(VisibilityFactory)} instead.
          *
          * @return {@link Builder} instance
@@ -532,7 +532,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
         /**
          * Set the divider's custom {@link VisibilityFactory}
-         * <br/>
+         * <br>
          * If you want to hide only the last divider use {@link #hideLastDivider()} instead.
          *
          * @param visibilityFactory custom {@link VisibilityFactory} to set
@@ -545,7 +545,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
         /**
          * Set the divider's custom {@link DrawableFactory}
-         * <br/>
+         * <br>
          * Warning: if the span count is major than one and the drawable can't be mirrored, the drawable will not be shown correctly.
          *
          * @param drawableFactory custom {@link DrawableFactory} to set

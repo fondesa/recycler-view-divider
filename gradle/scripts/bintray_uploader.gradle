@@ -1,7 +1,7 @@
 apply plugin: 'com.jfrog.bintray'
 
 Properties global = new Properties()
-File globalPropsFile = new File("D:/Gradle/bintray.properties")
+File globalPropsFile = new File("D:/programming/gradle/bintray.properties")
 Properties local = new Properties()
 File localPropsFile = new File("${project.rootDir}/bintray.properties")
 

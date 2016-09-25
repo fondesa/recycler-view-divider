@@ -40,7 +40,7 @@ public final class RecyclerViewDividerUtils {
 
     /**
      * Get the span count of a RecyclerView.
-     * <br/>
+     * <br>
      * If the layout manager hasn't a span count (like LinearLayoutManager), the span count will be 1
      *
      * @param recyclerView RecyclerView with the attached divider
@@ -63,7 +63,7 @@ public final class RecyclerViewDividerUtils {
 
     /**
      * Check the span size of the current item.
-     * <br/>
+     * <br>
      * The span size will be minor than or equal to the span count.
      *
      * @param recyclerView RecyclerView with the attached divider
@@ -85,7 +85,7 @@ public final class RecyclerViewDividerUtils {
 
     /**
      * Calculate the group in which the item is.
-     * <br/>
+     * <br>
      * This value is between 0 and {@link #getGroupCount(RecyclerView, int)} - 1
      *
      * @param recyclerView RecyclerView with the attached divider
@@ -105,7 +105,7 @@ public final class RecyclerViewDividerUtils {
 
     /**
      * Calculate the number of items' group in a list.
-     * <br/>
+     * <br>
      * If the span count is 1 (for example when the layout manager is a LinearLayoutManager), the group count will be equal to the span count.
      *
      * @param recyclerView RecyclerView with the attached divider
@@ -134,7 +134,7 @@ public final class RecyclerViewDividerUtils {
 
     /**
      * Calculate the span accumulated in this line.
-     * <br/>
+     * <br>
      * This span is calculated through the sum of the previous items' spans in this line and the current item's span
      *
      * @param recyclerView RecyclerView with the attached divider

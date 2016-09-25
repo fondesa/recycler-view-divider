@@ -88,8 +88,8 @@ public abstract class VisibilityFactory {
 
     /**
      * Convenient instance to hide the last divider.
-     * <br/>
-     * Warning: when the spanCount is > 1, only the divider after the last group will be hidden. This factory will not affect items' dividers.
+     * <br>
+     * Warning: when the spanCount is major than 1, only the divider after the last group will be hidden. This factory will not affect items' dividers.
      */
     private static class LastItemInvisible extends VisibilityFactory {
         LastItemInvisible() {
