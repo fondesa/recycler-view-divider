@@ -34,9 +34,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     private static final int TYPE_COLOR = 0;
     private static final int TYPE_DRAWABLE = 1;
 
-    private static final int REMAINDER_FIRST_ELEMENT = 1;
-    private static final int REMAINDER_LAST_ELEMENT = 0;
-
     private Builder mBuilder;
     private boolean mIsDividerAdded;
 
@@ -117,7 +114,9 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
             final int orientation = mBuilder.orientation;
             final int spanCount = mBuilder.spanCount;
-            final int spanSize = RecyclerViewDividerUtils.getSpanSize(parent, groupIndex);
+            final int spanSize = RecyclerViewDividerUtils.getSpanSize(parent, itemPosition);
+
+            int lineAccumulatedSpan = RecyclerViewDividerUtils.getAccumulatedSpanInLine(parent, spanSize, itemPosition, groupIndex);
 
             final int margin = mBuilder.marginFactory.marginSizeForItem(groupCount, groupIndex);
             int size = mBuilder.sizeFactory.sizeForItem(divider, orientation, groupCount, groupIndex);
@@ -136,9 +135,6 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             size = showDivider == VisibilityFactory.SHOW_ITEMS_ONLY ? 0 : size;
             halfSize = showDivider == VisibilityFactory.SHOW_GROUP_ONLY ? 0 : halfSize;
 
-            // the remainder is calculated to know where the item is inside the group
-            final int remainderInSpan = (itemPosition + spanSize) % spanCount;
-
             final int childBottom = child.getBottom();
             final int childTop = child.getTop();
             final int childRight = child.getRight();
@@ -154,7 +150,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             marginToAddBefore = marginToAddAfter = 0;
 
             if (orientation == RecyclerView.VERTICAL) {
-                if (spanCount > 1) {
+                if (spanCount > 1 && spanSize < spanCount) {
                     top = childTop + margin;
                     // size is added to draw filling point between horizontal and vertical dividers
                     bottom = childBottom - margin;
@@ -169,7 +165,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                         bottom += size;
                     }
 
-                    if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
+                    if (lineAccumulatedSpan == spanSize) {
                         // first element in the group
                         left = childRight + margin + params.rightMargin;
                         right = left + lastElementInSpanSize;
@@ -179,7 +175,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                         if (useCellMargin) {
                             marginToAddAfter = params.rightMargin;
                         }
-                    } else if (remainderInSpan == REMAINDER_LAST_ELEMENT) {
+                    } else if (lineAccumulatedSpan == spanCount) {
                         // last element in the group
                         right = childLeft - margin - params.leftMargin;
                         left = right - halfSize;
@@ -219,7 +215,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 setBoundsAndDraw(divider, c, left, top, right, bottom);
 
             } else {
-                if (spanCount > 1) {
+                if (spanCount > 1 && spanSize < spanCount) {
                     left = childLeft + margin;
                     // size is added to draw filling point between horizontal and vertical dividers
                     right = childRight - margin;
@@ -233,7 +229,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                         right += size;
                     }
 
-                    if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
+                    if (lineAccumulatedSpan == spanSize) {
                         // first element in the group
                         top = childBottom + margin + params.bottomMargin;
                         bottom = top + lastElementInSpanSize;
@@ -243,7 +239,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                         if (useCellMargin) {
                             marginToAddAfter = params.bottomMargin;
                         }
-                    } else if (remainderInSpan == REMAINDER_LAST_ELEMENT) {
+                    } else if (lineAccumulatedSpan == spanCount) {
                         // last element in the group
                         bottom = childTop - margin - params.topMargin;
                         top = bottom - halfSize;
@@ -306,34 +302,34 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         final int listSize = parent.getAdapter().getItemCount();
         if (listSize > 0) {
             int itemPosition = parent.getChildAdapterPosition(view);
-            final int groupPosition = RecyclerViewDividerUtils.getGroupIndex(parent, itemPosition);
+            final int groupIndex = RecyclerViewDividerUtils.getGroupIndex(parent, itemPosition);
             final int groupCount = RecyclerViewDividerUtils.getGroupCount(parent, listSize);
 
-            @VisibilityFactory.Show int showDivider = mBuilder.visibilityFactory.displayDividerForItem(groupCount, groupPosition);
+            @VisibilityFactory.Show int showDivider = mBuilder.visibilityFactory.displayDividerForItem(groupCount, groupIndex);
             if (showDivider != VisibilityFactory.SHOW_NONE) {
                 final int orientation = mBuilder.orientation;
                 final int spanCount = mBuilder.spanCount;
-                final int spanSize = RecyclerViewDividerUtils.getSpanSize(parent, groupPosition);
+                final int spanSize = RecyclerViewDividerUtils.getSpanSize(parent, itemPosition);
 
-                final Drawable divider = mBuilder.drawableFactory.drawableForItem(groupCount, groupPosition);
-                int size = mBuilder.sizeFactory.sizeForItem(divider, orientation, groupCount, groupPosition);
-                int marginSize = mBuilder.marginFactory.marginSizeForItem(groupCount, groupPosition);
+                int lineAccumulatedSpan = RecyclerViewDividerUtils.getAccumulatedSpanInLine(parent, spanSize, itemPosition, groupIndex);
 
-                // the remainder is calculated to know where the item is inside the group
-                final int remainderInSpan = (itemPosition + spanSize) % spanCount;
+                final Drawable divider = mBuilder.drawableFactory.drawableForItem(groupCount, groupIndex);
+                int size = mBuilder.sizeFactory.sizeForItem(divider, orientation, groupCount, groupIndex);
+                int marginSize = mBuilder.marginFactory.marginSizeForItem(groupCount, groupIndex);
+
                 int halfSize = size / 2 + marginSize;
 
                 size = showDivider == VisibilityFactory.SHOW_ITEMS_ONLY ? 0 : size;
                 halfSize = showDivider == VisibilityFactory.SHOW_GROUP_ONLY ? 0 : halfSize;
 
                 if (orientation == RecyclerView.VERTICAL) {
-                    if (spanCount == 1) {
+                    if (spanCount == 1 || spanSize == spanCount) {
                         // LinearLayoutManager or GridLayoutManager with 1 column
                         outRect.set(0, 0, 0, size);
-                    } else if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
+                    } else if (lineAccumulatedSpan == spanSize) {
                         // first element in the group
                         outRect.set(0, 0, halfSize, size);
-                    } else if (remainderInSpan == REMAINDER_LAST_ELEMENT) {
+                    } else if (lineAccumulatedSpan == spanCount) {
                         // last element in the group
                         outRect.set(halfSize, 0, 0, size);
                     } else {
@@ -341,13 +337,13 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                         outRect.set(halfSize, 0, halfSize, size);
                     }
                 } else {
-                    if (spanCount == 1) {
+                    if (spanCount == 1 || spanSize == spanCount) {
                         // LinearLayoutManager or GridLayoutManager with 1 row
                         outRect.set(0, 0, size, 0);
-                    } else if (remainderInSpan == REMAINDER_FIRST_ELEMENT) {
+                    } else if (lineAccumulatedSpan == spanSize) {
                         // first element in the group
                         outRect.set(0, 0, size, halfSize);
-                    } else if (remainderInSpan == REMAINDER_LAST_ELEMENT) {
+                    } else if (lineAccumulatedSpan == spanCount) {
                         // last element in the group
                         outRect.set(0, halfSize, size, 0);
                     } else {

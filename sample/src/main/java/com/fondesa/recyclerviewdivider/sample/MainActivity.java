@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int LIST_SIZE = 18;
+    private static final int LIST_SIZE = 16;
     private static final int SPAN_COUNT = 3;
     private static final String SHOW = "ALL";
     private static final String REMOVE = "REMOVE";
@@ -47,16 +47,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         RecyclerView mFirstRecyclerView = (RecyclerView) findViewById(R.id.first_recycler_view);
-        ((GridLayoutManager) mFirstRecyclerView.getLayoutManager()).setSpanCount(SPAN_COUNT);
+        GridLayoutManager mFirstManager = (GridLayoutManager) mFirstRecyclerView.getLayoutManager();
+        mFirstManager.setSpanCount(SPAN_COUNT);
+        mFirstManager.setSpanSizeLookup(new DummyLookup());
 
         RecyclerView mSecondRecyclerView = (RecyclerView) findViewById(R.id.second_recycler_view);
-        ((GridLayoutManager) mSecondRecyclerView.getLayoutManager()).setSpanCount(SPAN_COUNT);
+        GridLayoutManager mSecondManager = (GridLayoutManager) mSecondRecyclerView.getLayoutManager();
+        mSecondManager.setSpanCount(SPAN_COUNT);
+//        mSecondManager.setSpanSizeLookup(new DummyLookup());
 
         mFirstBuilder =  RecyclerViewDivider.with(this)
                 .addTo(mFirstRecyclerView)
-                .hideLastDivider()
                 .color(Color.RED)
-                .size(20);
+//                .marginSize(15)
+                .size(12);
 
         firstDivider = mFirstBuilder.build();
 
@@ -64,9 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
         secondDivider = RecyclerViewDivider.with(this)
                 .addTo(mSecondRecyclerView)
-                .hideLastDivider()
-                .color(Color.RED)
-                .size(20)
+                .color(Color.BLACK)
+//                .marginSize(15)
+                .size(6)
                 .build();
 
         secondDivider.attach();
@@ -156,6 +160,14 @@ public class MainActivity extends AppCompatActivity {
 
         public void setItemText(int item) {
             ((TextView) itemView).setText(String.valueOf(item));
+        }
+    }
+
+    private static class DummyLookup extends GridLayoutManager.SpanSizeLookup {
+
+        @Override
+        public int getSpanSize(int position) {
+            return position % 3 + 1;
         }
     }
 }

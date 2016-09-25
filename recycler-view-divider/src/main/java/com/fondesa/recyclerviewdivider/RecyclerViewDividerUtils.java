@@ -133,6 +133,33 @@ public final class RecyclerViewDividerUtils {
     }
 
     /**
+     * Calculate the span accumulated in this line.
+     * <br/>
+     * This span is calculated through the sum of the previous items' spans in this line and the current item's span
+     *
+     * @param recyclerView RecyclerView with the attached divider
+     * @param spanSize     spanSize of the item
+     * @param itemPosition position of the current item
+     * @param groupIndex   current index of the group
+     * @return accumulated span
+     */
+    static int getAccumulatedSpanInLine(@NonNull RecyclerView recyclerView, int spanSize, int itemPosition, int groupIndex) {
+        int lineAccumulatedSpan = spanSize;
+        int tempPos;
+        for (tempPos = itemPosition - 1; tempPos >= 0; tempPos--) {
+            int tempGroupIndex = RecyclerViewDividerUtils.getGroupIndex(recyclerView, tempPos);
+            if (tempGroupIndex == groupIndex) {
+                int tempSpanSize = RecyclerViewDividerUtils.getSpanSize(recyclerView, tempPos);
+                lineAccumulatedSpan += tempSpanSize;
+            } else {
+                // if the group index change, it means that line is changed
+                break;
+            }
+        }
+        return lineAccumulatedSpan;
+    }
+
+    /**
      * Converts a color to a Drawable
      *
      * @param color color to convert

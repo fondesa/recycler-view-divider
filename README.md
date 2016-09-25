@@ -4,8 +4,9 @@ RecyclerViewDivider
 A RecyclerView's divider that can be customized with simple properties or advanced ones.
 
 <img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/screenshots/screenshot_1.png" height="500">
-<img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/screenshots/screenshot_2.png" height="500">
 <img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/screenshots/screenshot_3.png" height="500">
+
+It supports completely LinearLayoutManager and GridLayoutManager, partially StaggeredGridManager.
 
 Usage
 ------
@@ -43,6 +44,7 @@ RecyclerViewDivider.with(context)
                 .tint(tint)
                 .size(size)
                 .marginSize(marginSize)
+                .hideLastDivider()
                 .build()
                 .attach();
 ```
@@ -63,31 +65,31 @@ RecyclerViewDivider.with(context)
                 .addTo(recyclerView)
                 .visibilityFactory(new VisibilityFactory() {
                     @Override
-                    public boolean displayDividerForItem(int listSize, int position) {
+                    public boolean displayDividerForItem(int groupCount, int groupIndex) {
                         return position != 1;
                     }
                 })
                 .drawableFactory(new DrawableFactory() {
                     @Override
-                    public Drawable drawableForItem(int listSize, int position) {
+                    public Drawable drawableForItem(int groupCount, int groupIndex) {
                         return position % 2 == 0 ? new ColorDrawable(Color.BLACK) : new ColorDrawable(Color.BLUE);
                     }
                 })
                 .tintFactory(new TintFactory() {
                     @Override
-                    public int tintForItem(int listSize, int position) {
+                    public int tintForItem(int groupCount, int groupIndex) {
                         return position == 0 ? Color.YELLOW : Color.GRAY;
                     }
                 })
                 .sizeFactory(new SizeFactory() {
                     @Override
-                    public int sizeForItem(@Nullable Drawable drawable, int orientation, int listSize, int position) {
+                    public int sizeForItem(@Nullable Drawable drawable, int orientation, int groupCount, int groupIndex) {
                         return position % 2 == 0 ? 45 : 78;
                     }
                 })
                 .marginFactory(new MarginFactory() {
                     @Override
-                    public int marginSizeForItem(int listSize, int position) {
+                    public int marginSizeForItem(int groupCount, int groupIndex) {
                         return position % 2 == 0 ? 10 : 10 * 2;
                     }
                 })
