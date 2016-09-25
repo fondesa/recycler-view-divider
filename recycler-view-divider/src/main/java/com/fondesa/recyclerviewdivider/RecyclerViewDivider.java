@@ -635,63 +635,50 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                     }
                 }
 
-                // init default values
-                if (type != TYPE_SPACE) {
-
                     /* -------------------- DRAWABLE FACTORY -------------------- */
 
-                    if (drawableFactory == null) {
-                        Drawable currDrawable = null;
-                        // all drawing properties will be set if RecyclerViewDivider is used as a divider, not as a space
-                        switch (type) {
-                            case TYPE_COLOR:
-                                if (color != null) {
-                                    currDrawable = RecyclerViewDividerUtils.colorToDrawable(color);
-                                }
-                                break;
+                if (drawableFactory == null) {
+                    Drawable currDrawable = null;
+                    // all drawing properties will be set if RecyclerViewDivider is used as a divider, not as a space
+                    switch (type) {
+                        case TYPE_COLOR:
+                            if (color != null) {
+                                currDrawable = RecyclerViewDividerUtils.colorToDrawable(color);
+                            }
+                            break;
 
-                            case TYPE_DRAWABLE:
-                                if (drawable != null) {
-                                    if (spanCount > 1) {
-                                        Log.e(TAG, "if your span count is major than 1 and the drawable can't be mirrored, it won't be shown correctly");
-                                    }
-                                    currDrawable = drawable;
+                        case TYPE_DRAWABLE:
+                            if (drawable != null) {
+                                if (spanCount > 1) {
+                                    Log.e(TAG, "if your span count is major than 1 and the drawable can't be mirrored, it won't be shown correctly");
                                 }
-                                break;
-                        }
-                        if (currDrawable == null) {
-                            drawableFactory = DrawableFactory.getDefault(context);
-                        } else {
-                            drawableFactory = DrawableFactory.getGeneralFactory(currDrawable);
-                        }
+                                currDrawable = drawable;
+                            }
+                            break;
                     }
+                    if (currDrawable == null) {
+                        drawableFactory = DrawableFactory.getDefault(context);
+                    } else {
+                        drawableFactory = DrawableFactory.getGeneralFactory(currDrawable);
+                    }
+                }
 
                     /* -------------------- TINT FACTORY -------------------- */
 
-                    if (tintFactory == null) {
-                        if (tint != null) {
-                            tintFactory = TintFactory.getGeneralFactory(tint);
-                        }
+                if (tintFactory == null) {
+                    if (tint != null) {
+                        tintFactory = TintFactory.getGeneralFactory(tint);
                     }
+                }
 
                     /* -------------------- MARGIN FACTORY -------------------- */
 
-                    if (marginFactory == null) {
-                        if (marginSize == INT_DEF) {
-                            marginFactory = MarginFactory.getDefault(context);
-                        } else {
-                            marginFactory = MarginFactory.getGeneralFactory(marginSize);
-                        }
+                if (marginFactory == null) {
+                    if (marginSize == INT_DEF) {
+                        marginFactory = MarginFactory.getDefault(context);
+                    } else {
+                        marginFactory = MarginFactory.getGeneralFactory(marginSize);
                     }
-                } else {
-
-                    /* -------------------- DRAWABLE FACTORY -------------------- */
-
-                    drawableFactory = DrawableFactory.getDefault(context);
-
-                    // help GC to dealloc other values or bring them to default
-                    tintFactory = null;
-                    marginFactory = null;
                 }
             }
 
