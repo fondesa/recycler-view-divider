@@ -1,69 +1,55 @@
 apply plugin: 'com.jfrog.bintray'
 
-Properties global = new Properties()
-File globalPropsFile = new File("D:/programming/gradle/bintray.properties")
-Properties local = new Properties()
-File localPropsFile = new File("${project.rootDir}/bintray.properties")
+version = BINTRAY_LIB_VERSION
 
-if (globalPropsFile.exists() && localPropsFile.exists()) {
-    global.load(globalPropsFile.newDataInputStream())
-    local.load(localPropsFile.newDataInputStream())
-
-    version = local.getProperty("bintray.library.version")
-
-    if (project.hasProperty("android")) {
-        // Android libraries
-        task sourcesJar(type: Jar) {
-            classifier = 'sources'
-            //noinspection GroovyAssignabilityCheck
-            from android.sourceSets.main.java.srcDirs
-        }
-
-        task javadoc(type: Javadoc) {
-            source = android.sourceSets.main.java.srcDirs
-            //noinspection GroovyAssignabilityCheck
-            classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-        }
-    } else {
-        // Java libraries
-        task sourcesJar(type: Jar, dependsOn: classes) {
-            classifier = 'sources'
-            from sourceSets.main.allSource
-        }
+if (project.hasProperty("android")) {
+    // Android libraries
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.srcDirs
     }
 
-    task javadocJar(type: Jar, dependsOn: javadoc) {
-        classifier = 'javadoc'
-        //noinspection GroovyAccessibility
-        from javadoc.destinationDir
+    task javadoc(type: Javadoc) {
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
     }
-
-    artifacts {
-        archives javadocJar
-        archives sourcesJar
+} else {
+    // Java libraries
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
     }
+}
 
-    bintray {
-        user = global.getProperty("bintray.username")
-        key = global.getProperty("bintray.apikey")
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
 
-        configurations = ['archives']
-        pkg {
-            repo = global.getProperty("bintray.repo")
-            name = local.getProperty("bintray.name")
-            desc = local.getProperty("bintray.library.description")
-            websiteUrl = local.getProperty("bintray.site.url")
-            vcsUrl = local.getProperty("bintray.git.url")
-            licenses = [local.getProperty("bintray.license.id")]
-            publish = true
-            publicDownloadNumbers = true
-            //noinspection GroovyAssignabilityCheck
-            version {
-                desc = local.getProperty("bintray.library.description")
-                gpg {
-                    sign = true
-                    passphrase = global.getProperty("bintray.gpg.password")
-                }
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+bintray {
+    user = BINTRAY_COMMON_USERNAME
+    key = BINTRAY_COMMON_APIKEY
+
+    configurations = ['archives']
+    pkg {
+        repo = BINTRAY_COMMON_REPO
+        name = BINTRAY_LIB_REPO_NAME
+        desc = BINTRAY_LIB_DESCRIPTION
+        websiteUrl = BINTRAY_LIB_SITE_URL
+        vcsUrl = BINTRAY_LIB_GIT_URL
+        licenses = [BINTRAY_COMMON_LICENSE_ID]
+        publish = true
+        publicDownloadNumbers = true
+        version {
+            desc = BINTRAY_LIB_DESCRIPTION
+            gpg {
+                sign = true
+                passphrase = BINTRAY_COMMON_GPG_PASSWORD
             }
         }
     }

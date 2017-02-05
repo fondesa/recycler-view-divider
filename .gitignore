@@ -62,4 +62,3 @@ crashlytics-build.properties
 .log
 
 app/keystore.properties
-bintray.properties

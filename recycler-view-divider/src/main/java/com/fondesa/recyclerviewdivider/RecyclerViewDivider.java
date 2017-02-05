@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2017 Fondesa
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.fondesa.recyclerviewdivider;
 
 import android.annotation.SuppressLint;
@@ -22,7 +38,6 @@ import com.fondesa.recyclerviewdivider.factories.VisibilityFactory;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.ref.WeakReference;
 
 /**
  * Class that draws a divider between RecyclerView's elements
@@ -34,16 +49,38 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     private static final int TYPE_COLOR = 0;
     private static final int TYPE_DRAWABLE = 1;
 
-    private Builder mBuilder;
-    private boolean mIsDividerAdded;
+    private final
+    @Type
+    int mType;
+    private final VisibilityFactory mVisibilityFactory;
+    private final DrawableFactory mDrawableFactory;
+    private final TintFactory mTintFactory;
+    private final SizeFactory mSizeFactory;
+    private final MarginFactory mMarginFactory;
 
     /**
      * Set the {@link Builder} for this {@link RecyclerViewDivider}
      *
-     * @param builder {@link Builder} with properties initialized
+     * @param type              divider's type (one of {@link Type})
+     * @param visibilityFactory instance of {@link VisibilityFactory} taken from {@link Builder}
+     * @param drawableFactory   instance of {@link DrawableFactory} taken from {@link Builder}
+     * @param tintFactory       instance of {@link TintFactory} taken from {@link Builder}
+     * @param sizeFactory       instance of {@link SizeFactory} taken from {@link Builder}
+     * @param marginFactory     instance of {@link MarginFactory} taken from {@link Builder}
      */
-    private RecyclerViewDivider(@NonNull Builder builder) {
-        mBuilder = builder;
+    private RecyclerViewDivider(@Type int type,
+                                @NonNull VisibilityFactory visibilityFactory,
+                                @NonNull DrawableFactory drawableFactory,
+                                @Nullable TintFactory tintFactory,
+                                @NonNull SizeFactory sizeFactory,
+                                @NonNull MarginFactory marginFactory) {
+
+        mType = type;
+        mVisibilityFactory = visibilityFactory;
+        mDrawableFactory = drawableFactory;
+        mTintFactory = tintFactory;
+        mSizeFactory = sizeFactory;
+        mMarginFactory = marginFactory;
     }
 
     /**
@@ -57,42 +94,32 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     }
 
     /**
-     * Add this divider on the RecyclerView
+     * Add this divider to a RecyclerView
+     *
+     * @param recyclerView RecyclerView at which the divider will be added
      */
-    public void attach() {
-        // get the value of RecyclerView from the WeakReference
-        RecyclerView recyclerView = mBuilder.recyclerViewRef.get();
-        if (recyclerView != null) {
-            if (!mIsDividerAdded) {
-                recyclerView.addItemDecoration(this);
-                mIsDividerAdded = true;
-            } else {
-                recyclerView.invalidateItemDecorations();
-            }
-        }
+    public void addTo(@NonNull RecyclerView recyclerView) {
+        removeFrom(recyclerView);
+        recyclerView.addItemDecoration(this);
     }
 
     /**
-     * Remove this divider from the RecyclerView
+     * Remove this divider from a RecyclerView
+     *
+     * @param recyclerView RecyclerView from which the divider will be removed
      */
-    public void detach() {
-        // get the value of RecyclerView from the WeakReference
-        RecyclerView recyclerView = mBuilder.recyclerViewRef.get();
-        if (recyclerView != null) {
-            if (mIsDividerAdded) {
-                recyclerView.removeItemDecoration(this);
-                mIsDividerAdded = false;
-            }
-        }
+    public void removeFrom(@NonNull RecyclerView recyclerView) {
+        recyclerView.removeItemDecoration(this);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         final RecyclerView.Adapter adapter = parent.getAdapter();
         final int listSize;
 
         // if the divider isn't a simple space, it will be drawn
-        if (mBuilder.type == TYPE_SPACE || adapter == null || (listSize = adapter.getItemCount()) == 0)
+        if (mType == TYPE_SPACE || adapter == null || (listSize = adapter.getItemCount()) == 0)
             return;
 
         int left;
@@ -100,6 +127,8 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         int right;
         int bottom;
 
+        final int orientation = RecyclerViewDividerUtils.getOrientation(parent);
+        final int spanCount = RecyclerViewDividerUtils.getSpanCount(parent);
         int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
@@ -107,22 +136,19 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             final int groupIndex = RecyclerViewDividerUtils.getGroupIndex(parent, itemPosition);
             final int groupCount = RecyclerViewDividerUtils.getGroupCount(parent, listSize);
 
-            Drawable divider = mBuilder.drawableFactory.drawableForItem(groupCount, groupIndex);
-            @VisibilityFactory.Show int showDivider = mBuilder.visibilityFactory.displayDividerForItem(groupCount, groupIndex);
+            Drawable divider = mDrawableFactory.drawableForItem(groupCount, groupIndex);
+            @VisibilityFactory.Show int showDivider = mVisibilityFactory.displayDividerForItem(groupCount, groupIndex);
 
             if (divider == null || showDivider == VisibilityFactory.SHOW_NONE) continue;
 
-            final int orientation = mBuilder.orientation;
-            final int spanCount = mBuilder.spanCount;
             final int spanSize = RecyclerViewDividerUtils.getSpanSize(parent, itemPosition);
 
             int lineAccumulatedSpan = RecyclerViewDividerUtils.getAccumulatedSpanInLine(parent, spanSize, itemPosition, groupIndex);
 
-            final int margin = mBuilder.marginFactory.marginSizeForItem(groupCount, groupIndex);
-            int size = mBuilder.sizeFactory.sizeForItem(divider, orientation, groupCount, groupIndex);
-            TintFactory tintFactory = mBuilder.tintFactory;
-            if (tintFactory != null) {
-                final int tint = tintFactory.tintForItem(groupCount, groupIndex);
+            final int margin = mMarginFactory.marginSizeForItem(groupCount, groupIndex);
+            int size = mSizeFactory.sizeForItem(divider, orientation, groupCount, groupIndex);
+            if (mTintFactory != null) {
+                final int tint = mTintFactory.tintForItem(groupCount, groupIndex);
                 Drawable wrappedDrawable = DrawableCompat.wrap(divider);
                 DrawableCompat.setTint(wrappedDrawable, tint);
                 divider = wrappedDrawable;
@@ -300,57 +326,59 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         final int listSize = parent.getAdapter().getItemCount();
-        if (listSize > 0) {
-            int itemPosition = parent.getChildAdapterPosition(view);
-            final int groupIndex = RecyclerViewDividerUtils.getGroupIndex(parent, itemPosition);
-            final int groupCount = RecyclerViewDividerUtils.getGroupCount(parent, listSize);
+        if (listSize <= 0)
+            return;
 
-            @VisibilityFactory.Show int showDivider = mBuilder.visibilityFactory.displayDividerForItem(groupCount, groupIndex);
-            if (showDivider != VisibilityFactory.SHOW_NONE) {
-                final int orientation = mBuilder.orientation;
-                final int spanCount = mBuilder.spanCount;
-                final int spanSize = RecyclerViewDividerUtils.getSpanSize(parent, itemPosition);
+        int itemPosition = parent.getChildAdapterPosition(view);
+        final int groupIndex = RecyclerViewDividerUtils.getGroupIndex(parent, itemPosition);
+        final int groupCount = RecyclerViewDividerUtils.getGroupCount(parent, listSize);
 
-                int lineAccumulatedSpan = RecyclerViewDividerUtils.getAccumulatedSpanInLine(parent, spanSize, itemPosition, groupIndex);
+        @VisibilityFactory.Show int showDivider = mVisibilityFactory.displayDividerForItem(groupCount, groupIndex);
+        if (showDivider == VisibilityFactory.SHOW_NONE)
+            return;
 
-                final Drawable divider = mBuilder.drawableFactory.drawableForItem(groupCount, groupIndex);
-                int size = mBuilder.sizeFactory.sizeForItem(divider, orientation, groupCount, groupIndex);
-                int marginSize = mBuilder.marginFactory.marginSizeForItem(groupCount, groupIndex);
+        final int orientation = RecyclerViewDividerUtils.getOrientation(parent);
+        final int spanCount = RecyclerViewDividerUtils.getSpanCount(parent);
+        final int spanSize = RecyclerViewDividerUtils.getSpanSize(parent, itemPosition);
 
-                int halfSize = size / 2 + marginSize;
+        int lineAccumulatedSpan = RecyclerViewDividerUtils.getAccumulatedSpanInLine(parent, spanSize, itemPosition, groupIndex);
 
-                size = showDivider == VisibilityFactory.SHOW_ITEMS_ONLY ? 0 : size;
-                halfSize = showDivider == VisibilityFactory.SHOW_GROUP_ONLY ? 0 : halfSize;
+        final Drawable divider = mDrawableFactory.drawableForItem(groupCount, groupIndex);
+        int size = mSizeFactory.sizeForItem(divider, orientation, groupCount, groupIndex);
+        int marginSize = mMarginFactory.marginSizeForItem(groupCount, groupIndex);
 
-                if (orientation == RecyclerView.VERTICAL) {
-                    if (spanCount == 1 || spanSize == spanCount) {
-                        // LinearLayoutManager or GridLayoutManager with 1 column
-                        outRect.set(0, 0, 0, size);
-                    } else if (lineAccumulatedSpan == spanSize) {
-                        // first element in the group
-                        outRect.set(0, 0, halfSize, size);
-                    } else if (lineAccumulatedSpan == spanCount) {
-                        // last element in the group
-                        outRect.set(halfSize, 0, 0, size);
-                    } else {
-                        // element in the middle
-                        outRect.set(halfSize, 0, halfSize, size);
-                    }
-                } else {
-                    if (spanCount == 1 || spanSize == spanCount) {
-                        // LinearLayoutManager or GridLayoutManager with 1 row
-                        outRect.set(0, 0, size, 0);
-                    } else if (lineAccumulatedSpan == spanSize) {
-                        // first element in the group
-                        outRect.set(0, 0, size, halfSize);
-                    } else if (lineAccumulatedSpan == spanCount) {
-                        // last element in the group
-                        outRect.set(0, halfSize, size, 0);
-                    } else {
-                        // element in the middle
-                        outRect.set(0, halfSize, size, halfSize);
-                    }
-                }
+        int halfSize = size / 2 + marginSize;
+
+        size = showDivider == VisibilityFactory.SHOW_ITEMS_ONLY ? 0 : size;
+        halfSize = showDivider == VisibilityFactory.SHOW_GROUP_ONLY ? 0 : halfSize;
+
+        if (orientation == RecyclerView.VERTICAL) {
+            if (spanCount == 1 || spanSize == spanCount) {
+                // LinearLayoutManager or GridLayoutManager with 1 column
+                outRect.set(0, 0, 0, size);
+            } else if (lineAccumulatedSpan == spanSize) {
+                // first element in the group
+                outRect.set(0, 0, halfSize, size);
+            } else if (lineAccumulatedSpan == spanCount) {
+                // last element in the group
+                outRect.set(halfSize, 0, 0, size);
+            } else {
+                // element in the middle
+                outRect.set(halfSize, 0, halfSize, size);
+            }
+        } else {
+            if (spanCount == 1 || spanSize == spanCount) {
+                // LinearLayoutManager or GridLayoutManager with 1 row
+                outRect.set(0, 0, size, 0);
+            } else if (lineAccumulatedSpan == spanSize) {
+                // first element in the group
+                outRect.set(0, 0, size, halfSize);
+            } else if (lineAccumulatedSpan == spanCount) {
+                // last element in the group
+                outRect.set(0, halfSize, size, 0);
+            } else {
+                // element in the middle
+                outRect.set(0, halfSize, size, halfSize);
             }
         }
     }
@@ -379,10 +407,7 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     public static class Builder {
         private static final int INT_DEF = -1;
 
-        private WeakReference<Context> contextRef;
-        private WeakReference<RecyclerView> recyclerViewRef;
-        private int orientation;
-        private int spanCount;
+        private final Context context;
 
         @ColorInt
         private Integer color;
@@ -409,22 +434,10 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          */
         @SuppressWarnings("WeakerAccess")
         public Builder(@NonNull Context context) {
-            contextRef = new WeakReference<>(context);
+            this.context = context;
             size = INT_DEF;
             marginSize = INT_DEF;
             type = TYPE_COLOR;
-        }
-
-        /**
-         * Add the {@link RecyclerViewDivider} to the {@link Builder}'s instance.
-         * The RecyclerView object will be stored in a WeakReference to avoid memory leak
-         *
-         * @param recyclerView RecyclerView on which the divider will be displayed on
-         * @return {@link Builder} instance
-         */
-        public Builder addTo(@NonNull RecyclerView recyclerView) {
-            recyclerViewRef = new WeakReference<>(recyclerView);
-            return this;
         }
 
         /**
@@ -603,87 +616,74 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
          */
         @SuppressLint("SwitchIntDef")
         public RecyclerViewDivider build() {
-            // get the value of RecyclerView from the WeakReference
-            RecyclerView recyclerView = recyclerViewRef.get();
-            if (recyclerView != null) {
-                // get RecyclerView's orientation
-                orientation = RecyclerViewDividerUtils.getOrientation(recyclerView);
-                spanCount = RecyclerViewDividerUtils.getSpanCount(recyclerView);
+            Log.d(TAG, "building the divider");
+
+            /* -------------------- VISIBILITY FACTORY -------------------- */
+
+            if (visibilityFactory == null) {
+                if (hideLastDivider) {
+                    visibilityFactory = VisibilityFactory.getLastItemInvisibleFactory();
+                } else {
+                    visibilityFactory = VisibilityFactory.getDefault();
+                }
             }
 
-            // get the value of Context from the WeakReference
-            Context context = contextRef.get();
-            if (context != null) {
+            /* -------------------- SIZE FACTORY -------------------- */
 
-                 /* -------------------- VISIBILITY FACTORY -------------------- */
-
-                if (visibilityFactory == null) {
-                    if (hideLastDivider) {
-                        visibilityFactory = VisibilityFactory.getLastItemInvisibleFactory();
-                    } else {
-                        visibilityFactory = VisibilityFactory.getDefault();
-                    }
+            if (sizeFactory == null) {
+                if (size == INT_DEF) {
+                    sizeFactory = SizeFactory.getDefault(context);
+                } else {
+                    sizeFactory = SizeFactory.getGeneralFactory(size);
                 }
+            }
 
-                 /* -------------------- SIZE FACTORY -------------------- */
+            /* -------------------- DRAWABLE FACTORY -------------------- */
 
-                if (sizeFactory == null) {
-                    if (size == INT_DEF) {
-                        sizeFactory = SizeFactory.getDefault(context);
-                    } else {
-                        sizeFactory = SizeFactory.getGeneralFactory(size);
-                    }
+            if (drawableFactory == null) {
+                Drawable currDrawable = null;
+                // all drawing properties will be set if RecyclerViewDivider is used as a divider, not as a space
+                switch (type) {
+                    case TYPE_COLOR:
+                        if (color != null) {
+                            currDrawable = RecyclerViewDividerUtils.colorToDrawable(color);
+                        }
+                        break;
+
+                    case TYPE_DRAWABLE:
+                        if (drawable != null) {
+                            Log.d(TAG, "if your span count is major than 1 and the drawable can't be mirrored, it won't be shown correctly");
+                            currDrawable = drawable;
+                        }
+                        break;
                 }
-
-                    /* -------------------- DRAWABLE FACTORY -------------------- */
-
-                if (drawableFactory == null) {
-                    Drawable currDrawable = null;
-                    // all drawing properties will be set if RecyclerViewDivider is used as a divider, not as a space
-                    switch (type) {
-                        case TYPE_COLOR:
-                            if (color != null) {
-                                currDrawable = RecyclerViewDividerUtils.colorToDrawable(color);
-                            }
-                            break;
-
-                        case TYPE_DRAWABLE:
-                            if (drawable != null) {
-                                if (spanCount > 1) {
-                                    Log.e(TAG, "if your span count is major than 1 and the drawable can't be mirrored, it won't be shown correctly");
-                                }
-                                currDrawable = drawable;
-                            }
-                            break;
-                    }
-                    if (currDrawable == null) {
-                        drawableFactory = DrawableFactory.getDefault(context);
-                    } else {
-                        drawableFactory = DrawableFactory.getGeneralFactory(currDrawable);
-                    }
+                if (currDrawable == null) {
+                    drawableFactory = DrawableFactory.getDefault(context);
+                } else {
+                    drawableFactory = DrawableFactory.getGeneralFactory(currDrawable);
                 }
+            }
 
-                    /* -------------------- TINT FACTORY -------------------- */
+            /* -------------------- TINT FACTORY -------------------- */
 
-                if (tintFactory == null) {
-                    if (tint != null) {
-                        tintFactory = TintFactory.getGeneralFactory(tint);
-                    }
+            if (tintFactory == null) {
+                if (tint != null) {
+                    tintFactory = TintFactory.getGeneralFactory(tint);
                 }
+            }
 
-                    /* -------------------- MARGIN FACTORY -------------------- */
+            /* -------------------- MARGIN FACTORY -------------------- */
 
-                if (marginFactory == null) {
-                    if (marginSize == INT_DEF) {
-                        marginFactory = MarginFactory.getDefault(context);
-                    } else {
-                        marginFactory = MarginFactory.getGeneralFactory(marginSize);
-                    }
+            if (marginFactory == null) {
+                if (marginSize == INT_DEF) {
+                    marginFactory = MarginFactory.getDefault(context);
+                } else {
+                    marginFactory = MarginFactory.getGeneralFactory(marginSize);
                 }
             }
 
             // creates divider for this mBuilder
-            return new RecyclerViewDivider(this);
+            return new RecyclerViewDivider(type, visibilityFactory, drawableFactory, tintFactory, sizeFactory, marginFactory);
         }
     }
 

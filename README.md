@@ -16,7 +16,7 @@ Usage
 If you want to use the basic version of this divider you can just add this line of code after your <i>setAdapter()</i> method:
 
 ```java
-RecyclerViewDivider.with(context).addTo(recyclerView).build().attach();
+RecyclerViewDivider.with(context).build().addTo(recyclerView);
 ```
 ###Customization###
 All dividers in the app have default values in xml resources:
@@ -39,7 +39,6 @@ It can be customized in code with properties equals for each divider:
 
 ```java
 RecyclerViewDivider.with(context)
-                .addTo(recyclerView)
                 .color(color)
                 // OR
                 .drawable(drawable)
@@ -48,7 +47,7 @@ RecyclerViewDivider.with(context)
                 .marginSize(marginSize)
                 .hideLastDivider()
                 .build()
-                .attach();
+                .addTo(recyclerView);
 ```
 
 It can also use custom factories to have a different logic for each divider:
@@ -64,7 +63,6 @@ It can also use custom factories to have a different logic for each divider:
 
 ```java
 RecyclerViewDivider.with(context)
-                .addTo(recyclerView)
                 .visibilityFactory(new VisibilityFactory() {
                     @Override
                     public int displayDividerForItem(int groupCount, int groupIndex) {
@@ -99,7 +97,7 @@ RecyclerViewDivider.with(context)
                     }
                 })
                 .build()
-                .attach();
+                .addTo(recyclerView);
 ```
 
 You can also use this divider as a simple space between RecyclerView's items:
@@ -107,7 +105,7 @@ You can also use this divider as a simple space between RecyclerView's items:
 #####Example of divider as space:#####
 
 ```java
-RecyclerViewDivider.with(context).addTo(recyclerView).asSpace().build().attach();
+RecyclerViewDivider.with(context).asSpace().build().addTo(recyclerView);
 ```
 
 Compatibility
@@ -118,13 +116,13 @@ Compatibility
 Integration
 ------
 
-Available both on ```jcenter()``` and ```mavenCentral```
+Available both on ```jcenter()``` and ```mavenCentral()```
 
 ###Gradle###
 
 ```gradle
 dependencies {
-    compile 'com.github.fondesa:recycler-view-divider:1.2.1'
+    compile 'com.github.fondesa:recycler-view-divider:1.3.0'
 }
 ```
 
@@ -134,7 +132,7 @@ dependencies {
 <dependency>
   <groupId>com.github.fondesa</groupId>
   <artifactId>recycler-view-divider</artifactId>
-  <version>1.2.1</version>
+  <version>1.3.0</version>
   <type>pom</type>
 </dependency>
 ```

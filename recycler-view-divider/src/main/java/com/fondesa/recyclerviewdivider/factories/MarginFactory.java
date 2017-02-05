@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2017 Fondesa
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.fondesa.recyclerviewdivider.factories;
 
 import android.content.Context;
@@ -55,7 +71,7 @@ public abstract class MarginFactory {
      * Default instance of a {@link MarginFactory}
      */
     private static class Default extends MarginFactory {
-        private int defaultMarginSize;
+        private final int defaultMarginSize;
 
         Default(Context context) {
             defaultMarginSize = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_margin_size);
@@ -71,7 +87,7 @@ public abstract class MarginFactory {
      * General instance of a {@link MarginFactory} used when the margin's size is set with {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder#marginSize(int)}
      */
     private static class General extends MarginFactory {
-        private int marginSize;
+        private final int marginSize;
 
         General(int marginSize) {
             this.marginSize = marginSize;

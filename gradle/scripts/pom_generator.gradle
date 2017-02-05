@@ -1,56 +1,40 @@
 apply plugin: 'com.github.dcendents.android-maven'
 
-Properties global = new Properties()
-File globalPropsFile = new File("D:/programming/gradle/bintray.properties")
-Properties local = new Properties()
-File localPropsFile = new File("${project.rootDir}/bintray.properties")
+group = BINTRAY_COMMON_GROUP_ID
 
-if (globalPropsFile.exists() && localPropsFile.exists()) {
-    global.load(globalPropsFile.newDataInputStream())
-    local.load(localPropsFile.newDataInputStream())
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                groupId BINTRAY_COMMON_GROUP_ID
+                artifactId BINTRAY_LIB_ARTIFACT_ID
 
-    group = global.getProperty("bintray.group.id")
+                name BINTRAY_LIB_NAME
+                description BINTRAY_LIB_DESCRIPTION
+                version BINTRAY_LIB_VERSION
+                url BINTRAY_LIB_SITE_URL
 
-    install {
-        repositories.mavenInstaller {
-            // This generates POM.xml with proper parameters
-            pom {
-                //noinspection GroovyAssignabilityCheck
-                project {
-                    packaging 'aar'
-                    groupId global.getProperty("bintray.group.id")
-                    artifactId local.getProperty("bintray.artifact.id")
-
-                    // Add your description here
-                    //noinspection GroovyAssignabilityCheck
-                    name local.getProperty("bintray.library.name")
-                    //noinspection GroovyAssignabilityCheck
-                    description local.getProperty("bintray.library.description")
-                    url local.getProperty("bintray.site.url")
-
-                    // Set your license
-                    licenses {
-                        license {
-                            //noinspection GroovyAssignabilityCheck
-                            name global.getProperty("bintray.license.name")
-                            url global.getProperty("bintray.license.url")
-                        }
-                    }
-                    developers {
-                        developer {
-                            id global.getProperty("bintray.developer.id")
-                            //noinspection GroovyAssignabilityCheck
-                            name global.getProperty("bintray.developer.name")
-                            email global.getProperty("bintray.developer.mail")
-                        }
-                    }
-                    scm {
-                        connection local.getProperty("bintray.git.url")
-                        developerConnection local.getProperty("bintray.git.url")
-                        url local.getProperty("bintray.site.url")
+                // Set your license
+                licenses {
+                    license {
+                        url BINTRAY_COMMON_LICENSE_URL
                     }
                 }
+                developers {
+                    developer {
+                        id BINTRAY_COMMON_DEV_ID
+                        name BINTRAY_COMMON_DEV_NAME
+                        email BINTRAY_COMMON_DEV_MAIL
+                    }
+                }
+                scm {
+                    connection BINTRAY_LIB_GIT_URL
+                    developerConnection BINTRAY_LIB_GIT_URL
+                    url BINTRAY_LIB_SITE_URL
+                }
             }
-        }
+        }.writeTo("$buildDir/poms/pom-default.xml")
     }
 }

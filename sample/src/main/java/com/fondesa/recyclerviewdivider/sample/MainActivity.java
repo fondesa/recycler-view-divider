@@ -22,12 +22,13 @@ public class MainActivity extends AppCompatActivity {
     private static final int SPAN_COUNT = 3;
     private static final String SHOW = "ALL";
     private static final String REMOVE = "REMOVE";
-    boolean dividerShown;
+    private boolean dividerShown;
 
     private RecyclerViewDivider firstDivider;
     private RecyclerViewDivider secondDivider;
 
-    RecyclerViewDivider.Builder mFirstBuilder;
+    private RecyclerView mFirstRecyclerView;
+    private RecyclerView mSecondRecyclerView;
 
     @SuppressWarnings("ConstantConditions")
     @Override
@@ -35,32 +36,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView mFirstRecyclerView = (RecyclerView) findViewById(R.id.first_recycler_view);
+        mFirstRecyclerView = (RecyclerView) findViewById(R.id.first_recycler_view);
         GridLayoutManager mFirstManager = (GridLayoutManager) mFirstRecyclerView.getLayoutManager();
         mFirstManager.setSpanCount(SPAN_COUNT);
         mFirstManager.setSpanSizeLookup(new DummyLookup());
 
-        RecyclerView mSecondRecyclerView = (RecyclerView) findViewById(R.id.second_recycler_view);
+        mSecondRecyclerView = (RecyclerView) findViewById(R.id.second_recycler_view);
         GridLayoutManager mSecondManager = (GridLayoutManager) mSecondRecyclerView.getLayoutManager();
         mSecondManager.setSpanCount(SPAN_COUNT);
         mSecondManager.setSpanSizeLookup(new DummyLookup());
 
-        mFirstBuilder =  RecyclerViewDivider.with(this)
-                .addTo(mFirstRecyclerView)
+        firstDivider = RecyclerViewDivider.with(this)
                 .color(Color.RED)
-                .size(12);
+                .size(12)
+                .build();
 
-        firstDivider = mFirstBuilder.build();
-
-        firstDivider.attach();
+        firstDivider.addTo(mFirstRecyclerView);
 
         secondDivider = RecyclerViewDivider.with(this)
-                .addTo(mSecondRecyclerView)
                 .color(Color.BLACK)
                 .size(6)
                 .build();
 
-        secondDivider.attach();
+        secondDivider.addTo(mSecondRecyclerView);
 
         dividerShown = true;
 
@@ -96,11 +94,11 @@ public class MainActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.action_toggle_div) {
             if (dividerShown) {
-                firstDivider.detach();
-                secondDivider.detach();
+                firstDivider.removeFrom(mFirstRecyclerView);
+                secondDivider.removeFrom(mSecondRecyclerView);
             } else {
-                firstDivider.attach();
-                secondDivider.attach();
+                firstDivider.addTo(mFirstRecyclerView);
+                secondDivider.addTo(mSecondRecyclerView);
             }
             dividerShown = !dividerShown;
             invalidateOptionsMenu();
@@ -110,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
     private class DummyAdapter extends RecyclerView.Adapter {
         private List<Integer> list;
-        private boolean first;
+        private final boolean first;
 
         public DummyAdapter(boolean first) {
             this.list = new ArrayList<>();
