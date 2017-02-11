@@ -11,6 +11,13 @@ android {
         versionCode 1
         versionName "debug"
     }
+
+    lintOptions {
+        htmlReport true
+        htmlOutput file("lint-report.html")
+        abortOnError true
+        warningsAsErrors false
+    }
 }
 
 dependencies {
