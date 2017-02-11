@@ -6,9 +6,9 @@ RecyclerViewDivider
 
 A RecyclerView's divider that can be customized with simple properties or advanced ones.
 
-<img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/a/screenshot_div_draw.png" height="500">
-<img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/screenshots/screenshot_div_simple.png" height="500">
-<img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/screenshots/screenshot_grid.png" height="500">
+<img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/art/screenshot_div_draw.png" height="500">
+<img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/art/screenshot_div_simple.png" height="500">
+<img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/art/screenshot_grid.png" height="500">
 
 It supports completely LinearLayoutManager, GridLayoutManager and partially StaggeredGridLayoutManager.
 
