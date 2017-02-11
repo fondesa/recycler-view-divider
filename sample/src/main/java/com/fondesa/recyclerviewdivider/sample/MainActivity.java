@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static class DummyViewHolder extends RecyclerView.ViewHolder {
-        public DummyViewHolder(View itemView) {
+        DummyViewHolder(View itemView) {
             super(itemView);
         }
 
