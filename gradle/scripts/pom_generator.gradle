@@ -1,6 +1,6 @@
 apply plugin: 'com.github.dcendents.android-maven'
 
-group = BINTRAY_COMMON_GROUP_ID
+group = project.hasProperty("BINTRAY_COMMON_GROUP_ID") ? BINTRAY_COMMON_GROUP_ID : ""
 
 install {
     repositories.mavenInstaller {
@@ -8,7 +8,7 @@ install {
         pom {
             project {
                 packaging 'aar'
-                groupId BINTRAY_COMMON_GROUP_ID
+                groupId project.hasProperty("BINTRAY_COMMON_GROUP_ID") ? BINTRAY_COMMON_GROUP_ID : ""
                 artifactId BINTRAY_LIB_ARTIFACT_ID
 
                 name BINTRAY_LIB_NAME
@@ -19,14 +19,14 @@ install {
                 // Set your license
                 licenses {
                     license {
-                        url BINTRAY_COMMON_LICENSE_URL
+                        url project.hasProperty("BINTRAY_COMMON_LICENSE_URL") ? BINTRAY_COMMON_LICENSE_URL : ""
                     }
                 }
                 developers {
                     developer {
-                        id BINTRAY_COMMON_DEV_ID
-                        name BINTRAY_COMMON_DEV_NAME
-                        email BINTRAY_COMMON_DEV_MAIL
+                        id project.hasProperty("BINTRAY_COMMON_DEV_ID") ? BINTRAY_COMMON_DEV_ID : ""
+                        name project.hasProperty("BINTRAY_COMMON_DEV_NAME") ? BINTRAY_COMMON_DEV_NAME : ""
+                        email project.hasProperty("BINTRAY_COMMON_DEV_MAIL") ? BINTRAY_COMMON_DEV_MAIL : ""
                     }
                 }
                 scm {
