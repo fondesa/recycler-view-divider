@@ -2,6 +2,7 @@ package com.fondesa.recyclerviewdivider.sample;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 secondDivider.addTo(mSecondRecyclerView);
             }
             dividerShown = !dividerShown;
-            invalidateOptionsMenu();
+            ActivityCompat.invalidateOptionsMenu(this);
         }
         return true;
     }
