@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         private List<Integer> list;
         private final boolean first;
 
-        public DummyAdapter(boolean first) {
+        DummyAdapter(boolean first) {
             this.list = new ArrayList<>();
             this.first = first;
         }
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             return list.size();
         }
 
-        public void updateList(List<Integer> list) {
+        void updateList(List<Integer> list) {
             if (list != this.list) {
                 this.list = list;
                 notifyDataSetChanged();
