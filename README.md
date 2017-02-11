@@ -6,9 +6,9 @@ RecyclerViewDivider
 
 A RecyclerView's divider that can be customized with simple properties or advanced ones.
 
-<img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/art/screenshot_div_draw.png" height="500">
-<img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/art/screenshot_div_simple.png" height="500">
-<img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/art/screenshot_grid.png" height="500">
+<img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/a/screenshot_div_draw.png" height="500">
+<img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/screenshots/screenshot_div_simple.png" height="500">
+<img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/screenshots/screenshot_grid.png" height="500">
 
 It supports completely LinearLayoutManager, GridLayoutManager and partially StaggeredGridLayoutManager.
 
@@ -17,7 +17,7 @@ Usage
 
 If you want to use the basic version of this divider you can just add this line of code after your <i>setAdapter()</i> method:
 
-```java
+```
 RecyclerViewDivider.with(context).build().addTo(recyclerView);
 ```
 ###Customization###
@@ -39,7 +39,7 @@ It can be customized in code with properties equals for each divider:
 
 #####Example with all general properties set:#####
 
-```java
+```
 RecyclerViewDivider.with(context)
                 .color(color)
                 // OR
@@ -63,7 +63,7 @@ It can also use custom factories to have a different logic for each divider:
 
 #####Example with all factories set:#####
 
-```java
+```
 RecyclerViewDivider.with(context)
                 .visibilityFactory(new VisibilityFactory() {
                     @Override
@@ -106,7 +106,7 @@ You can also use this divider as a simple space between RecyclerView's items:
 
 #####Example of divider as space:#####
 
-```java
+```
 RecyclerViewDivider.with(context).asSpace().build().addTo(recyclerView);
 ```
 

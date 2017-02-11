@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
             super(itemView);
         }
 
-        public void setItemText(int item) {
+        void setItemText(int item) {
             ((TextView) itemView).setText(String.valueOf(item));
         }
     }
