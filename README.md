@@ -17,7 +17,7 @@ Usage
 
 If you want to use the basic version of this divider you can just add this line of code after your <i>setAdapter()</i> method:
 
-```
+```java
 RecyclerViewDivider.with(context).build().addTo(recyclerView);
 ```
 ###Customization###
@@ -39,7 +39,7 @@ It can be customized in code with properties equals for each divider:
 
 #####Example with all general properties set:#####
 
-```
+```java
 RecyclerViewDivider.with(context)
                 .color(color)
                 // OR
@@ -63,7 +63,7 @@ It can also use custom factories to have a different logic for each divider:
 
 #####Example with all factories set:#####
 
-```
+```java
 RecyclerViewDivider.with(context)
                 .visibilityFactory(new VisibilityFactory() {
                     @Override
@@ -106,7 +106,7 @@ You can also use this divider as a simple space between RecyclerView's items:
 
 #####Example of divider as space:#####
 
-```
+```java
 RecyclerViewDivider.with(context).asSpace().build().addTo(recyclerView);
 ```
 
