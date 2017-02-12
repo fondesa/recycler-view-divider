@@ -4,12 +4,12 @@ jdk: oraclejdk8
 android:
   components:
     - tools
-    - platorm-tools
+    - platform-tools
+    - tools # to install Android SDK tools 25.x
     - build-tools-25.0.2
     - android-25
     - extra-android-support
     - extra-android-m2repository
-    - extra-google-m2repository
 
 branches:
   only:
