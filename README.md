@@ -2,7 +2,6 @@ RecyclerViewDivider
 ===============
 [![Build Status](https://travis-ci.org/Fondesa/RecyclerViewDivider.svg?branch=master)](https://travis-ci.org/Fondesa/RecyclerViewDivider)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.fondesa/recycler-view-divider.svg)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.github.fondesa%22%20AND%20a%3A%22recycler-view-divider%22)
-[![Bintray](https://img.shields.io/bintray/v/fondesa/maven/recycler-view-divider.svg)](https://bintray.com/fondesa/maven/recycler-view-divider)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 A RecyclerView's divider that can be customized with simple properties or advanced ones.
