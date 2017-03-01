@@ -15,5 +15,5 @@ android {
 dependencies {
     compile "com.android.support:appcompat-v7:$ANDROID_SUPPORT_VERSION"
     compile project(":recycler-view-divider")
-//    compile 'com.github.fondesa:recycler-view-divider:1.3.0'
+//    compile 'com.github.fondesa:recycler-view-divider:1.3.1'
 }
