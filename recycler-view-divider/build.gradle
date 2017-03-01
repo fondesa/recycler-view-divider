@@ -1,20 +1,20 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion Integer.parseInt(ANDROID_COMPILE_SDK_VERSION)
+    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
 
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 25
+        minSdkVersion Integer.parseInt(ANDROID_MIN_SDK_VERSION)
+        targetSdkVersion Integer.parseInt(ANDROID_TARGET_SDK_VERSION)
         return true
     }
 }
 
 dependencies {
-    compile 'com.android.support:support-annotations:25.1.1'
-    compile 'com.android.support:support-v4:25.1.1'
-    compile 'com.android.support:recyclerview-v7:25.1.1'
+    compile "com.android.support:support-annotations:$ANDROID_SUPPORT_VERSION"
+    compile "com.android.support:support-v4:$ANDROID_SUPPORT_VERSION"
+    compile "com.android.support:recyclerview-v7:$ANDROID_SUPPORT_VERSION"
 }
 
 apply from: "${rootDir}/gradle/scripts/bintray_uploader.gradle"
