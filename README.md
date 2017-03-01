@@ -124,7 +124,7 @@ Available both on ```jcenter()``` and ```mavenCentral()```
 
 ```gradle
 dependencies {
-    compile 'com.github.fondesa:recycler-view-divider:1.3.0'
+    compile 'com.github.fondesa:recycler-view-divider:1.3.1'
 }
 ```
 
@@ -134,7 +134,7 @@ dependencies {
 <dependency>
   <groupId>com.github.fondesa</groupId>
   <artifactId>recycler-view-divider</artifactId>
-  <version>1.3.0</version>
+  <version>1.3.1</version>
   <type>pom</type>
 </dependency>
 ```
