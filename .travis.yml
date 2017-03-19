@@ -1,11 +1,15 @@
 language: android
+
 jdk: oraclejdk8
+
+env:
+  global:
+    - MALLOC_ARENA_MAX=2
 
 android:
   components:
     - tools
     - platform-tools
-    - tools # to install Android SDK tools 25.x
     - build-tools-25.0.2
     - android-25
     - extra-android-support
@@ -16,7 +20,9 @@ branches:
     - master
 
 script:
-  - ./gradlew build connectedCheck --stacktrace
+  - ./gradlew build --continue --stacktrace
+
+sudo: required
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
