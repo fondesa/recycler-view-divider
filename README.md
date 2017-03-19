@@ -20,7 +20,7 @@ If you want to use the basic version of this divider you can just add this line 
 ```java
 RecyclerViewDivider.with(context).build().addTo(recyclerView);
 ```
-###Customization###
+### Customization ###
 All dividers in the app have default values in xml resources:
 <ul>
 <li><i>Color</i> → R.color.recycler_view_divider_color (default is #CFCFCF)</li>
@@ -37,7 +37,7 @@ It can be customized in code with properties equals for each divider:
 <li><i>marginSize(int)</i> → change left/right margin for an horizontal divider, top/bottom for a vertical one</li>
 </ul>
 
-#####Example with all general properties set:#####
+##### Example with all general properties set: #####
 
 ```java
 RecyclerViewDivider.with(context)
@@ -61,7 +61,7 @@ It can also use custom factories to have a different logic for each divider:
 <li><i>marginFactory(MarginFactory)</i> → set margin</li>
 </ul>
 
-#####Example with all factories set:#####
+##### Example with all factories set: #####
 
 ```java
 RecyclerViewDivider.with(context)
@@ -104,7 +104,7 @@ RecyclerViewDivider.with(context)
 
 You can also use this divider as a simple space between RecyclerView's items:
 
-#####Example of divider as space:#####
+##### Example of divider as space: #####
 
 ```java
 RecyclerViewDivider.with(context).asSpace().build().addTo(recyclerView);
@@ -120,21 +120,21 @@ Integration
 
 Available both on ```jcenter()``` and ```mavenCentral()```
 
-###Gradle###
+### Gradle ###
 
 ```gradle
 dependencies {
-    compile 'com.github.fondesa:recycler-view-divider:1.3.1'
+    compile 'com.github.fondesa:recycler-view-divider:1.3.2'
 }
 ```
 
-###Maven###
+### Maven ###
 
 ```xml
 <dependency>
   <groupId>com.github.fondesa</groupId>
   <artifactId>recycler-view-divider</artifactId>
-  <version>1.3.1</version>
+  <version>1.3.2</version>
   <type>pom</type>
 </dependency>
 ```
