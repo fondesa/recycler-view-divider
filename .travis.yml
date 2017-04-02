@@ -20,7 +20,8 @@ branches:
     - master
 
 script:
-  - ./gradlew build --continue --stacktrace
+    - ./gradlew :recycler-view-divider:build --continue --stacktrace
+    - ./gradlew :sample:assembleLocal --continue --stacktrace
 
 sudo: required
 

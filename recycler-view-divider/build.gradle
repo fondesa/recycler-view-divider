@@ -17,5 +17,4 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$ANDROID_SUPPORT_VERSION"
 }
 
-apply from: "${rootDir}/gradle/scripts/bintray_uploader.gradle"
-apply from: "${rootDir}/gradle/scripts/pom_generator.gradle"
+apply from: "${rootDir}/gradle/scripts/bintray-deployer.gradle"
