@@ -1,8 +1,6 @@
 RecyclerViewDivider
 ===============
 [![Build Status](https://travis-ci.org/Fondesa/RecyclerViewDivider.svg?branch=master)](https://travis-ci.org/Fondesa/RecyclerViewDivider)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.fondesa/recycler-view-divider.svg)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.github.fondesa%22%20AND%20a%3A%22recycler-view-divider%22)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 A RecyclerView's divider that can be customized with simple properties or advanced ones.
 
@@ -118,7 +116,7 @@ Compatibility
 Integration
 ------
 
-Available both on ```jcenter()``` and ```mavenCentral()```
+You can download the [latest JAR][1] or grab it from ```jcenter()``` or ```mavenCentral()```:
 
 ### Gradle ###
 
@@ -138,3 +136,5 @@ dependencies {
   <type>pom</type>
 </dependency>
 ```
+
+[1]: https://repo1.maven.org/maven2/com/github/fondesa/recycler-view-divider/1.3.3/recycler-view-divider-1.3.3-sources.jar
