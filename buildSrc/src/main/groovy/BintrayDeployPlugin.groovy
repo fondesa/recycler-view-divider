@@ -20,6 +20,8 @@ import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.javadoc.Javadoc
 
+import java.util.regex.Pattern
+
 /**
  * Plugin used to publish the library on Bintray and Maven Central.
  * This plugin will add some sources tasks and the {@code publishLibrary} task to upload the library.
@@ -234,7 +236,13 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
                 licenses = [prop("BINTRAY_COMMON_LICENSE_ID")]
                 publish = true
                 publicDownloadNumbers = true
+
+                def tags = prop(bintrayProps, "BINTRAY_LIB_TAGS")
+                labels = tags.split(Pattern.quote('|'))
+
+                githubRepo = prop(bintrayProps, "BINTRAY_LIB_GITHUB_REPO")
                 version {
+                    desc = "For further information: ${prop(bintrayProps, "BINTRAY_LIB_SITE_URL")}"
                     released = new Date()
                     gpg {
                         sign = true
