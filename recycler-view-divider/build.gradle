@@ -1,20 +1,11 @@
-apply plugin: 'com.android.library'
+new AndroidSharedPlugin(
+        type: AndroidSharedPlugin.LIBRARY
+).apply(project)
 
-android {
-    compileSdkVersion Integer.parseInt(ANDROID_COMPILE_SDK_VERSION)
-    buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
-
-    defaultConfig {
-        minSdkVersion Integer.parseInt(ANDROID_MIN_SDK_VERSION)
-        targetSdkVersion Integer.parseInt(ANDROID_TARGET_SDK_VERSION)
-        return true
-    }
-}
+new BintrayDeployPlugin().apply(project)
 
 dependencies {
     compile "com.android.support:support-annotations:$ANDROID_SUPPORT_VERSION"
     compile "com.android.support:support-v4:$ANDROID_SUPPORT_VERSION"
     compile "com.android.support:recyclerview-v7:$ANDROID_SUPPORT_VERSION"
 }
-
-apply from: "${rootDir}/gradle/scripts/bintray-deployer.gradle"
