@@ -228,7 +228,7 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
             publications = ['libraryPublication']
             pkg {
                 repo = prop("BINTRAY_COMMON_REPO")
-                name = prop(bintrayProps, "BINTRAY_LIB_REPO_NAME")
+                name = prop(bintrayProps, "BINTRAY_LIB_NAME")
                 desc = prop(bintrayProps, "BINTRAY_LIB_DESCRIPTION")
                 websiteUrl = prop(bintrayProps, "BINTRAY_LIB_SITE_URL")
                 issueTrackerUrl = prop(bintrayProps, "BINTRAY_LIB_ISSUE_TRACKER_URL")
@@ -242,7 +242,7 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
 
                 githubRepo = prop(bintrayProps, "BINTRAY_LIB_GITHUB_REPO")
                 version {
-                    desc = "For further information: ${prop(bintrayProps, "BINTRAY_LIB_SITE_URL")}"
+                    desc = prop(bintrayProps, "BINTRAY_LIB_VERSION_DESCRIPTION")
                     released = new Date()
                     gpg {
                         sign = true
