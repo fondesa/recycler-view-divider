@@ -114,7 +114,7 @@ Compatibility
 Integration
 ------
 
-You can download the [latest JAR][1] or grab it from ```jcenter()``` or ```mavenCentral()```:
+You can download a jar from GitHub's [releases page][2] or grab it from ```jcenter()``` or ```mavenCentral()```.
 
 ### Gradle ###
 
@@ -135,4 +135,4 @@ dependencies {
 </dependency>
 ```
 
-[1]: https://repo1.maven.org/maven2/com/github/fondesa/recycler-view-divider/1.3.3/recycler-view-divider-1.3.3-sources.jar
+[2]: https://github.com/Fondesa/RecyclerViewDivider/releases
