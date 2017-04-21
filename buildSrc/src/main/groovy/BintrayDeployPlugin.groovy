@@ -45,6 +45,7 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
         project.task("javadoc", type: Javadoc) {
             source = project.android.sourceSets.main.java.srcDirs
             classpath += project.files(project.android.getBootClasspath().join(File.pathSeparator))
+            classpath += project.configurations.compile
         }
 
         project.afterEvaluate {
