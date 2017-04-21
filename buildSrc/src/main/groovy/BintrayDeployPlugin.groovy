@@ -43,10 +43,13 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
 
         // Create the task to generate the javadoc.
         project.task("javadoc", type: Javadoc) {
-            failOnError false
             source = project.android.sourceSets.main.java.srcDirs
             classpath += project.files(project.android.getBootClasspath().join(File.pathSeparator))
-            classpath += project.configurations.compile
+        }
+
+        project.afterEvaluate {
+            // Add dependencies to javadoc.
+            project.javadoc.classpath += project.android.libraryVariants.toList().first().javaCompile.classpath
         }
 
         // Create the task to generate the jar of the javadoc sources.
@@ -90,7 +93,6 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
             def mapTaskInserted = taskMap.get(taskName)
             if (mapTaskInserted != null && !mapTaskInserted) {
                 taskMap.put(taskName, true)
-                println("Inserted: $taskName")
                 def allInserted = true
                 for (Map.Entry<String, Boolean> entry : taskMap.entrySet()) {
                     allInserted = entry.value
@@ -223,7 +225,7 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
         applyPlugin('com.jfrog.bintray')
         project.bintray {
             user = prop("BINTRAY_COMMON_USERNAME")
-            key = prop("BINTRAY_COMMON_APIKEY")
+            key = prop("BINTRAY_COMMON_API_KEY")
 
             publications = ['libraryPublication']
             pkg {
