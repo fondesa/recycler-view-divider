@@ -3,8 +3,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath "com.android.tools.build:gradle:$ANDROID_PLUGIN"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$BINTRAY_PLUGIN"
     }
 }
 
