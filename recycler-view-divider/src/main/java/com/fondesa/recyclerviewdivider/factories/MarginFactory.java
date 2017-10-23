@@ -20,6 +20,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.fondesa.recycler_view_divider.R;
+import com.fondesa.recyclerviewdivider.manager.inset.InsetManager;
 
 /**
  * Factory used to specify a custom logic to set different margins to the divider.
@@ -29,7 +30,8 @@ import com.fondesa.recycler_view_divider.R;
  * You can add a custom {@link MarginFactory} in your {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder} using
  * {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder#marginFactory(MarginFactory)} method
  */
-public abstract class MarginFactory {
+@Deprecated
+public abstract class MarginFactory implements InsetManager {
 
     private static MarginFactory defaultFactory;
 
@@ -39,9 +41,10 @@ public abstract class MarginFactory {
      * @param context current context
      * @return factory with default values
      */
+    @Deprecated
     public static synchronized MarginFactory getDefault(@NonNull Context context) {
         if (defaultFactory == null) {
-            defaultFactory = new Default(context);
+            defaultFactory = getGeneralFactory(context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_margin_size));
         }
         return defaultFactory;
     }
@@ -52,8 +55,14 @@ public abstract class MarginFactory {
      * @param marginSize margins' size of the dividers
      * @return factory with same values for each divider
      */
-    public static MarginFactory getGeneralFactory(int marginSize) {
-        return new General(marginSize);
+    @Deprecated
+    public static MarginFactory getGeneralFactory(final int marginSize) {
+        return new MarginFactory() {
+            @Override
+            public int marginSizeForItem(int groupCount, int groupIndex) {
+                return marginSize;
+            }
+        };
     }
 
     /**
@@ -65,37 +74,16 @@ public abstract class MarginFactory {
      *                   The groupIndex is equal to the item position when the span count is 1 (e.g. LinearLayoutManager).
      * @return right/left margin with horizontal divider or top/bottom margin with vertical divider
      */
+    @Deprecated
     public abstract int marginSizeForItem(int groupCount, int groupIndex);
 
-    /**
-     * Default instance of a {@link MarginFactory}
-     */
-    private static class Default extends MarginFactory {
-        private final int defaultMarginSize;
-
-        Default(Context context) {
-            defaultMarginSize = context.getResources().getDimensionPixelSize(R.dimen.recycler_view_divider_margin_size);
-        }
-
-        @Override
-        public int marginSizeForItem(int groupCount, int groupIndex) {
-            return defaultMarginSize;
-        }
+    @Override
+    public final int itemInsetBefore(int groupCount, int groupIndex) {
+        return marginSizeForItem(groupCount, groupIndex);
     }
 
-    /**
-     * General instance of a {@link MarginFactory} used when the margin's size is set with {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder#marginSize(int)}
-     */
-    private static class General extends MarginFactory {
-        private final int marginSize;
-
-        General(int marginSize) {
-            this.marginSize = marginSize;
-        }
-
-        @Override
-        public int marginSizeForItem(int groupCount, int groupIndex) {
-            return marginSize;
-        }
+    @Override
+    public final int itemInsetAfter(int groupCount, int groupIndex) {
+        return marginSizeForItem(groupCount, groupIndex);
     }
 }

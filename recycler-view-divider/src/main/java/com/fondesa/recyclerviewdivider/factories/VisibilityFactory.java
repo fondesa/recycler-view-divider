@@ -18,6 +18,8 @@ package com.fondesa.recyclerviewdivider.factories;
 
 import android.support.annotation.IntDef;
 
+import com.fondesa.recyclerviewdivider.manager.visibility.VisibilityManager;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -27,13 +29,18 @@ import java.lang.annotation.RetentionPolicy;
  * You can add a custom {@link VisibilityFactory} in your {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder} using
  * {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder#visibilityFactory(VisibilityFactory)} method
  */
+@Deprecated
 @SuppressWarnings("WeakerAccess")
-public abstract class VisibilityFactory {
+public abstract class VisibilityFactory implements VisibilityManager {
 
-    public static final int SHOW_NONE = 0;
-    public static final int SHOW_ITEMS_ONLY = 1;
-    public static final int SHOW_GROUP_ONLY = 2;
-    public static final int SHOW_ALL = 3;
+    @Deprecated
+    public static final int SHOW_NONE = (int) VisibilityManager.SHOW_NONE;
+    @Deprecated
+    public static final int SHOW_ITEMS_ONLY = (int) VisibilityManager.SHOW_ITEMS_ONLY;
+    @Deprecated
+    public static final int SHOW_GROUP_ONLY = (int) VisibilityManager.SHOW_GROUP_ONLY;
+    @Deprecated
+    public static final int SHOW_ALL = (int) VisibilityManager.SHOW_ALL;
 
     /**
      * Source annotation used to define different visibility types.
@@ -48,6 +55,7 @@ public abstract class VisibilityFactory {
      */
     @IntDef({SHOW_NONE, SHOW_ITEMS_ONLY, SHOW_GROUP_ONLY, SHOW_ALL})
     @Retention(RetentionPolicy.SOURCE)
+    @Deprecated
     public @interface Show {
         // empty annotation body
     }
@@ -59,9 +67,15 @@ public abstract class VisibilityFactory {
      *
      * @return factory with default values
      */
+    @Deprecated
     public static synchronized VisibilityFactory getDefault() {
         if (defaultFactory == null) {
-            defaultFactory = new Default();
+            defaultFactory = new VisibilityFactory() {
+                @Override
+                public int displayDividerForItem(int groupCount, int groupIndex) {
+                    return SHOW_ALL;
+                }
+            };
         }
         return defaultFactory;
     }
@@ -69,9 +83,16 @@ public abstract class VisibilityFactory {
     /**
      * @return a new {@link VisibilityFactory} that will now show last divider.
      */
+    @Deprecated
     public static VisibilityFactory getLastItemInvisibleFactory() {
-        return new LastItemInvisible();
+        return new VisibilityFactory() {
+            @Override
+            public int displayDividerForItem(int groupCount, int groupIndex) {
+                return groupIndex == groupCount - 1 ? SHOW_ITEMS_ONLY : SHOW_ALL;
+            }
+        };
     }
+
 
     /**
      * Defines a visibility for each group of divider
@@ -82,41 +103,13 @@ public abstract class VisibilityFactory {
      *                   The groupIndex is equal to the item position when the span count is 1 (e.g. LinearLayoutManager).
      * @return true if the divider will be visible, false instead
      */
+    @Deprecated
     public abstract
     @Show
     int displayDividerForItem(int groupCount, int groupIndex);
 
-    /**
-     * Default instance of a {@link VisibilityFactory}
-     */
-    private static class Default extends VisibilityFactory {
-        Default() {
-            // empty constructor
-        }
-
-        @Override
-        public
-        @Show
-        int displayDividerForItem(int groupCount, int groupIndex) {
-            return SHOW_ALL;
-        }
-    }
-
-    /**
-     * Convenient instance to hide the last divider.
-     * <br>
-     * Warning: when the spanCount is major than 1, only the divider after the last group will be hidden. This factory will not affect items' dividers.
-     */
-    private static class LastItemInvisible extends VisibilityFactory {
-        LastItemInvisible() {
-            // empty constructor
-        }
-
-        @Override
-        public
-        @Show
-        int displayDividerForItem(int groupCount, int groupIndex) {
-            return groupIndex == groupCount - 1 ? SHOW_ITEMS_ONLY : SHOW_ALL;
-        }
+    @Override
+    public final long itemVisibility(int groupCount, int groupIndex) {
+        return displayDividerForItem(groupIndex, groupIndex);
     }
 }

@@ -17,12 +17,15 @@
 package com.fondesa.recyclerviewdivider.factories;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 
 import com.fondesa.recycler_view_divider.R;
-import com.fondesa.recyclerviewdivider.RecyclerViewDividerUtils;
+import com.fondesa.recyclerviewdivider.manager.drawable.DrawableManager;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Factory used to specify a custom logic to use different drawables as divider.
@@ -30,7 +33,8 @@ import com.fondesa.recyclerviewdivider.RecyclerViewDividerUtils;
  * You can add a custom {@link DrawableFactory} in your {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder} using
  * {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder#drawableFactory(DrawableFactory)} method
  */
-public abstract class DrawableFactory {
+@Deprecated
+public abstract class DrawableFactory implements DrawableManager {
 
     private static DrawableFactory defaultFactory;
 
@@ -40,9 +44,10 @@ public abstract class DrawableFactory {
      * @param context current context
      * @return factory with default values
      */
+    @Deprecated
     public static synchronized DrawableFactory getDefault(@NonNull Context context) {
         if (defaultFactory == null) {
-            defaultFactory = new Default(context);
+            defaultFactory = getGeneralFactory(new ColorDrawable(ContextCompat.getColor(context, R.color.recycler_view_divider_color)));
         }
         return defaultFactory;
     }
@@ -53,8 +58,14 @@ public abstract class DrawableFactory {
      * @param drawable resource for all dividers
      * @return factory with same values for each divider
      */
-    public static DrawableFactory getGeneralFactory(@NonNull Drawable drawable) {
-        return new General(drawable);
+    @Deprecated
+    public static DrawableFactory getGeneralFactory(@NonNull final Drawable drawable) {
+        return new DrawableFactory() {
+            @Override
+            public Drawable drawableForItem(int groupCount, int groupIndex) {
+                return drawable;
+            }
+        };
     }
 
     /**
@@ -66,38 +77,12 @@ public abstract class DrawableFactory {
      *                   The groupIndex is equal to the item position when the span count is 1 (e.g. LinearLayoutManager).
      * @return Drawable resource for the divider int the current position
      */
+    @Deprecated
     public abstract Drawable drawableForItem(int groupCount, int groupIndex);
 
-    /**
-     * Default instance of a {@link DrawableFactory}
-     */
-    private static class Default extends DrawableFactory {
-        private final Drawable defaultDrawable;
-
-        Default(@NonNull Context context) {
-            defaultDrawable = RecyclerViewDividerUtils.colorToDrawable(ContextCompat.getColor(context, R.color.recycler_view_divider_color));
-        }
-
-        @Override
-        public Drawable drawableForItem(int groupCount, int groupIndex) {
-            return defaultDrawable;
-        }
-    }
-
-    /**
-     * General instance of a {@link DrawableFactory} used when the drawable is set with {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder#color(int)}
-     * or with {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder#drawable(Drawable)}
-     */
-    private static class General extends DrawableFactory {
-        private final Drawable drawable;
-
-        General(@NonNull Drawable drawable) {
-            this.drawable = drawable;
-        }
-
-        @Override
-        public Drawable drawableForItem(int groupCount, int groupIndex) {
-            return drawable;
-        }
+    @NotNull
+    @Override
+    public final Drawable itemDrawable(int groupCount, int groupIndex) {
+        return drawableForItem(groupCount, groupIndex);
     }
 }

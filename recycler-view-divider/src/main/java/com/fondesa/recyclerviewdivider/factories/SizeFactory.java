@@ -23,6 +23,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 
 import com.fondesa.recycler_view_divider.R;
+import com.fondesa.recyclerviewdivider.manager.size.SizeManager;
 
 /**
  * Factory used to specify a custom logic to set different sizes to the divider.
@@ -32,7 +33,8 @@ import com.fondesa.recycler_view_divider.R;
  * You can add a custom {@link SizeFactory} in your {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder} using
  * {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder#sizeFactory(SizeFactory)} method
  */
-public abstract class SizeFactory {
+@Deprecated
+public abstract class SizeFactory implements SizeManager {
 
     private static Default defaultFactory;
 
@@ -42,6 +44,7 @@ public abstract class SizeFactory {
      * @param context current context
      * @return factory with default values
      */
+    @Deprecated
     public static synchronized SizeFactory getDefault(@NonNull Context context) {
         if (defaultFactory == null) {
             defaultFactory = new Default(context);
@@ -55,8 +58,13 @@ public abstract class SizeFactory {
      * @param size dividers' size
      * @return factory with same values for each divider
      */
-    public static SizeFactory getGeneralFactory(int size) {
-        return new General(size);
+    public static SizeFactory getGeneralFactory(final int size) {
+        return new SizeFactory() {
+            @Override
+            public int sizeForItem(@Nullable Drawable drawable, int orientation, int groupCount, int groupIndex) {
+                return size;
+            }
+        };
     }
 
     /**
@@ -70,11 +78,18 @@ public abstract class SizeFactory {
      *                    The groupIndex is equal to the item position when the span count is 1 (e.g. LinearLayoutManager).
      * @return height for an horizontal divider, width for a vertical divider
      */
+    @Deprecated
     public abstract int sizeForItem(@Nullable Drawable drawable, int orientation, int groupCount, int groupIndex);
+
+    @Override
+    public final int itemSize(@NonNull Drawable drawable, int orientation, int groupCount, int groupIndex) {
+        return sizeForItem(drawable, orientation, groupCount, groupIndex);
+    }
 
     /**
      * Default instance of a {@link SizeFactory}
      */
+    @Deprecated
     private static class Default extends SizeFactory {
         private final int defaultSize;
 
@@ -94,22 +109,6 @@ public abstract class SizeFactory {
             if (size == -1) {
                 size = defaultSize;
             }
-            return size;
-        }
-    }
-
-    /**
-     * General instance of a {@link SizeFactory} used when the size is set with {@link com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder#size(int)}
-     */
-    private static class General extends SizeFactory {
-        private final int size;
-
-        General(int size) {
-            this.size = size;
-        }
-
-        @Override
-        public int sizeForItem(@Nullable Drawable drawable, int orientation, int groupCount, int groupIndex) {
             return size;
         }
     }

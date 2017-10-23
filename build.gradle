@@ -4,6 +4,7 @@ buildscript {
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$ANDROID_PLUGIN"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$BINTRAY_PLUGIN"
     }
 }
@@ -11,6 +12,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url 'https://maven.google.com' }
     }
 }
 
