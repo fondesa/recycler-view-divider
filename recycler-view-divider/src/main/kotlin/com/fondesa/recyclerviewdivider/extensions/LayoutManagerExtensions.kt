@@ -22,7 +22,9 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 
 /**
- * Created by antoniolig on 11/10/17.
+ * Get the orientation of a [RecyclerView] using its layout manager.
+ *
+ * @return [RecyclerView.VERTICAL] or [RecyclerView.HORIZONTAL]
  */
 internal val RecyclerView.LayoutManager.orientation: Int
     get() = when (this) {
@@ -31,6 +33,13 @@ internal val RecyclerView.LayoutManager.orientation: Int
         else -> RecyclerView.VERTICAL
     }
 
+/**
+ * Get the span count of a [RecyclerView].
+ * <br>
+ * If the layout manager hasn't a span count (like [LinearLayoutManager]), the span count will be 1.
+ *
+ * @return span count of the [RecyclerView].
+ */
 internal val RecyclerView.LayoutManager.spanCount: Int
     get() = when (this) {
         is GridLayoutManager -> spanCount
@@ -38,30 +47,64 @@ internal val RecyclerView.LayoutManager.spanCount: Int
         else -> 1
     }
 
+/**
+ * Check the span size of the current item.
+ * <br>
+ * The span size will be minor than or equal to the span count.
+ *
+ * @param itemPosition position of the current item.
+ * @return span size of the current item
+ */
 internal fun RecyclerView.LayoutManager.getSpanSize(itemPosition: Int): Int =
         (this as? GridLayoutManager)?.spanSizeLookup?.getSpanSize(itemPosition) ?: 1
 
+/**
+ * Calculate the group in which the item is.
+ * <br>
+ * This value is between 0 and [getGroupCount] - 1.
+ *
+ * @param itemPosition position of the current item.
+ * @return the index of the group.
+ */
 internal fun RecyclerView.LayoutManager.getGroupIndex(itemPosition: Int): Int =
         (this as? GridLayoutManager)?.spanSizeLookup?.getSpanGroupIndex(itemPosition, spanCount) ?:
                 itemPosition
 
-internal fun RecyclerView.LayoutManager.getGroupCount(itemCount: Int): Int {
-    return if (this is GridLayoutManager) {
-        val spanSizeLookup = spanSizeLookup
-        val spanCount = spanCount
+/**
+ * Calculate the number of items' group in a list.
+ * <br>
+ * If the span count is 1 (for example when the layout manager is a [LinearLayoutManager]),
+ * the group count will be equal to the span count.
+ *
+ * @param itemCount number of items in the list.
+ * @return the number of groups
+ */
+internal fun RecyclerView.LayoutManager.getGroupCount(itemCount: Int): Int = if (this is GridLayoutManager) {
+    val spanSizeLookup = spanSizeLookup
+    val spanCount = spanCount
 
-        var groupCount = 0
-        var pos = 0
-        while (pos < itemCount) {
-            if (spanSizeLookup.getSpanIndex(pos, spanCount) == 0) {
-                groupCount++
-            }
-            pos++
+    var groupCount = 0
+    var pos = 0
+    while (pos < itemCount) {
+        if (spanSizeLookup.getSpanIndex(pos, spanCount) == 0) {
+            groupCount++
         }
-        groupCount
-    } else itemCount
-}
+        pos++
+    }
+    groupCount
+} else itemCount
 
+/**
+ * Calculate the span accumulated in this line.
+ * <br>
+ * This span is calculated through the sum of the previous items' spans
+ * in this line and the current item's span.
+ *
+ * @param spanSize     span size of the item.
+ * @param itemPosition position of the current item.
+ * @param groupIndex   current index of the group.
+ * @return accumulated span.
+ */
 internal fun RecyclerView.LayoutManager.getAccumulatedSpanInLine(spanSize: Int, itemPosition: Int, groupIndex: Int): Int {
     var lineAccumulatedSpan = spanSize
     var tempPos: Int = itemPosition - 1
