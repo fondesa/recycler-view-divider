@@ -17,10 +17,12 @@
 package com.fondesa.recyclerviewdivider.manager.visibility
 
 /**
- * Created by antoniolig on 23/10/17.
+ * Default implementation of [VisibilityManager] that will show all dividers
+ * excluding the one after the last group.
  */
-internal class HideLastVisibilityManager : VisibilityManager {
+class HideLastVisibilityManager : VisibilityManager {
 
+    @VisibilityManager.Show
     override fun itemVisibility(groupCount: Int, groupIndex: Int): Long = if (groupIndex == groupCount - 1)
         VisibilityManager.SHOW_ITEMS_ONLY
     else

@@ -17,11 +17,22 @@
 package com.fondesa.recyclerviewdivider.manager.drawable
 
 import android.graphics.drawable.Drawable
+import com.fondesa.recyclerviewdivider.RecyclerViewDivider
 
 /**
- * Created by antoniolig on 23/10/17.
+ * Used to specify a custom logic to use different drawables as divider.
+ * <br>
+ * You can add a custom [DrawableManager] in your [RecyclerViewDivider.Builder] using
+ * the [RecyclerViewDivider.Builder.drawableManager] method.
  */
 interface DrawableManager {
 
+    /**
+     * Defines a custom Drawable for each group of divider.
+     *
+     * @param groupCount number of groups in a list (equal to the list size when the span count is 1).
+     * @param groupIndex position of the group (equal to the item position when the span count is 1).
+     * @return [Drawable] resource for the divider int the current position.
+     */
     fun itemDrawable(groupCount: Int, groupIndex: Int): Drawable
 }

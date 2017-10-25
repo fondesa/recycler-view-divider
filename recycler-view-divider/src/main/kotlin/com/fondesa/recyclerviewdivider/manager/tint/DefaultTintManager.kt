@@ -17,11 +17,14 @@
 package com.fondesa.recyclerviewdivider.manager.tint
 
 import android.support.annotation.ColorInt
+import com.fondesa.recyclerviewdivider.manager.size.SizeManager
 
 /**
- * Created by antoniolig on 23/10/17.
+ * Default implementation of [SizeManager] that will use the same color to tint each item.
+ *
+ * @param tint the color used to tint each item.
  */
-internal class DefaultTintManager(@ColorInt private val tint: Int): TintManager {
+class DefaultTintManager(@ColorInt private val tint: Int) : TintManager {
 
     @ColorInt
     override fun itemTint(groupCount: Int, groupIndex: Int): Int = tint

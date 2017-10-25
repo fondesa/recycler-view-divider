@@ -17,12 +17,23 @@
 package com.fondesa.recyclerviewdivider.manager.tint
 
 import android.support.annotation.ColorInt
+import com.fondesa.recyclerviewdivider.RecyclerViewDivider
 
 /**
- * Created by antoniolig on 23/10/17.
+ * Used to specify a custom logic to use different tint colors to tint divider's drawables.
+ * <br>
+ * You can add a custom [TintManager] in your [RecyclerViewDivider.Builder] using
+ * the [RecyclerViewDivider.Builder.tintManager] method.
  */
 interface TintManager {
 
+    /**
+     * Defines a custom tint color for each group of divider.
+     *
+     * @param groupCount number of groups in a list (equal to the list size when the span count is 1).
+     * @param groupIndex position of the group (equal to the item position when the span count is 1).
+     * @return tint color for the divider's drawable in the current position.
+     */
     @ColorInt
     fun itemTint(groupCount: Int, groupIndex: Int): Int
 }

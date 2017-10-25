@@ -23,16 +23,23 @@ import android.support.v7.widget.RecyclerView
 import com.fondesa.recycler_view_divider.R
 
 /**
- * Created by antoniolig on 23/10/17.
+ * Default implementation of [SizeManager] that will use the same size for each item.
+ *
+ * @param defaultSize the size that will be set for each item.
  */
-internal class DefaultSizeManager(@Px private val defaultSize: Int) : SizeManager {
+class DefaultSizeManager(@Px private val defaultSize: Int) : SizeManager {
 
-    constructor(context: Context): this(context.resources.getDimensionPixelSize(R.dimen.recycler_view_divider_size))
+    /**
+     * Constructor that will obtain the default size from the resources.
+     *
+     * @param context the [Context] used to access the resources.
+     */
+    constructor(context: Context) : this(context.resources.getDimensionPixelSize(R.dimen.recycler_view_divider_size))
 
     @Px
     override fun itemSize(drawable: Drawable, orientation: Int, groupCount: Int, groupIndex: Int): Int {
         val size = if (orientation == RecyclerView.VERTICAL) drawable.intrinsicHeight else drawable.intrinsicWidth
-        // if the size is equals to -1, it means that the drawable's sizes can't be defined, e.g. ColorDrawable.
+        // If the size is equal to -1, it means that the drawable's sizes can't be defined, e.g. ColorDrawable.
         return if (size == -1) defaultSize else size
     }
 }

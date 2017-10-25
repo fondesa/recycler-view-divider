@@ -24,12 +24,24 @@ import android.support.v4.content.ContextCompat
 import com.fondesa.recycler_view_divider.R
 
 /**
- * Created by antoniolig on 23/10/17.
+ * Default implementation of [DrawableManager] that will draw the same [Drawable] for each item.
+ *
+ * @param drawable the [Drawable] that will be drawn for each item.
  */
-internal class DefaultDrawableManager(private val drawable: Drawable) : DrawableManager {
+class DefaultDrawableManager(private val drawable: Drawable) : DrawableManager {
 
+    /**
+     * Constructor that will use a [ColorDrawable] that wraps a color.
+     *
+     * @param color the color that will be wrapped in a [ColorDrawable].
+     */
     constructor(@ColorInt color: Int) : this(ColorDrawable(color))
 
+    /**
+     * Constructor that will obtain the default color from the resources.
+     *
+     * @param context the [Context] used to access the resources.
+     */
     constructor(context: Context): this(ContextCompat.getColor(context, R.color.recycler_view_divider_color))
 
     override fun itemDrawable(groupCount: Int, groupIndex: Int): Drawable = drawable
