@@ -16,14 +16,18 @@
 
 package com.fondesa.recyclerviewdivider.manager.size
 
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.support.annotation.Px
 import android.support.v7.widget.RecyclerView
+import com.fondesa.recycler_view_divider.R
 
 /**
  * Created by antoniolig on 23/10/17.
  */
 internal class DefaultSizeManager(@Px private val defaultSize: Int) : SizeManager {
+
+    constructor(context: Context): this(context.resources.getDimensionPixelSize(R.dimen.recycler_view_divider_size))
 
     @Px
     override fun itemSize(drawable: Drawable, orientation: Int, groupCount: Int, groupIndex: Int): Int {

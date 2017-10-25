@@ -16,12 +16,21 @@
 
 package com.fondesa.recyclerviewdivider.manager.drawable
 
+import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.support.annotation.ColorInt
+import android.support.v4.content.ContextCompat
+import com.fondesa.recycler_view_divider.R
 
 /**
  * Created by antoniolig on 23/10/17.
  */
-class DefaultDrawableManager(private val drawable: Drawable) : DrawableManager {
+internal class DefaultDrawableManager(private val drawable: Drawable) : DrawableManager {
+
+    constructor(@ColorInt color: Int) : this(ColorDrawable(color))
+
+    constructor(context: Context): this(ContextCompat.getColor(context, R.color.recycler_view_divider_color))
 
     override fun itemDrawable(groupCount: Int, groupIndex: Int): Drawable = drawable
 }

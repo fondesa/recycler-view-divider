@@ -37,26 +37,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mFirstRecyclerView = (RecyclerView) findViewById(R.id.first_recycler_view);
+        mFirstRecyclerView = findViewById(R.id.first_recycler_view);
         GridLayoutManager mFirstManager = (GridLayoutManager) mFirstRecyclerView.getLayoutManager();
         mFirstManager.setSpanCount(SPAN_COUNT);
         mFirstManager.setSpanSizeLookup(new DummyLookup());
 
-        mSecondRecyclerView = (RecyclerView) findViewById(R.id.second_recycler_view);
+        mSecondRecyclerView = findViewById(R.id.second_recycler_view);
         GridLayoutManager mSecondManager = (GridLayoutManager) mSecondRecyclerView.getLayoutManager();
         mSecondManager.setSpanCount(SPAN_COUNT);
         mSecondManager.setSpanSizeLookup(new DummyLookup());
 
         firstDivider = RecyclerViewDivider.with(this)
                 .color(Color.RED)
-                .size(12)
+                .size(24)
+                .inset(70, 0)
                 .build();
 
         firstDivider.addTo(mFirstRecyclerView);
 
         secondDivider = RecyclerViewDivider.with(this)
                 .color(Color.BLACK)
-                .size(6)
+                .size(24)
+                .inset(0, 70)
                 .build();
 
         secondDivider.addTo(mSecondRecyclerView);
