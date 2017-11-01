@@ -10,8 +10,8 @@ android:
   components:
     - tools
     - platform-tools
-    - build-tools-25.0.3
-    - android-25
+    - build-tools-27.0.0
+    - android-27
     - extra-android-support
     - extra-android-m2repository
 
@@ -21,7 +21,8 @@ branches:
 
 script:
     - ./gradlew :recycler-view-divider:build --continue --stacktrace
-    - ./gradlew :sample:assembleLocal --continue --stacktrace
+    - ./gradlew :sample:sample-java:assembleLocal --continue -s
+    - ./gradlew :sample:sample-kotlin:assembleLocal --continue -s
 
 sudo: required
 

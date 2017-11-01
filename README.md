@@ -21,7 +21,8 @@ All dividers in the app have default values in xml resources:
 <ul>
 <li><i>Color</i> → R.color.recycler_view_divider_color (default is #CFCFCF)</li>
 <li><i>Size</i> → R.dimen.recycler_view_divider_size (default is 1dp)</li>
-<li><i>Margin size</i> → R.dimen.recycler_view_divider_margin_size (default is 0dp)</li>
+<li><i>Inset before</i> → R.dimen.recycler_view_divider_inset_before (default is 0dp)</li>
+<li><i>Inset after</i> → R.dimen.recycler_view_divider_inset_after (default is 0dp)</li>
 </ul>
 
 It can be customized in code with properties equals for each divider:
@@ -30,7 +31,7 @@ It can be customized in code with properties equals for each divider:
 <li><i>drawable(Drawable)</i> → change drawable</li>
 <li><i>tint(int)</i> → change drawables' tint</li>
 <li><i>size(int)</i> → change height for an horizontal divider, width for a vertical one</li>
-<li><i>marginSize(int)</i> → change left/right margin for an horizontal divider, top/bottom for a vertical one</li>
+<li><i>inset(int, int)</i> → change left/right inset for an horizontal divider, top/bottom for a vertical one</li>
 </ul>
 
 ##### Example with all general properties set: #####
@@ -42,56 +43,58 @@ RecyclerViewDivider.with(context)
                 .drawable(drawable)
                 .tint(tint)
                 .size(size)
-                .marginSize(marginSize)
+                .inset(insetBefore, insetAfter)
                 .hideLastDivider()
                 .build()
                 .addTo(recyclerView);
 ```
 
-It can also use custom factories to have a different logic for each divider:
+It can also use custom managers to have a different logic for each divider:
 <ul>
-<li><i>visibilityFactory(VisibilityFactory)</i> → set visibility</li>
-<li><i>drawableFactory(DrawableFactory)</i> → set color/drawable</li>
-<li><i>tintFactory(TintFactory)</i> → set tint</li>
-<li><i>sizeFactory(SizeFactory)</i> → set size</li>
-<li><i>marginFactory(MarginFactory)</i> → set margin</li>
+<li><i>drawableManager(DrawableManager)</i> → set color/drawable</li>
+<li><i>insetManager(InsetManager)</i> → set inset</li>
+<li><i>sizeManager(SizeManager)</i> → set size</li>
+<li><i>tintManager(TintManager)</i> → set tint</li>
+<li><i>visibilityManager(VisibilityManager)</i> → set visibility</li>
 </ul>
 
-##### Example with all factories set: #####
+##### Example with all managers set: #####
 
 ```java
 RecyclerViewDivider.with(context)
-                .visibilityFactory(new VisibilityFactory() {
+                .drawableManager(new DrawableManager() {
                     @Override
-                    public int displayDividerForItem(int groupCount, int groupIndex) {
-                        if (groupCount % groupIndex == 0) {
-                            return SHOW_ITEMS_ONLY;
-                        }
-                        return SHOW_ALL;
-                    }
-                })
-                .drawableFactory(new DrawableFactory() {
-                    @Override
-                    public Drawable drawableForItem(int groupCount, int groupIndex) {
+                    public Drawable itemDrawable(int groupCount, int groupIndex) {
                         return position % 2 == 0 ? new ColorDrawable(Color.BLACK) : new ColorDrawable(Color.BLUE);
                     }
                 })
-                .tintFactory(new TintFactory() {
+                .insetManager(new InsetManager() {
+                     @Override
+                    public int itemInsetAfter(int groupCount, int groupIndex) {
+                        return position % 2 == 0 ? 10 : 10 * 2;
+                    }
+        
                     @Override
-                    public int tintForItem(int groupCount, int groupIndex) {
-                        return position == 0 ? Color.YELLOW : Color.GRAY;
+                    public int itemInsetBefore(int groupCount, int groupIndex) {
+                        return position % 2 == 0 ? 15 : 15 * 2;
                     }
                 })
-                .sizeFactory(new SizeFactory() {
+                .sizeManager(new SizeManager() {
                     @Override
-                    public int sizeForItem(@Nullable Drawable drawable, int orientation, int groupCount, int groupIndex) {
+                    public int itemSize(@Nullable Drawable drawable, int orientation, int groupCount, int groupIndex) {
                         return position % 2 == 0 ? 45 : 78;
                     }
                 })
-                .marginFactory(new MarginFactory() {
+                .tintManager(new TintManager() {
                     @Override
-                    public int marginSizeForItem(int groupCount, int groupIndex) {
-                        return position % 2 == 0 ? 10 : 10 * 2;
+                    public int itemTint(int groupCount, int groupIndex) {
+                        return position == 0 ? Color.YELLOW : Color.GRAY;
+                    }
+                })
+                .visibilityManager(new VisibilityManager() {
+                    @Override
+                    public int itemVisibility(int groupCount, int groupIndex) {
+                        return groupCount % groupIndex == 0 ? SHOW_ITEMS_ONLY : SHOW_ALL;
                     }
                 })
                 .build()
@@ -109,7 +112,7 @@ RecyclerViewDivider.with(context).asSpace().build().addTo(recyclerView);
 Compatibility
 ------
 
-**Android SDK**: RecyclerViewDivider requires a minimum API level of 9
+**Android SDK**: RecyclerViewDivider requires a minimum API level of 14 (the same of RecyclerView).
 
 Integration
 ------
@@ -120,7 +123,7 @@ You can download a jar from GitHub's [releases page][2] or grab it from ```jcent
 
 ```gradle
 dependencies {
-    compile 'com.github.fondesa:recycler-view-divider:1.3.3'
+    compile 'com.github.fondesa:recycler-view-divider:1.4.0'
 }
 ```
 
@@ -130,7 +133,7 @@ dependencies {
 <dependency>
   <groupId>com.github.fondesa</groupId>
   <artifactId>recycler-view-divider</artifactId>
-  <version>1.3.3</version>
+  <version>1.4.0</version>
   <type>pom</type>
 </dependency>
 ```

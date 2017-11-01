@@ -38,6 +38,8 @@ class AndroidSharedPlugin extends ConfiguredProjectPlugin {
         } else if (type == APP) {
             applyPlugin('com.android.application')
         }
+        applyPlugin('kotlin-android')
+        applyPlugin('org.jetbrains.dokka')
 
         // Add Android extension.
         project.android {
@@ -48,12 +50,23 @@ class AndroidSharedPlugin extends ConfiguredProjectPlugin {
                 minSdkVersion prop(androidProps, "MIN_SDK").toInteger()
                 targetSdkVersion prop(androidProps, "TARGET_SDK").toInteger()
             }
+
+            sourceSets {
+                main.java.srcDirs += "src/main/kotlin"
+            }
+
             if (config != null) {
                 // Set the delegate to the Android extension.
                 config.delegate = project.android
                 // Add the additional behavior.
                 config.call()
             }
+        }
+
+        // Add the Dokka extension.
+        project.dokka {
+            outputFormat = "javadoc"
+            skipEmptyPackages = true
         }
     }
 }
