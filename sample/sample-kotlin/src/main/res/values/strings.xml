@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">RecyclerViewDivider</string>
+    <string name="first_recycler_label">Horizontal divider</string>
+    <string name="second_recycler_label">Vertical divider</string>
+</resources>

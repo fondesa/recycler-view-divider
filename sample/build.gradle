@@ -1,23 +1,30 @@
-new AndroidSharedPlugin(
-        type: AndroidSharedPlugin.APP,
-        config: {
-            defaultConfig.applicationId "com.fondesa.recyclerviewdivider.sample"
+buildscript {
+    ext {
+        libraryMavenCompileVersion = '1.3.3'
 
-            flavorDimensions "app"
+        androidLib = [
+                supportV4: "com.android.support:appcompat-v7:$ANDROID_SUPPORT_VERSION"
+        ]
 
-            productFlavors {
-                local.dimension "app"
-                maven.dimension "app"
+        recyclerViewDivider = [
+                local: ":recycler-view-divider",
+                maven: "com.github.fondesa:recycler-view-divider:$libraryMavenCompileVersion"
+        ]
+    }
+}
+
+subprojects { project ->
+    new AndroidSharedPlugin(
+            type: AndroidSharedPlugin.APP,
+            config: {
+                defaultConfig.applicationId "com.fondesa.recyclerviewdivider.sample"
+
+                flavorDimensions "app"
+
+                productFlavors {
+                    local.dimension "app"
+                    maven.dimension "app"
+                }
             }
-        }
-).apply(project)
-
-final def libraryMavenCompileVersion = "1.3.3"
-
-dependencies {
-    implementation "com.android.support:appcompat-v7:$ANDROID_SUPPORT_VERSION"
-
-    localImplementation project(":recycler-view-divider")
-
-    mavenImplementation "com.github.fondesa:recycler-view-divider:$libraryMavenCompileVersion"
+    ).apply(project)
 }
