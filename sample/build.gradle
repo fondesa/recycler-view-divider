@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        libraryMavenCompileVersion = '1.3.3'
+        libraryMavenCompileVersion = '1.4.0'
 
         androidLib = [
                 supportV4: "com.android.support:appcompat-v7:$ANDROID_SUPPORT_VERSION"

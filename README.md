@@ -123,7 +123,7 @@ You can download a jar from GitHub's [releases page][2] or grab it from ```jcent
 
 ```gradle
 dependencies {
-    compile 'com.github.fondesa:recycler-view-divider:1.3.3'
+    compile 'com.github.fondesa:recycler-view-divider:1.4.0'
 }
 ```
 
@@ -133,7 +133,7 @@ dependencies {
 <dependency>
   <groupId>com.github.fondesa</groupId>
   <artifactId>recycler-view-divider</artifactId>
-  <version>1.3.3</version>
+  <version>1.4.0</version>
   <type>pom</type>
 </dependency>
 ```
