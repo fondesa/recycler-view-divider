@@ -47,21 +47,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val firstManager = firstRecyclerView!!.layoutManager as GridLayoutManager
+        val firstManager = firstRecyclerView.layoutManager as GridLayoutManager
         firstManager.spanCount = SPAN_COUNT
         firstManager.spanSizeLookup = DummyLookup()
 
-        val secondManager = secondRecyclerView!!.layoutManager as GridLayoutManager
-        secondManager.spanCount = SPAN_COUNT
-        secondManager.spanSizeLookup = DummyLookup()
+        val secondManager = secondRecyclerView.layoutManager as GridLayoutManager
+        secondManager.spanCount = 1
+//        secondManager.spanSizeLookup = DummyLookup()
 
         firstDivider = RecyclerViewDivider.with(this)
                 .color(Color.RED)
                 .size(24)
-                .inset(70, 0)
                 .build()
 
-        firstDivider.addTo(firstRecyclerView!!)
+        firstDivider.addTo(firstRecyclerView)
 
         secondDivider = RecyclerViewDivider.with(this)
                 .color(Color.BLACK)
@@ -69,15 +68,15 @@ class MainActivity : AppCompatActivity() {
                 .inset(0, 70)
                 .build()
 
-        secondDivider.addTo(secondRecyclerView!!)
+        secondDivider.addTo(secondRecyclerView)
 
         dividerShown = true
 
         val dummyList = (0 until LIST_SIZE).map { it + 1 }.toList()
         val firstDummyAdapter = DummyAdapter(true)
-        firstRecyclerView!!.adapter = firstDummyAdapter
+        firstRecyclerView.adapter = firstDummyAdapter
         val secondDummyAdapter = DummyAdapter(false)
-        secondRecyclerView!!.adapter = secondDummyAdapter
+        secondRecyclerView.adapter = secondDummyAdapter
 
         firstDummyAdapter.updateList(dummyList)
         secondDummyAdapter.updateList(dummyList)

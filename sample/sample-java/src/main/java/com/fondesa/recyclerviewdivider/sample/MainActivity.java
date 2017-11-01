@@ -38,19 +38,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mFirstRecyclerView = findViewById(R.id.first_recycler_view);
-        GridLayoutManager mFirstManager = (GridLayoutManager) mFirstRecyclerView.getLayoutManager();
-        mFirstManager.setSpanCount(SPAN_COUNT);
-        mFirstManager.setSpanSizeLookup(new DummyLookup());
+        GridLayoutManager firstManager = (GridLayoutManager) mFirstRecyclerView.getLayoutManager();
+        firstManager.setSpanCount(SPAN_COUNT);
+        firstManager.setSpanSizeLookup(new DummyLookup());
 
         mSecondRecyclerView = findViewById(R.id.second_recycler_view);
-        GridLayoutManager mSecondManager = (GridLayoutManager) mSecondRecyclerView.getLayoutManager();
-        mSecondManager.setSpanCount(SPAN_COUNT);
-        mSecondManager.setSpanSizeLookup(new DummyLookup());
+        GridLayoutManager secondManager = (GridLayoutManager) mSecondRecyclerView.getLayoutManager();
+        secondManager.setSpanCount(1);
+//        mSecondManager.setSpanSizeLookup(new DummyLookup());
 
         firstDivider = RecyclerViewDivider.with(this)
                 .color(Color.RED)
                 .size(24)
-                .inset(70, 0)
                 .build();
 
         firstDivider.addTo(mFirstRecyclerView);

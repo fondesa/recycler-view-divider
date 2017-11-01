@@ -114,15 +114,12 @@ class RecyclerViewDivider(private val isSpace: Boolean,
         val divider = drawableManager.itemDrawable(groupCount, groupIndex)
         var size = sizeManager.itemSize(divider, orientation, groupCount, groupIndex)
 
-        val insetBefore: Int
-        val insetAfter: Int
-        if (spanCount > 1) {
+        var insetBefore: Int = insetManager.itemInsetBefore(groupCount, groupIndex)
+        var insetAfter: Int = insetManager.itemInsetAfter(groupCount, groupIndex)
+        if (spanCount > 1 && (insetBefore > 0 || insetAfter > 0)) {
             insetBefore = 0
             insetAfter = 0
             Log.e(TAG, "the inset won't be applied with a span major than 1.")
-        } else {
-            insetBefore = insetManager.itemInsetBefore(groupCount, groupIndex)
-            insetAfter = insetManager.itemInsetAfter(groupCount, groupIndex)
         }
 
         var halfSize = size / 2
@@ -195,15 +192,12 @@ class RecyclerViewDivider(private val isSpace: Boolean,
                 divider.draw(c)
             }
 
-            val insetBefore: Int
-            val insetAfter: Int
-            if (spanCount > 1) {
+            var insetBefore: Int = insetManager.itemInsetBefore(groupCount, groupIndex)
+            var insetAfter: Int = insetManager.itemInsetAfter(groupCount, groupIndex)
+            if (spanCount > 1 && (insetBefore > 0 || insetAfter > 0)) {
                 insetBefore = 0
                 insetAfter = 0
                 Log.e(TAG, "the inset won't be applied with a span major than 1.")
-            } else {
-                insetBefore = insetManager.itemInsetBefore(groupCount, groupIndex)
-                insetAfter = insetManager.itemInsetAfter(groupCount, groupIndex)
             }
 
             tintManager?.let {
