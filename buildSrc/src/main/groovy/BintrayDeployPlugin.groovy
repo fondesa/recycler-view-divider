@@ -145,14 +145,24 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
         scmNode.appendNode('developerConnection', prop(bintrayProps, "BINTRAY_LIB_GIT_URL"))
         scmNode.appendNode('url', prop(bintrayProps, "BINTRAY_LIB_SITE_URL"))
 
-        // Add dependencies part
-        def dependenciesNode = root.appendNode('dependencies')
+        // Save all dependencies in a map to avoid duplicated dependencies.
+        Map<String, Dependency> dependencies = new HashMap<>()
 
-        // List all compile dependencies and write to POM
-        project.configurations.compile.getAllDependencies().each { Dependency dep ->
+        def addDependency = { Dependency dep ->
             if (dep.group == null || dep.version == null)
                 return // ignore invalid dependencies
+            dependencies.put(dep.name, dep)
+        }
 
+        // Add all dependencies from the following configurations.
+        project.configurations.compile.getAllDependencies().each(addDependency)
+        project.configurations.api.getAllDependencies().each(addDependency)
+        project.configurations.implementation.getAllDependencies().each(addDependency)
+
+        // Add dependencies' node.
+        def dependenciesNode = root.appendNode('dependencies')
+
+        dependencies.values().each { Dependency dep ->
             def dependencyVersion = dep.name
             if (dependencyVersion == null || dependencyVersion == "unspecified")
                 dependencyVersion = prop(bintrayProps, "BINTRAY_LIB_VERSION")
