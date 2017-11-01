@@ -62,15 +62,31 @@ class RecyclerViewDivider(private val isSpace: Boolean,
     companion object {
         private val TAG = RecyclerViewDivider::class.java.simpleName
 
+        /**
+         * Creates a new [Builder] for the current [Context].
+         *
+         * @param context current [Context].
+         * @return a new [Builder] instance.
+         */
         @JvmStatic
         fun with(context: Context): Builder = Builder(context)
     }
 
+    /**
+     * Add this divider to a [RecyclerView].
+     *
+     * @param recyclerView [RecyclerView] at which the divider will be added.
+     */
     fun addTo(recyclerView: RecyclerView) {
         removeFrom(recyclerView)
         recyclerView.addItemDecoration(this)
     }
 
+    /**
+     * Remove this divider from a [RecyclerView].
+     *
+     * @param recyclerView [RecyclerView] from which the divider will be removed.
+     */
     fun removeFrom(recyclerView: RecyclerView) {
         recyclerView.removeItemDecoration(this)
     }
