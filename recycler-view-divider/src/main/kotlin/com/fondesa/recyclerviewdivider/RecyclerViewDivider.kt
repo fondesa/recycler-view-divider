@@ -27,6 +27,7 @@ import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
+import com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder
 import com.fondesa.recyclerviewdivider.extensions.*
 import com.fondesa.recyclerviewdivider.factories.*
 import com.fondesa.recyclerviewdivider.manager.drawable.DefaultDrawableManager
@@ -42,7 +43,14 @@ import com.fondesa.recyclerviewdivider.manager.visibility.HideLastVisibilityMana
 import com.fondesa.recyclerviewdivider.manager.visibility.VisibilityManager
 
 /**
- * Created by antoniolig on 19/10/17.
+ * Used to draw a divider between [RecyclerView]'s elements.
+ *
+ * @param isSpace true if the divider must be managed like a simple space.
+ * @param drawableManager instance of [DrawableManager] taken from [Builder].
+ * @param insetManager instance of [DrawableManager] taken from [Builder].
+ * @param sizeManager instance of [SizeManager] taken from [Builder].
+ * @param tintManager instance of [TintManager] taken from [Builder].
+ * @param visibilityManager instance of [VisibilityManager] taken from [Builder].
  */
 class RecyclerViewDivider(private val isSpace: Boolean,
                           private val drawableManager: DrawableManager,
@@ -334,6 +342,11 @@ class RecyclerViewDivider(private val isSpace: Boolean,
         }
     }
 
+    /**
+     * Builder class for [RecyclerViewDivider].
+     *
+     * @param context [Context] used to access the resources.
+     */
     class Builder(private val context: Context) {
         private var drawableManager: DrawableManager? = null
         private var insetManager: InsetManager? = null
@@ -343,58 +356,178 @@ class RecyclerViewDivider(private val isSpace: Boolean,
 
         private var isSpace = false
 
+        /**
+         * Set this divider as a space.
+         * This method is different from setting the transparent color as divider, because
+         * it will not draw anything, so, it's the most optimized one.
+         */
         fun asSpace() = apply { isSpace = true }
 
+        /**
+         * Set the color of all dividers.
+         * <br>
+         * To set a custom color for each divider use [drawableManager] instead.
+         *
+         * @param color resolved color for this divider, not a resource.
+         * @return this [Builder] instance.
+         */
         fun color(@ColorInt color: Int) = drawable(ColorDrawable(color))
 
+        /**
+         * Set the drawable of all dividers.
+         * <br>
+         * To set a custom drawable for each divider use [drawableManager] instead.
+         * Warning: if the span count is major than one and the drawable can't be mirrored,
+         * the drawable will not be shown correctly.
+         *
+         * @param drawable drawable custom drawable for this divider.
+         * @return this [Builder] instance.
+         */
         fun drawable(drawable: Drawable) = drawableManager(DefaultDrawableManager(drawable))
 
+        /**
+         * Hide the divider after the last group of items.
+         * <br>
+         * Warning: when the spanCount is major than 1, only the divider after
+         * the last group will be hidden, the items' dividers, instead, will be shown.
+         * <br>
+         * If you want to specify a more flexible behaviour, use [visibilityManager] instead.
+         *
+         * @return this [Builder] instance.
+         */
         fun hideLastDivider() = visibilityManager(HideLastVisibilityManager())
 
+        /**
+         * Set the inset before and after the divider.
+         * It will be equal for all dividers.
+         * To set a custom inset for each divider, use [insetManager] instead.
+         *
+         * @param insetBefore the inset that will be applied before.
+         * @param insetAfter the inset that will be applied after.
+         * @return this [Builder] instance.
+         */
         fun inset(@Px insetBefore: Int, @Px insetAfter: Int) = insetManager(DefaultInsetManager(insetBefore, insetAfter))
 
+        /**
+         * Set the size of all dividers. The divider's final size will depend on RecyclerView's orientation:
+         * Size is referred to the height of an horizontal divider and to the width of a vertical divider.
+         * To set a custom size for each divider use [sizeManager] instead.
+         *
+         * @param size size in pixels for this divider.
+         * @return this [Builder] instance.
+         */
         fun size(@Px size: Int) = sizeManager(DefaultSizeManager(size))
 
+        /**
+         * Set the tint color of all dividers' drawables.
+         * If you want to create a plain divider with a single color, [color] is recommended.
+         * To set a custom tint color for each divider's drawable use [tintManager] instead.
+         *
+         * @param color color that will be used as drawable's tint.
+         * @return this [Builder] instance.
+         */
         fun tint(@ColorInt color: Int) = tintManager(DefaultTintManager(color))
 
+        /**
+         * Set the divider's custom [DrawableManager].
+         * Warning: if the span count is major than one and the drawable can't be mirrored,
+         * the drawable will not be shown correctly.
+         *
+         * @param drawableManager custom [DrawableManager] to set.
+         * @return this [Builder] instance.
+         */
         fun drawableManager(drawableManager: DrawableManager) = apply {
             this.drawableManager = drawableManager
             isSpace = false
         }
 
+        /**
+         * Set the divider's custom [InsetManager].
+         *
+         * @param insetManager custom [InsetManager] to set.
+         * @return this [Builder] instance.
+         */
         fun insetManager(insetManager: InsetManager) = apply { this.insetManager = insetManager }
 
+        /**
+         * Set the divider's custom [SizeManager].
+         *
+         * @param sizeManager custom [SizeManager] to set.
+         * @return this [Builder] instance.
+         */
         fun sizeManager(sizeManager: SizeManager) = apply { this.sizeManager = sizeManager }
 
+        /**
+         * Set the divider's custom [TintManager].
+         *
+         * @param tintManager custom [TintManager] to set.
+         * @return this [Builder] instance.
+         */
         fun tintManager(tintManager: TintManager) = apply { this.tintManager = tintManager }
 
+        /**
+         * Set the divider's custom [VisibilityManager].
+         * <br>
+         * If you want to hide only the last divider use [hideLastDivider] instead.
+         *
+         * @param visibilityManager custom [VisibilityManager] to set.
+         * @return this [Builder] instance.
+         */
         fun visibilityManager(visibilityManager: VisibilityManager) = apply { this.visibilityManager = visibilityManager }
 
+        /**
+         * Set an equal inset for all dividers.
+         * This method is now deprecated, use [inset].
+         *
+         * @param marginSize margins' size in pixels for this divider.
+         * @return this [Builder] instance.
+         */
         @Deprecated("This method is now deprecated", ReplaceWith("inset(insetBefore, insetAfter)"))
         fun marginSize(@Px marginSize: Int) = inset(marginSize, marginSize)
 
+        /**
+         * The usage of factories is now deprecated, use [drawableManager] instead.
+         */
         @Deprecated("This method is now deprecated", ReplaceWith("drawableManager(drawableManager)"))
         fun drawableFactory(drawableFactory: DrawableFactory?) = apply { drawableManager = drawableFactory }
 
+        /**
+         * The usage of factories is now deprecated, use [insetManager] instead.
+         */
         @Deprecated("This method is now deprecated", ReplaceWith("insetManager(insetManager)"))
         fun marginFactory(marginFactory: MarginFactory?) = apply { insetManager = marginFactory }
 
+        /**
+         * The usage of factories is now deprecated, use [tintManager] instead.
+         */
         @Deprecated("This method is now deprecated", ReplaceWith("tintManager(tintManager)"))
         fun tintFactory(tintFactory: TintFactory?) = apply { tintManager = tintFactory }
 
+        /**
+         * The usage of factories is now deprecated, use [sizeManager] instead.
+         */
         @Deprecated("This method is now deprecated", ReplaceWith("sizeManager(sizeManager)"))
         fun sizeFactory(sizeFactory: SizeFactory?) = apply { sizeManager = sizeFactory }
 
+        /**
+         * The usage of factories is now deprecated, use [visibilityManager] instead.
+         */
         @Deprecated("This method is now deprecated", ReplaceWith("visibilityManager(visibilityManager)"))
         fun visibilityFactory(visibilityFactory: VisibilityFactory?) = apply { visibilityManager = visibilityFactory }
 
+        /**
+         * Creates a new [RecyclerViewDivider] with given configurations and initializes all values.
+         *
+         * @return a new [RecyclerViewDivider] with these [Builder] configurations.
+         */
         fun build(): RecyclerViewDivider {
-
+            // Get the builder managers or the default ones.
             val drawableManager = drawableManager ?: DefaultDrawableManager(context)
             val insetManager = insetManager ?: DefaultInsetManager(context)
             val sizeManager = sizeManager ?: DefaultSizeManager(context)
             val visibilityManager = visibilityManager ?: DefaultVisibilityManager()
 
+            // Creates the divider.
             return RecyclerViewDivider(isSpace,
                     drawableManager,
                     insetManager,

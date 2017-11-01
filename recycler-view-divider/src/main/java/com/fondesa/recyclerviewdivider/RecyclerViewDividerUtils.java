@@ -23,6 +23,7 @@ import android.support.annotation.ColorInt;
 /**
  * Utilities class
  */
+@Deprecated
 public final class RecyclerViewDividerUtils {
 
     private RecyclerViewDividerUtils() {
@@ -35,6 +36,7 @@ public final class RecyclerViewDividerUtils {
      * @param color color to convert
      * @return ColorDrawable from color
      */
+    @Deprecated
     public static Drawable colorToDrawable(@ColorInt int color) {
         return new ColorDrawable(color);
     }

@@ -3,9 +3,11 @@ new AndroidSharedPlugin(
         config: {
             defaultConfig.applicationId "com.fondesa.recyclerviewdivider.sample"
 
+            flavorDimensions "app"
+
             productFlavors {
-                local
-                maven
+                local.dimension "app"
+                maven.dimension "app"
             }
         }
 ).apply(project)
