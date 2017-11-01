@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
+
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.ExcludeRule
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.bundling.Jar
-import org.gradle.api.tasks.javadoc.Javadoc
 
 import java.util.regex.Pattern
 
@@ -41,22 +41,10 @@ class BintrayDeployPlugin extends ConfiguredProjectPlugin {
             from project.android.sourceSets.main.java.srcDirs
         }
 
-        // Create the task to generate the javadoc.
-        project.task("javadoc", type: Javadoc) {
-            source = project.android.sourceSets.main.java.srcDirs
-            classpath += project.files(project.android.getBootClasspath().join(File.pathSeparator))
-            classpath += project.configurations.compile
-        }
-
-        project.afterEvaluate {
-            // Add dependencies to javadoc.
-            project.javadoc.classpath += project.android.libraryVariants.toList().first().javaCompile.classpath
-        }
-
         // Create the task to generate the jar of the javadoc sources.
-        project.task("javadocJar", type: Jar, dependsOn: project.javadoc) {
+        project.task("javadocJar", type: Jar, dependsOn: project.dokka) {
             classifier = 'javadoc'
-            from project.javadoc.destinationDir
+            from project.dokka.outputDirectory
         }
 
         project.artifacts {

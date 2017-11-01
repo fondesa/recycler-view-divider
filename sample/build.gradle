@@ -15,10 +15,9 @@ new AndroidSharedPlugin(
 final def libraryMavenCompileVersion = "1.3.3"
 
 dependencies {
-    compile "com.android.support:support-v4:$ANDROID_SUPPORT_VERSION"
-    compile "com.android.support:appcompat-v7:$ANDROID_SUPPORT_VERSION"
+    implementation "com.android.support:appcompat-v7:$ANDROID_SUPPORT_VERSION"
 
-    localCompile project(":recycler-view-divider")
+    localImplementation project(":recycler-view-divider")
 
-    mavenCompile "com.github.fondesa:recycler-view-divider:$libraryMavenCompileVersion"
+    mavenImplementation "com.github.fondesa:recycler-view-divider:$libraryMavenCompileVersion"
 }

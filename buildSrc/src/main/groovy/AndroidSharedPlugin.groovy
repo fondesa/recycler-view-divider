@@ -39,6 +39,7 @@ class AndroidSharedPlugin extends ConfiguredProjectPlugin {
             applyPlugin('com.android.application')
         }
         applyPlugin('kotlin-android')
+        applyPlugin('org.jetbrains.dokka')
 
         // Add Android extension.
         project.android {
@@ -60,6 +61,12 @@ class AndroidSharedPlugin extends ConfiguredProjectPlugin {
                 // Add the additional behavior.
                 config.call()
             }
+        }
+
+        // Add the Dokka extension.
+        project.dokka {
+            outputFormat = "javadoc"
+            skipEmptyPackages = true
         }
     }
 }
