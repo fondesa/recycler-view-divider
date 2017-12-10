@@ -29,7 +29,6 @@ import android.util.Log
 import android.view.View
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder
 import com.fondesa.recyclerviewdivider.extension.*
-import com.fondesa.recyclerviewdivider.factories.*
 import com.fondesa.recyclerviewdivider.manager.drawable.DefaultDrawableManager
 import com.fondesa.recyclerviewdivider.manager.drawable.DrawableManager
 import com.fondesa.recyclerviewdivider.manager.inset.DefaultInsetManager
@@ -488,46 +487,6 @@ class RecyclerViewDivider(private val isSpace: Boolean,
          * @return this [Builder] instance.
          */
         fun visibilityManager(visibilityManager: VisibilityManager) = apply { this.visibilityManager = visibilityManager }
-
-        /**
-         * Set an equal inset for all dividers.
-         * This method is now deprecated, use [inset].
-         *
-         * @param marginSize margins' size in pixels for this divider.
-         * @return this [Builder] instance.
-         */
-        @Deprecated("This method is now deprecated", ReplaceWith("inset(insetBefore, insetAfter)"))
-        fun marginSize(@Px marginSize: Int) = inset(marginSize, marginSize)
-
-        /**
-         * The usage of factories is now deprecated, use [drawableManager] instead.
-         */
-        @Deprecated("This method is now deprecated", ReplaceWith("drawableManager(drawableManager)"))
-        fun drawableFactory(drawableFactory: DrawableFactory?) = apply { drawableManager = drawableFactory }
-
-        /**
-         * The usage of factories is now deprecated, use [insetManager] instead.
-         */
-        @Deprecated("This method is now deprecated", ReplaceWith("insetManager(insetManager)"))
-        fun marginFactory(marginFactory: MarginFactory?) = apply { insetManager = marginFactory }
-
-        /**
-         * The usage of factories is now deprecated, use [tintManager] instead.
-         */
-        @Deprecated("This method is now deprecated", ReplaceWith("tintManager(tintManager)"))
-        fun tintFactory(tintFactory: TintFactory?) = apply { tintManager = tintFactory }
-
-        /**
-         * The usage of factories is now deprecated, use [sizeManager] instead.
-         */
-        @Deprecated("This method is now deprecated", ReplaceWith("sizeManager(sizeManager)"))
-        fun sizeFactory(sizeFactory: SizeFactory?) = apply { sizeManager = sizeFactory }
-
-        /**
-         * The usage of factories is now deprecated, use [visibilityManager] instead.
-         */
-        @Deprecated("This method is now deprecated", ReplaceWith("visibilityManager(visibilityManager)"))
-        fun visibilityFactory(visibilityFactory: VisibilityFactory?) = apply { visibilityManager = visibilityFactory }
 
         /**
          * Creates a new [RecyclerViewDivider] with given configurations and initializes all values.
