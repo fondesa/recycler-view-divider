@@ -18,7 +18,6 @@ package com.fondesa.recyclerviewdivider.sample;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider;
@@ -27,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class App extends Application implements RecyclerViewDivider.BuilderProvider {
 
-    @NonNull
+    @NotNull
     @Override
     public RecyclerViewDivider.Builder provideDividerBuilder(@NotNull Context context) {
         return new RecyclerViewDivider.Builder(context)
