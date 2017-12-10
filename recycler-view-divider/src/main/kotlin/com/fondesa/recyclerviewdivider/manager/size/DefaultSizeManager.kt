@@ -20,21 +20,35 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.support.annotation.Px
 import android.support.v7.widget.RecyclerView
-import com.fondesa.recycler_view_divider.R
 
 /**
- * Default implementation of [SizeManager] that will use the same size for each item.
- *
- * @param defaultSize the size that will be set for each item.
+ * Default implementation of [SizeManager] that will calculate the size of each item using the
+ * drawable's dimensions.
+ * If the dimensions can't be calculated, a default size will be used.
  */
-class DefaultSizeManager(@Px private val defaultSize: Int) : SizeManager {
+class DefaultSizeManager : SizeManager {
+
+    private val defaultSize: Int
 
     /**
-     * Constructor that will obtain the default size from the resources.
+     * Constructor that assigns a default size equal to 1dp.
      *
      * @param context the [Context] used to access the resources.
      */
-    constructor(context: Context) : this(context.resources.getDimensionPixelSize(R.dimen.recycler_view_divider_size))
+    constructor(context: Context) {
+        val dps = 1
+        val scale = context.resources.displayMetrics.density
+        this.defaultSize = (dps * scale + 0.5f).toInt()
+    }
+
+    /**
+     * Constructor that assigns a default size equal to [defaultSize].
+     *
+     * @param defaultSize the size that will be set for each item.
+     */
+    constructor(@Px defaultSize: Int) {
+        this.defaultSize = defaultSize
+    }
 
     @Px
     override fun itemSize(drawable: Drawable, orientation: Int, groupCount: Int, groupIndex: Int): Int {

@@ -51,24 +51,27 @@ import com.fondesa.recyclerviewdivider.manager.visibility.VisibilityManager
  * @param tintManager instance of [TintManager] taken from [Builder].
  * @param visibilityManager instance of [VisibilityManager] taken from [Builder].
  */
-class RecyclerViewDivider(private val isSpace: Boolean,
-                          private val drawableManager: DrawableManager,
-                          private val insetManager: InsetManager,
-                          private val sizeManager: SizeManager,
-                          private val tintManager: TintManager?,
-                          private val visibilityManager: VisibilityManager) : RecyclerView.ItemDecoration() {
+class RecyclerViewDivider internal constructor(private val isSpace: Boolean,
+                                               private val drawableManager: DrawableManager,
+                                               private val insetManager: InsetManager,
+                                               private val sizeManager: SizeManager,
+                                               private val tintManager: TintManager?,
+                                               private val visibilityManager: VisibilityManager) : RecyclerView.ItemDecoration() {
 
     companion object {
         private val TAG = RecyclerViewDivider::class.java.simpleName
 
         /**
          * Creates a new [Builder] for the current [Context].
+         * The [Builder] instance will be provided by the application if it implements [BuilderProvider].
+         * Otherwise, a new base instance will be created.
          *
          * @param context current [Context].
          * @return a new [Builder] instance.
          */
         @JvmStatic
-        fun with(context: Context): Builder = Builder(context)
+        fun with(context: Context): Builder =
+                (context.applicationContext as? BuilderProvider)?.provideDividerBuilder(context) ?: Builder(context)
     }
 
     /**
@@ -351,7 +354,6 @@ class RecyclerViewDivider(private val isSpace: Boolean,
 
                 drawWithBounds(left, top, right, bottom)
             }
-
         }
     }
 
@@ -495,8 +497,8 @@ class RecyclerViewDivider(private val isSpace: Boolean,
          */
         fun build(): RecyclerViewDivider {
             // Get the builder managers or the default ones.
-            val drawableManager = drawableManager ?: DefaultDrawableManager(context)
-            val insetManager = insetManager ?: DefaultInsetManager(context)
+            val drawableManager = drawableManager ?: DefaultDrawableManager()
+            val insetManager = insetManager ?: DefaultInsetManager()
             val sizeManager = sizeManager ?: DefaultSizeManager(context)
             val visibilityManager = visibilityManager ?: DefaultVisibilityManager()
 
@@ -508,5 +510,20 @@ class RecyclerViewDivider(private val isSpace: Boolean,
                     tintManager,
                     visibilityManager)
         }
+    }
+
+    /**
+     * Used to provide a common configuration [RecyclerViewDivider.Builder] when a builder is created
+     * through [RecyclerViewDivider.with].
+     */
+    interface BuilderProvider {
+
+        /**
+         * Provides an instance of [RecyclerViewDivider.Builder].
+         *
+         * @param context the [Context] that can be used to access to resources.
+         * @return new instance of [RecyclerViewDivider.Builder] with the new configurations set.
+         */
+        fun provideDividerBuilder(context: Context): RecyclerViewDivider.Builder
     }
 }
