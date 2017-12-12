@@ -6,6 +6,9 @@ env:
   global:
     - MALLOC_ARENA_MAX=2
 
+before_install:
+- yes | sdkmanager "platforms;android-27"
+
 android:
   components:
     - tools
