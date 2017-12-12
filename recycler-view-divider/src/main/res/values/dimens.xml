@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="recycler_view_divider_size">1dp</dimen>
-    <dimen name="recycler_view_divider_margin_size">0dp</dimen>
-    <dimen name="recycler_view_divider_inset_before">@dimen/recycler_view_divider_margin_size</dimen>
-    <dimen name="recycler_view_divider_inset_after">@dimen/recycler_view_divider_margin_size</dimen>
-</resources>

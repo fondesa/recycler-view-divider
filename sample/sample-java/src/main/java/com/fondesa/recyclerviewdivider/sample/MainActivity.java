@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
 //        mSecondManager.setSpanSizeLookup(new DummyLookup());
 
         firstDivider = RecyclerViewDivider.with(this)
-                .color(Color.RED)
                 .size(24)
                 .build();
 
@@ -56,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
         secondDivider = RecyclerViewDivider.with(this)
                 .color(Color.BLACK)
-                .size(24)
                 .inset(0, 70)
                 .build();
 

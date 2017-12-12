@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-    <dimen name="first_div_size">16dp</dimen>
-    <dimen name="second_div_size">16dp</dimen>
+    <dimen name="divider_size">4dp</dimen>
 
-    <!--<dimen name="recycler_view_divider_size">26dp</dimen>-->
-    <!--<dimen name="recycler_view_divider_margin_size">35dp</dimen>-->
+    <dimen name="first_div_size">16dp</dimen>
+
+    <dimen name="second_div_size">16dp</dimen>
 </resources>

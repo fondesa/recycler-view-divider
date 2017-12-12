@@ -16,9 +16,7 @@
 
 package com.fondesa.recyclerviewdivider.manager.inset
 
-import android.content.Context
 import android.support.annotation.Px
-import com.fondesa.recycler_view_divider.R
 
 /**
  * Default implementation of [InsetManager] that will use the same inset for each item.
@@ -30,12 +28,9 @@ class DefaultInsetManager(@Px private val insetBefore: Int,
                           @Px private val insetAfter: Int) : InsetManager {
 
     /**
-     * Constructor that will obtain the default insets from the resources.
-     *
-     * @param context the [Context] used to access the resources.
+     * Constructor that assigns a default inset equal to 0.
      */
-    constructor(context: Context) : this(context.resources.getDimensionPixelSize(R.dimen.recycler_view_divider_inset_before),
-            context.resources.getDimensionPixelSize(R.dimen.recycler_view_divider_inset_after))
+    constructor() : this(0, 0)
 
     @Px
     override fun itemInsetBefore(groupCount: Int, groupIndex: Int): Int = insetBefore

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.fondesa.recyclerviewdivider.extensions
+package com.fondesa.recyclerviewdivider.extension
 
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager

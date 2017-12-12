@@ -28,8 +28,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder
-import com.fondesa.recyclerviewdivider.extensions.*
-import com.fondesa.recyclerviewdivider.factories.*
+import com.fondesa.recyclerviewdivider.extension.*
 import com.fondesa.recyclerviewdivider.manager.drawable.DefaultDrawableManager
 import com.fondesa.recyclerviewdivider.manager.drawable.DrawableManager
 import com.fondesa.recyclerviewdivider.manager.inset.DefaultInsetManager
@@ -52,24 +51,27 @@ import com.fondesa.recyclerviewdivider.manager.visibility.VisibilityManager
  * @param tintManager instance of [TintManager] taken from [Builder].
  * @param visibilityManager instance of [VisibilityManager] taken from [Builder].
  */
-class RecyclerViewDivider(private val isSpace: Boolean,
-                          private val drawableManager: DrawableManager,
-                          private val insetManager: InsetManager,
-                          private val sizeManager: SizeManager,
-                          private val tintManager: TintManager?,
-                          private val visibilityManager: VisibilityManager) : RecyclerView.ItemDecoration() {
+class RecyclerViewDivider internal constructor(private val isSpace: Boolean,
+                                               private val drawableManager: DrawableManager,
+                                               private val insetManager: InsetManager,
+                                               private val sizeManager: SizeManager,
+                                               private val tintManager: TintManager?,
+                                               private val visibilityManager: VisibilityManager) : RecyclerView.ItemDecoration() {
 
     companion object {
         private val TAG = RecyclerViewDivider::class.java.simpleName
 
         /**
          * Creates a new [Builder] for the current [Context].
+         * The [Builder] instance will be provided by the application if it implements [BuilderProvider].
+         * Otherwise, a new base instance will be created.
          *
          * @param context current [Context].
          * @return a new [Builder] instance.
          */
         @JvmStatic
-        fun with(context: Context): Builder = Builder(context)
+        fun with(context: Context): Builder =
+                (context.applicationContext as? BuilderProvider)?.provideDividerBuilder(context) ?: Builder(context)
     }
 
     /**
@@ -127,27 +129,36 @@ class RecyclerViewDivider(private val isSpace: Boolean,
         size = if (showDivider == VisibilityManager.SHOW_ITEMS_ONLY) 0 else size
         halfSize = if (showDivider == VisibilityManager.SHOW_GROUP_ONLY) 0 else halfSize
 
+        val isRTL = parent.isRTL
+        val setRect = { leftB: Int, topB: Int, rightB: Int, bottomB: Int ->
+            if (isRTL) {
+                outRect.set(rightB, topB, leftB, bottomB)
+            } else {
+                outRect.set(leftB, topB, rightB, bottomB)
+            }
+        }
+
         if (orientation == RecyclerView.VERTICAL) {
             when {
             // LinearLayoutManager or GridLayoutManager with 1 column
-                spanCount == 1 || spanSize == spanCount -> outRect.set(0, 0, 0, size)
+                spanCount == 1 || spanSize == spanCount -> setRect(0, 0, 0, size)
             // first element in the group
-                lineAccumulatedSpan == spanSize -> outRect.set(0, 0, halfSize + insetAfter, size)
+                lineAccumulatedSpan == spanSize -> setRect(0, 0, halfSize + insetAfter, size)
             // last element in the group
-                lineAccumulatedSpan == spanCount -> outRect.set(halfSize + insetBefore, 0, 0, size)
+                lineAccumulatedSpan == spanCount -> setRect(halfSize + insetBefore, 0, 0, size)
             // element in the middle
-                else -> outRect.set(halfSize + insetBefore, 0, halfSize + insetAfter, size)
+                else -> setRect(halfSize + insetBefore, 0, halfSize + insetAfter, size)
             }
         } else {
             when {
             // LinearLayoutManager or GridLayoutManager with 1 row
-                spanCount == 1 || spanSize == spanCount -> outRect.set(0, 0, size, 0)
+                spanCount == 1 || spanSize == spanCount -> setRect(0, 0, size, 0)
             // first element in the group
-                lineAccumulatedSpan == spanSize -> outRect.set(0, 0, size, halfSize + insetAfter)
+                lineAccumulatedSpan == spanSize -> setRect(0, 0, size, halfSize + insetAfter)
             // last element in the group
-                lineAccumulatedSpan == spanCount -> outRect.set(0, halfSize + insetBefore, size, 0)
+                lineAccumulatedSpan == spanCount -> setRect(0, halfSize + insetBefore, size, 0)
             // element in the middle
-                else -> outRect.set(0, halfSize + insetBefore, size, halfSize + insetAfter)
+                else -> setRect(0, halfSize + insetBefore, size, halfSize + insetAfter)
             }
         }
     }
@@ -171,6 +182,7 @@ class RecyclerViewDivider(private val isSpace: Boolean,
         val childCount = parent.childCount
 
         val groupCount = lm.getGroupCount(listSize)
+        val isRTL = parent.isRTL
 
         for (i in 0 until childCount) {
             val child = parent.getChildAt(i)
@@ -186,11 +198,6 @@ class RecyclerViewDivider(private val isSpace: Boolean,
             var size = sizeManager.itemSize(divider, orientation, groupCount, groupIndex)
             val spanSize = lm.getSpanSize(itemPosition)
             val lineAccumulatedSpan = lm.getAccumulatedSpanInLine(spanSize, itemPosition, groupIndex)
-
-            val setBoundsAndDraw = { leftB: Int, topB: Int, rightB: Int, bottomB: Int ->
-                divider.setBounds(leftB, topB, rightB, bottomB)
-                divider.draw(c)
-            }
 
             var insetBefore: Int = insetManager.itemInsetBefore(groupCount, groupIndex)
             var insetAfter: Int = insetManager.itemInsetAfter(groupCount, groupIndex)
@@ -208,6 +215,10 @@ class RecyclerViewDivider(private val isSpace: Boolean,
             }
 
             val params = child.layoutParams as RecyclerView.LayoutParams
+            val startMargin = params.startMarginCompat
+            val topMargin = params.topMargin
+            val endMargin = params.endMarginCompat
+            val bottomMargin = params.bottomMargin
 
             var halfSize = if (size < 2) size else size / 2
 
@@ -223,132 +234,126 @@ class RecyclerViewDivider(private val isSpace: Boolean,
             // halfSize * 2 is used instead of size to handle the case Show.ITEMS_ONLY in which size will be == 0
             val lastElementInSpanSize = if (itemPosition == listSize - 1) halfSize * 2 else halfSize
 
-            var marginToAddAfter = 0
-            var marginToAddBefore = marginToAddAfter
+            val drawWithBounds = { leftB: Int, topB: Int, rightB: Int, bottomB: Int ->
+                divider.setBounds(leftB, topB, rightB, bottomB)
+                divider.draw(c)
+            }
 
             if (orientation == RecyclerView.VERTICAL) {
+                // The RecyclerView is vertical.
                 if (spanCount > 1 && spanSize < spanCount) {
-                    top = childTop
+                    top = childTop - topMargin
                     // size is added to draw filling point between horizontal and vertical dividers
-                    bottom = childBottom
+                    bottom = childBottom + bottomMargin + size
 
-                    if (groupIndex > 0) {
-                        top -= params.topMargin
+                    val partialDrawAfter = {
+                        if (isRTL) {
+                            right = childLeft - endMargin
+                            left = right - lastElementInSpanSize
+                        } else {
+                            right = childRight + endMargin
+                            left = right + lastElementInSpanSize
+                        }
+                        drawWithBounds(left, top, right, bottom)
                     }
-                    if (groupIndex < groupCount - 1 || size > 0) {
-                        bottom += params.bottomMargin
+
+                    val partialDrawBefore = {
+                        if (isRTL) {
+                            right = childRight + startMargin
+                            left = right + lastElementInSpanSize
+                        } else {
+                            right = childLeft - startMargin
+                            left = right - lastElementInSpanSize
+                        }
+                        drawWithBounds(left, top, right, bottom)
                     }
-                    bottom += size
 
                     when (lineAccumulatedSpan) {
-                        spanSize -> {
-                            // first element in the group
-                            left = childRight + params.rightMargin
-                            right = left + lastElementInSpanSize
-
-                            setBoundsAndDraw(left, top, right, bottom)
-
-                            marginToAddAfter = params.rightMargin
-                        }
-                        spanCount -> {
-                            // last element in the group
-                            right = childLeft - params.leftMargin
-                            left = right - halfSize
-
-                            setBoundsAndDraw(left, top, right, bottom)
-
-                            marginToAddBefore = params.leftMargin
-                        }
+                    // First element.
+                        spanSize -> partialDrawAfter()
+                    // Last element.
+                        spanCount -> partialDrawBefore()
+                    // Element in the middle.
                         else -> {
-                            // element in the middle
-                            // left half divider
-                            right = childLeft - params.leftMargin
-                            left = right - halfSize
-
-                            setBoundsAndDraw(left, top, right, bottom)
-
-                            // right half divider
-                            left = childRight + params.rightMargin
-                            right = left + lastElementInSpanSize
-
-                            setBoundsAndDraw(left, top, right, bottom)
-
-                            marginToAddAfter = params.rightMargin
-                            marginToAddBefore = params.leftMargin
+                            partialDrawBefore()
+                            partialDrawAfter()
                         }
                     }
                 }
 
                 // draw bottom divider
-                top = childBottom + params.bottomMargin
+                top = childBottom + bottomMargin
                 bottom = top + size
-                left = childLeft + insetBefore - marginToAddBefore
-                right = childRight - insetAfter + marginToAddAfter
 
-                setBoundsAndDraw(left, top, right, bottom)
+                if (isRTL) {
+                    left = childLeft + insetAfter - endMargin
+                    right = childRight - insetBefore + startMargin
+                } else {
+                    left = childLeft + insetBefore - startMargin
+                    right = childRight - insetAfter + endMargin
+                }
+
+                drawWithBounds(left, top, right, bottom)
 
             } else {
+                // The RecyclerView is horizontal.
                 if (spanCount > 1 && spanSize < spanCount) {
-                    left = childLeft
                     // size is added to draw filling point between horizontal and vertical dividers
-                    right = childRight
-                    if (groupIndex > 0) {
-                        left -= params.leftMargin
+                    if (isRTL) {
+                        left = childLeft - endMargin - size
+                        right = childRight + startMargin
+                    } else {
+                        left = childLeft - startMargin
+                        right = childRight + endMargin + size
                     }
-                    if (groupIndex < groupCount - 1 || size > 0) {
-                        right += params.rightMargin
-                    }
-                    right += size
+
 
                     when (lineAccumulatedSpan) {
                         spanSize -> {
                             // first element in the group
-                            top = childBottom + params.bottomMargin
+                            top = childBottom + bottomMargin
                             bottom = top + lastElementInSpanSize
 
-                            setBoundsAndDraw(left, top, right, bottom)
-
-                            marginToAddAfter = params.bottomMargin
+                            drawWithBounds(left, top, right, bottom)
                         }
                         spanCount -> {
                             // last element in the group
-                            bottom = childTop - params.topMargin
-                            top = bottom - halfSize
+                            bottom = childTop - topMargin
+                            top = bottom - lastElementInSpanSize
 
-                            setBoundsAndDraw(left, top, right, bottom)
-
-                            marginToAddBefore = params.topMargin
+                            drawWithBounds(left, top, right, bottom)
                         }
                         else -> {
                             // element in the middle
                             // top half divider
-                            bottom = childTop - params.topMargin
-                            top = bottom - halfSize
+                            bottom = childTop - topMargin
+                            top = bottom - lastElementInSpanSize
 
                             divider.setBounds(left, top, right, bottom)
                             divider.draw(c)
 
                             // bottom half divider
-                            top = childBottom + params.bottomMargin
+                            top = childBottom + bottomMargin
                             bottom = top + lastElementInSpanSize
 
-                            setBoundsAndDraw(left, top, right, bottom)
-
-                            marginToAddAfter = params.bottomMargin
-                            marginToAddBefore = params.topMargin
+                            drawWithBounds(left, top, right, bottom)
                         }
                     }
                 }
 
                 // draw right divider
-                bottom = childBottom - insetAfter + marginToAddAfter
-                top = childTop + insetBefore - marginToAddBefore
-                left = childRight + params.rightMargin
-                right = left + size
+                bottom = childBottom - insetAfter + bottomMargin
+                top = childTop + insetBefore - topMargin
+                if (isRTL) {
+                    left = childLeft - endMargin
+                    right = left - size
+                } else {
+                    left = childRight + endMargin
+                    right = left + size
+                }
 
-                setBoundsAndDraw(left, top, right, bottom)
+                drawWithBounds(left, top, right, bottom)
             }
-
         }
     }
 
@@ -486,54 +491,14 @@ class RecyclerViewDivider(private val isSpace: Boolean,
         fun visibilityManager(visibilityManager: VisibilityManager) = apply { this.visibilityManager = visibilityManager }
 
         /**
-         * Set an equal inset for all dividers.
-         * This method is now deprecated, use [inset].
-         *
-         * @param marginSize margins' size in pixels for this divider.
-         * @return this [Builder] instance.
-         */
-        @Deprecated("This method is now deprecated", ReplaceWith("inset(insetBefore, insetAfter)"))
-        fun marginSize(@Px marginSize: Int) = inset(marginSize, marginSize)
-
-        /**
-         * The usage of factories is now deprecated, use [drawableManager] instead.
-         */
-        @Deprecated("This method is now deprecated", ReplaceWith("drawableManager(drawableManager)"))
-        fun drawableFactory(drawableFactory: DrawableFactory?) = apply { drawableManager = drawableFactory }
-
-        /**
-         * The usage of factories is now deprecated, use [insetManager] instead.
-         */
-        @Deprecated("This method is now deprecated", ReplaceWith("insetManager(insetManager)"))
-        fun marginFactory(marginFactory: MarginFactory?) = apply { insetManager = marginFactory }
-
-        /**
-         * The usage of factories is now deprecated, use [tintManager] instead.
-         */
-        @Deprecated("This method is now deprecated", ReplaceWith("tintManager(tintManager)"))
-        fun tintFactory(tintFactory: TintFactory?) = apply { tintManager = tintFactory }
-
-        /**
-         * The usage of factories is now deprecated, use [sizeManager] instead.
-         */
-        @Deprecated("This method is now deprecated", ReplaceWith("sizeManager(sizeManager)"))
-        fun sizeFactory(sizeFactory: SizeFactory?) = apply { sizeManager = sizeFactory }
-
-        /**
-         * The usage of factories is now deprecated, use [visibilityManager] instead.
-         */
-        @Deprecated("This method is now deprecated", ReplaceWith("visibilityManager(visibilityManager)"))
-        fun visibilityFactory(visibilityFactory: VisibilityFactory?) = apply { visibilityManager = visibilityFactory }
-
-        /**
          * Creates a new [RecyclerViewDivider] with given configurations and initializes all values.
          *
          * @return a new [RecyclerViewDivider] with these [Builder] configurations.
          */
         fun build(): RecyclerViewDivider {
             // Get the builder managers or the default ones.
-            val drawableManager = drawableManager ?: DefaultDrawableManager(context)
-            val insetManager = insetManager ?: DefaultInsetManager(context)
+            val drawableManager = drawableManager ?: DefaultDrawableManager()
+            val insetManager = insetManager ?: DefaultInsetManager()
             val sizeManager = sizeManager ?: DefaultSizeManager(context)
             val visibilityManager = visibilityManager ?: DefaultVisibilityManager()
 
@@ -545,5 +510,20 @@ class RecyclerViewDivider(private val isSpace: Boolean,
                     tintManager,
                     visibilityManager)
         }
+    }
+
+    /**
+     * Used to provide a common configuration [RecyclerViewDivider.Builder] when a builder is created
+     * through [RecyclerViewDivider.with].
+     */
+    interface BuilderProvider {
+
+        /**
+         * Provides an instance of [RecyclerViewDivider.Builder].
+         *
+         * @param context the [Context] that can be used to access to resources.
+         * @return new instance of [RecyclerViewDivider.Builder] with the new configurations set.
+         */
+        fun provideDividerBuilder(context: Context): RecyclerViewDivider.Builder
     }
 }
