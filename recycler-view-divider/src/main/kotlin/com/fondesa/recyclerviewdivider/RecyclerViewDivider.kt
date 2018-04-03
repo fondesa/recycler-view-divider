@@ -71,7 +71,8 @@ class RecyclerViewDivider internal constructor(private val isSpace: Boolean,
          */
         @JvmStatic
         fun with(context: Context): Builder =
-                (context.applicationContext as? BuilderProvider)?.provideDividerBuilder(context) ?: Builder(context)
+                (context.applicationContext as? BuilderProvider)?.provideDividerBuilder(context)
+                        ?: Builder(context)
     }
 
     /**
@@ -100,6 +101,11 @@ class RecyclerViewDivider internal constructor(private val isSpace: Boolean,
 
         val lm = parent.layoutManager
         val itemPosition = parent.getChildAdapterPosition(view)
+        if (itemPosition == RecyclerView.NO_POSITION) {
+            // Avoid the computation if the position of this view cannot be retrieved.
+            return
+        }
+
         val groupCount = lm.getGroupCount(listSize)
         val groupIndex = lm.getGroupIndex(itemPosition)
 
@@ -188,6 +194,10 @@ class RecyclerViewDivider internal constructor(private val isSpace: Boolean,
             val child = parent.getChildAt(i)
 
             val itemPosition = parent.getChildAdapterPosition(child)
+            if (itemPosition == RecyclerView.NO_POSITION) {
+                // Avoid the computation if the position of at least one view cannot be retrieved.
+                return
+            }
             val groupIndex = lm.getGroupIndex(itemPosition)
 
             @VisibilityManager.Show val showDivider: Long = visibilityManager.itemVisibility(groupCount, groupIndex)
