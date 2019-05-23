@@ -34,8 +34,7 @@ script:
   # Build the library project.
   - ./gradlew :recycler-view-divider:build -s
   # Assemble the sample with the local libs.
-  - ./gradlew :sample:sample-java:assembleLocal -s
-  - ./gradlew :sample:sample-kotlin:assembleLocal -s
+  - ./gradlew :sample:assembleLocal -s
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock

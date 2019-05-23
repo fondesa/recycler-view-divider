@@ -1,7 +1,0 @@
-evaluationDependsOn(':sample')
-
-dependencies {
-    implementation androidLib.supportV4
-    localImplementation project(recyclerViewDivider.local)
-    mavenImplementation recyclerViewDivider.maven
-}
