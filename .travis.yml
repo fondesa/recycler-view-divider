@@ -32,7 +32,7 @@ branches:
 
 script:
   # Build the library project.
-  - ./gradlew :kpermissions:build --continue -s
+  - ./gradlew :recycler-view-divider:build --continue -s
   # Assemble the sample with the local libs.
   - ./gradlew :sample:sample-java:assembleLocal --continue -s
   - ./gradlew :sample:sample-kotlin:assembleLocal --continue -s
