@@ -64,7 +64,7 @@ class AndroidSharedPlugin extends ConfiguredProjectPlugin {
 
         // Add the Dokka extension.
         project.dokka {
-            outputFormat = "javadoc"
+            outputFormat = "html"
             skipEmptyPackages = true
         }
     }
