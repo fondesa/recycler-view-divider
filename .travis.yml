@@ -34,7 +34,8 @@ script:
   # Build the library project.
   - ./gradlew :kpermissions:build --continue -s
   # Assemble the sample with the local libs.
-  - ./gradlew :sample:assembleLocal --continue -s
+  - ./gradlew :sample:sample-java:assembleLocal --continue -s
+  - ./gradlew :sample:sample-kotlin:assembleLocal --continue -s
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
