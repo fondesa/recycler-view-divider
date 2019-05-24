@@ -36,7 +36,7 @@ You can download a jar from GitHub's [releases page](https://github.com/Fondesa/
 
 ```gradle
 dependencies {
-    compile 'com.github.fondesa:recycler-view-divider:2.0.1'
+    compile 'com.github.fondesa:recycler-view-divider:3.0.0'
 }
 ```
 
@@ -46,7 +46,7 @@ dependencies {
 <dependency>
   <groupId>com.github.fondesa</groupId>
   <artifactId>recycler-view-divider</artifactId>
-  <version>2.0.1</version>
+  <version>3.0.0</version>
   <type>pom</type>
 </dependency>
 ```
