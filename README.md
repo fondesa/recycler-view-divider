@@ -27,6 +27,8 @@ Compatibility
 
 **Android SDK**: RecyclerViewDivider requires a minimum API level of 14 (the same of RecyclerView).
 
+**AndroidX**: this library requires AndroidX. To use it in a project without AndroidX, refer to the version *2.x*
+
 Integration
 ------
 
