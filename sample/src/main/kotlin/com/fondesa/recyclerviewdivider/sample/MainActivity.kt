@@ -18,21 +18,21 @@ package com.fondesa.recyclerviewdivider.sample
 
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        private val LIST_SIZE = 16
-        private val SPAN_COUNT = 3
-        private val SHOW = "ALL"
-        private val REMOVE = "REMOVE"
+        private const val LIST_SIZE = 16
+        private const val SPAN_COUNT = 3
+        private const val SHOW = "ALL"
+        private const val REMOVE = "REMOVE"
     }
 
     private var dividerShown: Boolean = false
@@ -56,15 +56,15 @@ class MainActivity : AppCompatActivity() {
 //        secondManager.spanSizeLookup = DummyLookup()
 
         firstDivider = RecyclerViewDivider.with(this)
-                .size(24)
-                .build()
+            .size(24)
+            .build()
 
         firstDivider.addTo(firstRecyclerView)
 
         secondDivider = RecyclerViewDivider.with(this)
-                .color(Color.BLACK)
-                .inset(0, 70)
-                .build()
+            .color(Color.BLACK)
+            .inset(0, 70)
+            .build()
 
         secondDivider.addTo(secondRecyclerView)
 
@@ -108,7 +108,8 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    private inner class DummyAdapter internal constructor(private val first: Boolean) : RecyclerView.Adapter<DummyViewHolder>() {
+    private inner class DummyAdapter internal constructor(private val first: Boolean) :
+        RecyclerView.Adapter<DummyViewHolder>() {
         private var list: List<Int>? = null
 
         init {
@@ -116,8 +117,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DummyViewHolder =
-                DummyViewHolder(LayoutInflater.from(this@MainActivity)
-                        .inflate(if (first) R.layout.dummy_cell_first else R.layout.dummy_cell_second, parent, false))
+            DummyViewHolder(
+                LayoutInflater.from(this@MainActivity)
+                    .inflate(
+                        if (first) R.layout.dummy_cell_first else R.layout.dummy_cell_second,
+                        parent,
+                        false
+                    )
+            )
 
         override fun onBindViewHolder(holder: DummyViewHolder, position: Int) {
             holder.setItemText(list!![position])
@@ -133,7 +140,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private class DummyViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private class DummyViewHolder internal constructor(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
 
         internal fun setItemText(item: Int) {
             (itemView as TextView).text = item.toString()

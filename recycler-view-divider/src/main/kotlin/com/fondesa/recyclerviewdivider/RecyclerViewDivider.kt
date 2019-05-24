@@ -21,12 +21,12 @@ import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.support.annotation.ColorInt
-import android.support.annotation.Px
-import android.support.v4.graphics.drawable.DrawableCompat
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
+import androidx.annotation.ColorInt
+import androidx.annotation.Px
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder
 import com.fondesa.recyclerviewdivider.extension.*
 import com.fondesa.recyclerviewdivider.manager.drawable.DefaultDrawableManager
@@ -51,12 +51,14 @@ import com.fondesa.recyclerviewdivider.manager.visibility.VisibilityManager
  * @param tintManager instance of [TintManager] taken from [Builder].
  * @param visibilityManager instance of [VisibilityManager] taken from [Builder].
  */
-class RecyclerViewDivider internal constructor(private val isSpace: Boolean,
-                                               private val drawableManager: DrawableManager,
-                                               private val insetManager: InsetManager,
-                                               private val sizeManager: SizeManager,
-                                               private val tintManager: TintManager?,
-                                               private val visibilityManager: VisibilityManager) : RecyclerView.ItemDecoration() {
+class RecyclerViewDivider internal constructor(
+    private val isSpace: Boolean,
+    private val drawableManager: DrawableManager,
+    private val insetManager: InsetManager,
+    private val sizeManager: SizeManager,
+    private val tintManager: TintManager?,
+    private val visibilityManager: VisibilityManager
+) : RecyclerView.ItemDecoration() {
 
     companion object {
         private val TAG = RecyclerViewDivider::class.java.simpleName
@@ -71,8 +73,8 @@ class RecyclerViewDivider internal constructor(private val isSpace: Boolean,
          */
         @JvmStatic
         fun with(context: Context): Builder =
-                (context.applicationContext as? BuilderProvider)?.provideDividerBuilder(context)
-                        ?: Builder(context)
+            (context.applicationContext as? BuilderProvider)?.provideDividerBuilder(context)
+                ?: Builder(context)
     }
 
     /**
@@ -94,12 +96,17 @@ class RecyclerViewDivider internal constructor(private val isSpace: Boolean,
         recyclerView.removeItemDecoration(this)
     }
 
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        val listSize = parent.adapter.itemCount
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
+        val listSize = parent.adapter?.itemCount ?: 0
         if (listSize <= 0)
             return
 
-        val lm = parent.layoutManager
+        val lm = parent.layoutManager ?: return
         val itemPosition = parent.getChildAdapterPosition(view)
         if (itemPosition == RecyclerView.NO_POSITION) {
             // Avoid the computation if the position of this view cannot be retrieved.
@@ -109,8 +116,8 @@ class RecyclerViewDivider internal constructor(private val isSpace: Boolean,
         val groupCount = lm.getGroupCount(listSize)
         val groupIndex = lm.getGroupIndex(itemPosition)
 
-        @VisibilityManager.Show val showDivider: Long = visibilityManager.itemVisibility(groupCount, groupIndex)
-        if (showDivider == VisibilityManager.SHOW_NONE)
+        val showDivider = visibilityManager.itemVisibility(groupCount, groupIndex)
+        if (showDivider == VisibilityManager.VisibilityType.NONE)
             return
 
         val orientation = lm.orientation
@@ -132,8 +139,8 @@ class RecyclerViewDivider internal constructor(private val isSpace: Boolean,
 
         var halfSize = size / 2
 
-        size = if (showDivider == VisibilityManager.SHOW_ITEMS_ONLY) 0 else size
-        halfSize = if (showDivider == VisibilityManager.SHOW_GROUP_ONLY) 0 else halfSize
+        size = if (showDivider == VisibilityManager.VisibilityType.ITEMS_ONLY) 0 else size
+        halfSize = if (showDivider == VisibilityManager.VisibilityType.GROUP_ONLY) 0 else halfSize
 
         val isRTL = parent.isRTL
         val setRect = { leftB: Int, topB: Int, rightB: Int, bottomB: Int ->
@@ -146,24 +153,24 @@ class RecyclerViewDivider internal constructor(private val isSpace: Boolean,
 
         if (orientation == RecyclerView.VERTICAL) {
             when {
-            // LinearLayoutManager or GridLayoutManager with 1 column
+                // LinearLayoutManager or GridLayoutManager with 1 column
                 spanCount == 1 || spanSize == spanCount -> setRect(0, 0, 0, size)
-            // first element in the group
+                // first element in the group
                 lineAccumulatedSpan == spanSize -> setRect(0, 0, halfSize + insetAfter, size)
-            // last element in the group
+                // last element in the group
                 lineAccumulatedSpan == spanCount -> setRect(halfSize + insetBefore, 0, 0, size)
-            // element in the middle
+                // element in the middle
                 else -> setRect(halfSize + insetBefore, 0, halfSize + insetAfter, size)
             }
         } else {
             when {
-            // LinearLayoutManager or GridLayoutManager with 1 row
+                // LinearLayoutManager or GridLayoutManager with 1 row
                 spanCount == 1 || spanSize == spanCount -> setRect(0, 0, size, 0)
-            // first element in the group
+                // first element in the group
                 lineAccumulatedSpan == spanSize -> setRect(0, 0, size, halfSize + insetAfter)
-            // last element in the group
+                // last element in the group
                 lineAccumulatedSpan == spanCount -> setRect(0, halfSize + insetBefore, size, 0)
-            // element in the middle
+                // element in the middle
                 else -> setRect(0, halfSize + insetBefore, size, halfSize + insetAfter)
             }
         }
@@ -182,7 +189,7 @@ class RecyclerViewDivider internal constructor(private val isSpace: Boolean,
         var right: Int
         var bottom: Int
 
-        val lm = parent.layoutManager
+        val lm = parent.layoutManager ?: return
         val orientation = lm.orientation
         val spanCount = lm.spanCount
         val childCount = parent.childCount
@@ -200,14 +207,15 @@ class RecyclerViewDivider internal constructor(private val isSpace: Boolean,
             }
             val groupIndex = lm.getGroupIndex(itemPosition)
 
-            @VisibilityManager.Show val showDivider: Long = visibilityManager.itemVisibility(groupCount, groupIndex)
+            val showDivider = visibilityManager.itemVisibility(groupCount, groupIndex)
 
-            if (showDivider == VisibilityManager.SHOW_NONE) continue
+            if (showDivider == VisibilityManager.VisibilityType.NONE) continue
 
             var divider = drawableManager.itemDrawable(groupCount, groupIndex)
             var size = sizeManager.itemSize(divider, orientation, groupCount, groupIndex)
             val spanSize = lm.getSpanSize(itemPosition)
-            val lineAccumulatedSpan = lm.getAccumulatedSpanInLine(spanSize, itemPosition, groupIndex)
+            val lineAccumulatedSpan =
+                lm.getAccumulatedSpanInLine(spanSize, itemPosition, groupIndex)
 
             var insetBefore: Int = insetManager.itemInsetBefore(groupCount, groupIndex)
             var insetAfter: Int = insetManager.itemInsetAfter(groupCount, groupIndex)
@@ -232,8 +240,9 @@ class RecyclerViewDivider internal constructor(private val isSpace: Boolean,
 
             var halfSize = if (size < 2) size else size / 2
 
-            size = if (showDivider == VisibilityManager.SHOW_ITEMS_ONLY) 0 else size
-            halfSize = if (showDivider == VisibilityManager.SHOW_GROUP_ONLY) 0 else halfSize
+            size = if (showDivider == VisibilityManager.VisibilityType.ITEMS_ONLY) 0 else size
+            halfSize =
+                if (showDivider == VisibilityManager.VisibilityType.GROUP_ONLY) 0 else halfSize
 
             val childBottom = child.bottom
             val childTop = child.top
@@ -279,11 +288,11 @@ class RecyclerViewDivider internal constructor(private val isSpace: Boolean,
                     }
 
                     when (lineAccumulatedSpan) {
-                    // First element.
+                        // First element.
                         spanSize -> partialDrawAfter()
-                    // Last element.
+                        // Last element.
                         spanCount -> partialDrawBefore()
-                    // Element in the middle.
+                        // Element in the middle.
                         else -> {
                             partialDrawBefore()
                             partialDrawAfter()
@@ -431,7 +440,8 @@ class RecyclerViewDivider internal constructor(private val isSpace: Boolean,
          * @param insetAfter the inset that will be applied after.
          * @return this [Builder] instance.
          */
-        fun inset(@Px insetBefore: Int, @Px insetAfter: Int) = insetManager(DefaultInsetManager(insetBefore, insetAfter))
+        fun inset(@Px insetBefore: Int, @Px insetAfter: Int) =
+            insetManager(DefaultInsetManager(insetBefore, insetAfter))
 
         /**
          * Set the size of all dividers. The divider's final size will depend on RecyclerView's orientation:
@@ -498,7 +508,8 @@ class RecyclerViewDivider internal constructor(private val isSpace: Boolean,
          * @param visibilityManager custom [VisibilityManager] to set.
          * @return this [Builder] instance.
          */
-        fun visibilityManager(visibilityManager: VisibilityManager) = apply { this.visibilityManager = visibilityManager }
+        fun visibilityManager(visibilityManager: VisibilityManager) =
+            apply { this.visibilityManager = visibilityManager }
 
         /**
          * Creates a new [RecyclerViewDivider] with given configurations and initializes all values.
@@ -513,12 +524,14 @@ class RecyclerViewDivider internal constructor(private val isSpace: Boolean,
             val visibilityManager = visibilityManager ?: DefaultVisibilityManager()
 
             // Creates the divider.
-            return RecyclerViewDivider(isSpace,
-                    drawableManager,
-                    insetManager,
-                    sizeManager,
-                    tintManager,
-                    visibilityManager)
+            return RecyclerViewDivider(
+                isSpace,
+                drawableManager,
+                insetManager,
+                sizeManager,
+                tintManager,
+                visibilityManager
+            )
         }
     }
 

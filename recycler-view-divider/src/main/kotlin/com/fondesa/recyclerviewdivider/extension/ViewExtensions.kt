@@ -16,8 +16,8 @@
 
 package com.fondesa.recyclerviewdivider.extension
 
-import android.support.v4.view.ViewCompat
 import android.view.View
+import androidx.core.view.ViewCompat
 
 /**
  * Check the layout orientation of this [View].

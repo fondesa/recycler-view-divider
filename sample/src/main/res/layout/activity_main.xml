@@ -13,7 +13,7 @@
         android:layout_margin="8dp"
         android:text="@string/first_recycler_label" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/first_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -26,7 +26,7 @@
         android:layout_margin="8dp"
         android:text="@string/second_recycler_label" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/second_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"

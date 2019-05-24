@@ -22,9 +22,11 @@ package com.fondesa.recyclerviewdivider.manager.visibility
  */
 class HideLastVisibilityManager : VisibilityManager {
 
-    @VisibilityManager.Show
-    override fun itemVisibility(groupCount: Int, groupIndex: Int): Long = if (groupIndex == groupCount - 1)
-        VisibilityManager.SHOW_ITEMS_ONLY
+    override fun itemVisibility(
+        groupCount: Int,
+        groupIndex: Int
+    ): VisibilityManager.VisibilityType = if (groupIndex == groupCount - 1)
+        VisibilityManager.VisibilityType.ITEMS_ONLY
     else
-        VisibilityManager.SHOW_ALL
+        VisibilityManager.VisibilityType.ALL
 }

@@ -16,7 +16,7 @@
 
 package com.fondesa.recyclerviewdivider.manager.inset
 
-import android.support.annotation.Px
+import androidx.annotation.Px
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider
 import com.fondesa.recyclerviewdivider.manager.drawable.DrawableManager
 

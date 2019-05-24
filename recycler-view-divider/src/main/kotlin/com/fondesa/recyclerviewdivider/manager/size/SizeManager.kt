@@ -17,8 +17,8 @@
 package com.fondesa.recyclerviewdivider.manager.size
 
 import android.graphics.drawable.Drawable
-import android.support.annotation.Px
-import android.support.v7.widget.RecyclerView
+import androidx.annotation.Px
+import androidx.recyclerview.widget.RecyclerView
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider
 
 /**
