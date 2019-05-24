@@ -16,7 +16,7 @@
 
 package com.fondesa.recyclerviewdivider.manager.inset
 
-import android.support.annotation.Px
+import androidx.annotation.Px
 
 /**
  * Default implementation of [InsetManager] that will use the same inset for each item.

@@ -16,8 +16,8 @@
 
 package com.fondesa.recyclerviewdivider.extension
 
-import android.support.v4.view.MarginLayoutParamsCompat
 import android.view.ViewGroup
+import androidx.core.view.MarginLayoutParamsCompat
 
 /**
  * Get the start margin for all APIs.

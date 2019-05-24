@@ -18,8 +18,8 @@ package com.fondesa.recyclerviewdivider.manager.size
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.support.annotation.Px
-import android.support.v7.widget.RecyclerView
+import androidx.annotation.Px
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Default implementation of [SizeManager] that will calculate the size of each item using the

@@ -16,7 +16,7 @@
 
 package com.fondesa.recyclerviewdivider.manager.tint
 
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 import com.fondesa.recyclerviewdivider.manager.size.SizeManager
 
 /**

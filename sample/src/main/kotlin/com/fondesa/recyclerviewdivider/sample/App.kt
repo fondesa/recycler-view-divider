@@ -18,7 +18,7 @@ package com.fondesa.recyclerviewdivider.sample
 
 import android.app.Application
 import android.content.Context
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider
 
 class App : Application(), RecyclerViewDivider.BuilderProvider {

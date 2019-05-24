@@ -18,7 +18,7 @@ package com.fondesa.recyclerviewdivider.manager.drawable
 
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 
 /**
  * Default implementation of [DrawableManager] that will draw the same [Drawable] for each item.
