@@ -129,14 +129,6 @@ class RecyclerViewDivider internal constructor(
         val divider = drawableManager.itemDrawable(groupCount, groupIndex)
         var size = sizeManager.itemSize(divider, orientation, groupCount, groupIndex)
 
-        var insetBefore: Int = insetManager.itemInsetBefore(groupCount, groupIndex)
-        var insetAfter: Int = insetManager.itemInsetAfter(groupCount, groupIndex)
-        if (spanCount > 1 && (insetBefore > 0 || insetAfter > 0)) {
-            insetBefore = 0
-            insetAfter = 0
-            Log.e(TAG, "the inset won't be applied with a span major than 1.")
-        }
-
         var halfSize = size / 2
 
         size = if (showDivider == VisibilityManager.VisibilityType.ITEMS_ONLY) 0 else size
@@ -156,22 +148,22 @@ class RecyclerViewDivider internal constructor(
                 // LinearLayoutManager or GridLayoutManager with 1 column
                 spanCount == 1 || spanSize == spanCount -> setRect(0, 0, 0, size)
                 // first element in the group
-                lineAccumulatedSpan == spanSize -> setRect(0, 0, halfSize + insetAfter, size)
+                lineAccumulatedSpan == spanSize -> setRect(0, 0, halfSize, size)
                 // last element in the group
-                lineAccumulatedSpan == spanCount -> setRect(halfSize + insetBefore, 0, 0, size)
+                lineAccumulatedSpan == spanCount -> setRect(halfSize, 0, 0, size)
                 // element in the middle
-                else -> setRect(halfSize + insetBefore, 0, halfSize + insetAfter, size)
+                else -> setRect(halfSize, 0, halfSize, size)
             }
         } else {
             when {
                 // LinearLayoutManager or GridLayoutManager with 1 row
                 spanCount == 1 || spanSize == spanCount -> setRect(0, 0, size, 0)
                 // first element in the group
-                lineAccumulatedSpan == spanSize -> setRect(0, 0, size, halfSize + insetAfter)
+                lineAccumulatedSpan == spanSize -> setRect(0, 0, size, halfSize)
                 // last element in the group
-                lineAccumulatedSpan == spanCount -> setRect(0, halfSize + insetBefore, size, 0)
+                lineAccumulatedSpan == spanCount -> setRect(0, halfSize, size, 0)
                 // element in the middle
-                else -> setRect(0, halfSize + insetBefore, size, halfSize + insetAfter)
+                else -> setRect(0, halfSize, size, halfSize)
             }
         }
     }
