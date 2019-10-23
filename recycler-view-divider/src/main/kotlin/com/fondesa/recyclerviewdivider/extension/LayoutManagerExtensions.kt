@@ -67,8 +67,12 @@ internal fun RecyclerView.LayoutManager.getSpanSize(itemPosition: Int): Int =
  * @return the index of the group.
  */
 internal fun RecyclerView.LayoutManager.getGroupIndex(itemPosition: Int): Int =
-    (this as? GridLayoutManager)?.spanSizeLookup?.getSpanGroupIndex(itemPosition, spanCount)
-        ?: itemPosition
+    when (this) {
+        is GridLayoutManager -> spanSizeLookup?.getSpanGroupIndex(itemPosition, spanCount)
+            ?: itemPosition
+        is StaggeredGridLayoutManager -> itemPosition / spanCount
+        else -> itemPosition
+    }
 
 /**
  * Calculate the number of items' group in a list.
@@ -79,8 +83,8 @@ internal fun RecyclerView.LayoutManager.getGroupIndex(itemPosition: Int): Int =
  * @param itemCount number of items in the list.
  * @return the number of groups
  */
-internal fun RecyclerView.LayoutManager.getGroupCount(itemCount: Int): Int =
-    if (this is GridLayoutManager) {
+internal fun RecyclerView.LayoutManager.getGroupCount(itemCount: Int): Int = when (this) {
+    is GridLayoutManager -> {
         val spanSizeLookup = spanSizeLookup
         val spanCount = spanCount
 
@@ -93,7 +97,16 @@ internal fun RecyclerView.LayoutManager.getGroupCount(itemCount: Int): Int =
             pos++
         }
         groupCount
-    } else itemCount
+    }
+    is StaggeredGridLayoutManager -> {
+        var completeGroupCount = itemCount / spanCount
+        if (itemCount % itemCount != 0) {
+            completeGroupCount++
+        }
+        completeGroupCount
+    }
+    else -> itemCount
+}
 
 /**
  * Calculate the span accumulated in this line.
