@@ -12,7 +12,7 @@ new AndroidSharedPlugin(
         }
 ).apply(project)
 
-def libraryMavenCompileVersion = '3.0.2'
+def libraryMavenCompileVersion = '3.1.0'
 
 dependencies {
     implementation "androidx.appcompat:appcompat:$ANDROIDX_APPCOMPAT_VERSION"
