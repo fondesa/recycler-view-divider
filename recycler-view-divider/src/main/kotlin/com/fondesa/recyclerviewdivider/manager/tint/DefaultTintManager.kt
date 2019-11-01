@@ -24,8 +24,8 @@ import com.fondesa.recyclerviewdivider.manager.size.SizeManager
  *
  * @param tint the color used to tint each item.
  */
-class DefaultTintManager(@ColorInt private val tint: Int) : TintManager {
+class DefaultTintManager(@ColorInt private val tint: Int) : FixedTintManager() {
 
     @ColorInt
-    override fun itemTint(groupCount: Int, groupIndex: Int): Int = tint
+    override fun itemTint(): Int = tint
 }

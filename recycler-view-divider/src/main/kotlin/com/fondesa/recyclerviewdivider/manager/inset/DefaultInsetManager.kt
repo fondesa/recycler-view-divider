@@ -24,8 +24,10 @@ import androidx.annotation.Px
  * @param insetBefore the inset that will be applied before each item.
  * @param insetAfter the inset that will be applied after each item.
  */
-class DefaultInsetManager(@Px private val insetBefore: Int,
-                          @Px private val insetAfter: Int) : InsetManager {
+class DefaultInsetManager(
+    @Px private val insetBefore: Int,
+    @Px private val insetAfter: Int
+) : FixedInsetManager() {
 
     /**
      * Constructor that assigns a default inset equal to 0.
@@ -33,8 +35,8 @@ class DefaultInsetManager(@Px private val insetBefore: Int,
     constructor() : this(0, 0)
 
     @Px
-    override fun itemInsetBefore(groupCount: Int, groupIndex: Int): Int = insetBefore
+    override fun itemInsetBefore(): Int = insetBefore
 
     @Px
-    override fun itemInsetAfter(groupCount: Int, groupIndex: Int): Int = insetAfter
+    override fun itemInsetAfter(): Int = insetAfter
 }

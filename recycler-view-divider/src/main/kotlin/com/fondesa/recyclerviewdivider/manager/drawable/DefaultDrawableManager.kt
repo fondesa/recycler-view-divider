@@ -25,7 +25,7 @@ import androidx.annotation.ColorInt
  *
  * @param drawable the [Drawable] that will be drawn for each item.
  */
-class DefaultDrawableManager(private val drawable: Drawable) : DrawableManager {
+class DefaultDrawableManager(private val drawable: Drawable) : FixedDrawableManager() {
 
     /**
      * Constructor that will use a [ColorDrawable] that wraps [color].
@@ -39,5 +39,5 @@ class DefaultDrawableManager(private val drawable: Drawable) : DrawableManager {
      */
     constructor() : this(0xFFCFCFCF.toInt())
 
-    override fun itemDrawable(groupCount: Int, groupIndex: Int): Drawable = drawable
+    override fun itemDrawable(): Drawable = drawable
 }

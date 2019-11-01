@@ -56,7 +56,26 @@ internal val RecyclerView.LayoutManager.spanCount: Int
  * @return span size of the current item
  */
 internal fun RecyclerView.LayoutManager.getSpanSize(itemPosition: Int): Int =
-    (this as? GridLayoutManager)?.spanSizeLookup?.getSpanSize(itemPosition) ?: 1
+    when (this) {
+        is GridLayoutManager -> spanSizeLookup.getSpanSize(itemPosition)
+        is StaggeredGridLayoutManager -> throw IllegalStateException(
+            "The method getSpanSize(Int) shouldn't be invoked on a ${StaggeredGridLayoutManager::class.java.simpleName}"
+        )
+        else -> 1
+    }
+
+/**
+ * Check the span size of the current item when the layout manager is a [StaggeredGridLayoutManager].
+ * <br>
+ * The span size will be minor than or equal to the span count.
+ *
+ * @param lp the layout params of the item.
+ * @return span size of the current item
+ */
+internal fun StaggeredGridLayoutManager.getSpanSize(lp: StaggeredGridLayoutManager.LayoutParams): Int {
+    val isFullSpan = lp.isFullSpan
+    return if (isFullSpan) spanCount else 1
+}
 
 /**
  * Calculate the group in which the item is.
@@ -70,7 +89,9 @@ internal fun RecyclerView.LayoutManager.getGroupIndex(itemPosition: Int): Int =
     when (this) {
         is GridLayoutManager -> spanSizeLookup?.getSpanGroupIndex(itemPosition, spanCount)
             ?: itemPosition
-        is StaggeredGridLayoutManager -> itemPosition / spanCount
+        is StaggeredGridLayoutManager -> throw IllegalStateException(
+            "The method getGroupIndex(Int) shouldn't be invoked on a ${StaggeredGridLayoutManager::class.java.simpleName}"
+        )
         else -> itemPosition
     }
 
@@ -98,13 +119,9 @@ internal fun RecyclerView.LayoutManager.getGroupCount(itemCount: Int): Int = whe
         }
         groupCount
     }
-    is StaggeredGridLayoutManager -> {
-        var completeGroupCount = itemCount / spanCount
-        if (itemCount % itemCount != 0) {
-            completeGroupCount++
-        }
-        completeGroupCount
-    }
+    is StaggeredGridLayoutManager -> throw IllegalStateException(
+        "The method getGroupCount(Int) shouldn't be invoked on a ${StaggeredGridLayoutManager::class.java.simpleName}"
+    )
     else -> itemCount
 }
 
@@ -124,6 +141,9 @@ internal fun RecyclerView.LayoutManager.getAccumulatedSpanInLine(
     itemPosition: Int,
     groupIndex: Int
 ): Int {
+    if (this is StaggeredGridLayoutManager) {
+        throw IllegalStateException("The method getAccumulatedSpanInLine(Int, Int, Int) shouldn't be invoked on a ${StaggeredGridLayoutManager::class.java.simpleName}")
+    }
     var lineAccumulatedSpan = spanSize
     var tempPos: Int = itemPosition - 1
     while (tempPos >= 0) {
@@ -138,4 +158,18 @@ internal fun RecyclerView.LayoutManager.getAccumulatedSpanInLine(
         tempPos--
     }
     return lineAccumulatedSpan
+}
+
+/**
+ * Calculate the span accumulated in this line when the layout manager is a [StaggeredGridLayoutManager].
+ * <br>
+ * This span is calculated through the sum of the previous items' spans
+ * in this line and the current item's span.
+ *
+ * @param lp the layout params of the item.
+ * @return accumulated span.
+ */
+internal fun StaggeredGridLayoutManager.getAccumulatedSpanInLine(lp: StaggeredGridLayoutManager.LayoutParams): Int {
+    val isFullSpan = lp.isFullSpan
+    return if (isFullSpan) spanCount else lp.spanIndex + 1
 }
