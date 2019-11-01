@@ -27,19 +27,25 @@ import androidx.annotation.ColorInt
 import androidx.annotation.Px
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder
 import com.fondesa.recyclerviewdivider.extension.*
 import com.fondesa.recyclerviewdivider.manager.drawable.DefaultDrawableManager
 import com.fondesa.recyclerviewdivider.manager.drawable.DrawableManager
+import com.fondesa.recyclerviewdivider.manager.drawable.asFixed
 import com.fondesa.recyclerviewdivider.manager.inset.DefaultInsetManager
 import com.fondesa.recyclerviewdivider.manager.inset.InsetManager
+import com.fondesa.recyclerviewdivider.manager.inset.asFixed
 import com.fondesa.recyclerviewdivider.manager.size.DefaultSizeManager
 import com.fondesa.recyclerviewdivider.manager.size.SizeManager
+import com.fondesa.recyclerviewdivider.manager.size.asFixed
 import com.fondesa.recyclerviewdivider.manager.tint.DefaultTintManager
 import com.fondesa.recyclerviewdivider.manager.tint.TintManager
+import com.fondesa.recyclerviewdivider.manager.tint.asFixed
 import com.fondesa.recyclerviewdivider.manager.visibility.DefaultVisibilityManager
 import com.fondesa.recyclerviewdivider.manager.visibility.HideLastVisibilityManager
 import com.fondesa.recyclerviewdivider.manager.visibility.VisibilityManager
+import com.fondesa.recyclerviewdivider.manager.visibility.asFixed
 
 /**
  * Used to draw a divider between [RecyclerView]'s elements.
@@ -113,21 +119,38 @@ class RecyclerViewDivider internal constructor(
             return
         }
 
-        val groupCount = lm.getGroupCount(listSize)
-        val groupIndex = lm.getGroupIndex(itemPosition)
-
-        val showDivider = visibilityManager.itemVisibility(groupCount, groupIndex)
-        if (showDivider == VisibilityManager.VisibilityType.NONE)
-            return
-
         val orientation = lm.orientation
         val spanCount = lm.spanCount
-        val spanSize = lm.getSpanSize(itemPosition)
 
-        val lineAccumulatedSpan = lm.getAccumulatedSpanInLine(spanSize, itemPosition, groupIndex)
+        val spanSize: Int
+        val lineAccumulatedSpan: Int
+        val showDivider: VisibilityManager.VisibilityType
+        val divider: Drawable
+        @Px var size: Int
 
-        val divider = drawableManager.itemDrawable(groupCount, groupIndex)
-        var size = sizeManager.itemSize(divider, orientation, groupCount, groupIndex)
+        if (lm is StaggeredGridLayoutManager) {
+            val lp = view.layoutParams as StaggeredGridLayoutManager.LayoutParams
+            spanSize = lm.getSpanSize(lp)
+            lineAccumulatedSpan = lm.getAccumulatedSpanInLine(lp)
+
+            showDivider = visibilityManager.asFixed().itemVisibility()
+            if (showDivider == VisibilityManager.VisibilityType.NONE)
+                return
+
+            divider = drawableManager.asFixed().itemDrawable()
+            size = sizeManager.asFixed().itemSize(divider, orientation)
+        } else {
+            val groupCount = lm.getGroupCount(listSize)
+            val groupIndex = lm.getGroupIndex(itemPosition)
+            spanSize = lm.getSpanSize(itemPosition)
+            lineAccumulatedSpan = lm.getAccumulatedSpanInLine(spanSize, itemPosition, groupIndex)
+            showDivider = visibilityManager.itemVisibility(groupCount, groupIndex)
+            if (showDivider == VisibilityManager.VisibilityType.NONE)
+                return
+
+            divider = drawableManager.itemDrawable(groupCount, groupIndex)
+            size = sizeManager.itemSize(divider, orientation, groupCount, groupIndex)
+        }
 
         var halfSize = size / 2
 
@@ -186,7 +209,8 @@ class RecyclerViewDivider internal constructor(
         val spanCount = lm.spanCount
         val childCount = parent.childCount
 
-        val groupCount = lm.getGroupCount(listSize)
+        val groupCount = if (lm is StaggeredGridLayoutManager) -1 else lm.getGroupCount(listSize)
+
         val isRTL = parent.isRTL
 
         for (i in 0 until childCount) {
@@ -197,30 +221,54 @@ class RecyclerViewDivider internal constructor(
                 // Avoid the computation if the position of at least one view cannot be retrieved.
                 return
             }
-            val groupIndex = lm.getGroupIndex(itemPosition)
 
-            val showDivider = visibilityManager.itemVisibility(groupCount, groupIndex)
+            val spanSize: Int
+            val lineAccumulatedSpan: Int
+            val showDivider: VisibilityManager.VisibilityType
+            var divider: Drawable
+            @Px var size: Int
+            @Px var insetBefore: Int
+            @Px var insetAfter: Int
+            @ColorInt val tint: Int?
 
-            if (showDivider == VisibilityManager.VisibilityType.NONE) continue
+            if (lm is StaggeredGridLayoutManager) {
+                val lp = child.layoutParams as StaggeredGridLayoutManager.LayoutParams
+                spanSize = lm.getSpanSize(lp)
+                lineAccumulatedSpan = lm.getAccumulatedSpanInLine(lp)
 
-            var divider = drawableManager.itemDrawable(groupCount, groupIndex)
-            var size = sizeManager.itemSize(divider, orientation, groupCount, groupIndex)
-            val spanSize = lm.getSpanSize(itemPosition)
-            val lineAccumulatedSpan =
-                lm.getAccumulatedSpanInLine(spanSize, itemPosition, groupIndex)
+                showDivider = visibilityManager.asFixed().itemVisibility()
+                if (showDivider == VisibilityManager.VisibilityType.NONE) continue
 
-            var insetBefore: Int = insetManager.itemInsetBefore(groupCount, groupIndex)
-            var insetAfter: Int = insetManager.itemInsetAfter(groupCount, groupIndex)
+                divider = drawableManager.asFixed().itemDrawable()
+                size = sizeManager.asFixed().itemSize(divider, orientation)
+                val fixedInsetManager = insetManager.asFixed()
+                insetBefore = fixedInsetManager.itemInsetBefore()
+                insetAfter = fixedInsetManager.itemInsetAfter()
+                tint = tintManager?.asFixed()?.itemTint()
+            } else {
+                val groupIndex = lm.getGroupIndex(itemPosition)
+                spanSize = lm.getSpanSize(itemPosition)
+                lineAccumulatedSpan =
+                    lm.getAccumulatedSpanInLine(spanSize, itemPosition, groupIndex)
+                showDivider = visibilityManager.itemVisibility(groupCount, groupIndex)
+                if (showDivider == VisibilityManager.VisibilityType.NONE) continue
+
+                divider = drawableManager.itemDrawable(groupCount, groupIndex)
+                size = sizeManager.itemSize(divider, orientation, groupCount, groupIndex)
+                insetBefore = insetManager.itemInsetBefore(groupCount, groupIndex)
+                insetAfter = insetManager.itemInsetAfter(groupCount, groupIndex)
+                tint = tintManager?.itemTint(groupCount, groupIndex)
+            }
+
             if (spanCount > 1 && (insetBefore > 0 || insetAfter > 0)) {
                 insetBefore = 0
                 insetAfter = 0
                 Log.e(TAG, "the inset won't be applied with a span major than 1.")
             }
 
-            tintManager?.let {
-                val tint = it.itemTint(groupCount, groupIndex)
+            tint?.let {
                 val wrappedDrawable = DrawableCompat.wrap(divider)
-                DrawableCompat.setTint(wrappedDrawable, tint)
+                DrawableCompat.setTint(wrappedDrawable, it)
                 divider = wrappedDrawable
             }
 
@@ -539,6 +587,6 @@ class RecyclerViewDivider internal constructor(
          * @param context the [Context] that can be used to access to resources.
          * @return new instance of [RecyclerViewDivider.Builder] with the new configurations set.
          */
-        fun provideDividerBuilder(context: Context): RecyclerViewDivider.Builder
+        fun provideDividerBuilder(context: Context): Builder
     }
 }

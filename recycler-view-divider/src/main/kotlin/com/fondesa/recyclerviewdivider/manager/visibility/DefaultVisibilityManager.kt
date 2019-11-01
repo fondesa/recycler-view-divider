@@ -19,10 +19,8 @@ package com.fondesa.recyclerviewdivider.manager.visibility
 /**
  * Default implementation of [VisibilityManager] that will show all dividers.
  */
-class DefaultVisibilityManager : VisibilityManager {
+class DefaultVisibilityManager : FixedVisibilityManager() {
 
-    override fun itemVisibility(
-        groupCount: Int,
-        groupIndex: Int
-    ): VisibilityManager.VisibilityType = VisibilityManager.VisibilityType.ALL
+    override fun itemVisibility(): VisibilityManager.VisibilityType =
+        VisibilityManager.VisibilityType.ALL
 }

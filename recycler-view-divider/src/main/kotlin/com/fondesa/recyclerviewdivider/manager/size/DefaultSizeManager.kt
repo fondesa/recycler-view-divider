@@ -26,7 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
  * drawable's dimensions.
  * If the dimensions can't be calculated, a default size will be used.
  */
-class DefaultSizeManager : SizeManager {
+class DefaultSizeManager : FixedSizeManager {
 
     private val defaultSize: Int
 
@@ -51,8 +51,9 @@ class DefaultSizeManager : SizeManager {
     }
 
     @Px
-    override fun itemSize(drawable: Drawable, orientation: Int, groupCount: Int, groupIndex: Int): Int {
-        val size = if (orientation == RecyclerView.VERTICAL) drawable.intrinsicHeight else drawable.intrinsicWidth
+    override fun itemSize(drawable: Drawable, orientation: Int): Int {
+        val size =
+            if (orientation == RecyclerView.VERTICAL) drawable.intrinsicHeight else drawable.intrinsicWidth
         // If the size is equal to -1, it means that the drawable's sizes can't be defined, e.g. ColorDrawable.
         return if (size == -1) defaultSize else size
     }
