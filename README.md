@@ -6,7 +6,10 @@ A RecyclerView's divider that can be customized with simple properties or advanc
 
 <img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/art/screenshot_div_simple.png" height="500">   <img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/art/screenshot_grid.png" height="500">   <img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/art/screenshot_div_draw.png" height="500">
 
-It supports completely LinearLayoutManager and GridLayoutManager.
+It supports:
+- `LinearLayoutManager` (completely)
+- `GridLayoutManager` (completely)
+- `StaggeredGridLayoutManager` (partially)
 
 Usage
 ------
@@ -38,7 +41,7 @@ You can download a jar from GitHub's [releases page](https://github.com/Fondesa/
 
 ```gradle
 dependencies {
-    compile 'com.github.fondesa:recycler-view-divider:3.0.2'
+    compile 'com.github.fondesa:recycler-view-divider:3.1.0'
 }
 ```
 
@@ -48,7 +51,7 @@ dependencies {
 <dependency>
   <groupId>com.github.fondesa</groupId>
   <artifactId>recycler-view-divider</artifactId>
-  <version>3.0.2</version>
+  <version>3.1.0</version>
   <type>pom</type>
 </dependency>
 ```
