@@ -14,30 +14,16 @@
  * limitations under the License.
  */
 
-apply plugin: "groovy"
-apply plugin: 'kotlin'
+package com.fondesa.recyclerviewdivider.buildtools
 
-buildscript {
-    apply from: 'parse-dependencies.gradle'
-    repositories {
-        jcenter()
-        google()
-    }
-    dependencies {
-        classpath deps.kotlinPlugin
+import com.android.build.gradle.BaseExtension
+import com.android.build.gradle.BasePlugin
+import org.gradle.api.Project
+
+internal inline fun Project.withAndroidPlugin(crossinline block: BaseExtension.() -> Unit) {
+    plugins.withType(BasePlugin::class.java) {
+        androidExtension.apply(block)
     }
 }
 
-repositories {
-    jcenter()
-    google()
-    maven { url "https://plugins.gradle.org/m2/" }
-}
-
-dependencies {
-    implementation deps.androidPlugin
-    implementation deps.bintrayPlugin
-    implementation deps.dokkaPlugin
-    implementation deps.kotlinPlugin
-    implementation deps.kotlinStdLib
-}
+private val Project.androidExtension: BaseExtension get() = extensions.getByName("android") as BaseExtension

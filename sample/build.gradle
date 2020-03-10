@@ -14,24 +14,27 @@
  * limitations under the License.
  */
 
-new AndroidSharedPlugin(
-        type: AndroidSharedPlugin.APP,
-        config: {
-            defaultConfig.applicationId "com.fondesa.recyclerviewdivider.sample"
+apply plugin: 'com.android.application'
+apply plugin: 'recycler-view-divider-android'
 
-            flavorDimensions "app"
+android {
+    defaultConfig.applicationId "com.fondesa.recyclerviewdivider.sample"
 
-            productFlavors {
-                local.dimension "app"
-                maven.dimension "app"
-            }
+    flavorDimensions "app"
+
+    productFlavors {
+        local {
+            dimension "app"
+            isDefault.set(true)
         }
-).apply(project)
+        remote.dimension "app"
+    }
+}
 
 dependencies {
     implementation Deps.androidxAppCompat
 
     localImplementation project(":recycler-view-divider")
 
-    mavenImplementation Deps.recyclerViewDivider
+    remoteImplementation Deps.recyclerViewDivider
 }
