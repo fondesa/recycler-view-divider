@@ -14,30 +14,18 @@
  * limitations under the License.
  */
 
-apply plugin: "groovy"
-apply plugin: 'kotlin'
+package com.fondesa.recyclerviewdivider.buildtools
 
-buildscript {
-    apply from: 'parse-dependencies.gradle'
-    repositories {
-        jcenter()
-        google()
-    }
-    dependencies {
-        classpath deps.kotlinPlugin
-    }
+import org.gradle.api.Project
+import java.io.File
+import java.util.*
+
+internal fun Project.readPropertiesOf(fileName: String): Properties {
+    val rootPropsFile = rootProject.file(fileName)
+    val propsFile = file(fileName)
+    return readPropertiesFiles(rootPropsFile, propsFile)
 }
 
-repositories {
-    jcenter()
-    google()
-    maven { url "https://plugins.gradle.org/m2/" }
-}
-
-dependencies {
-    implementation deps.androidPlugin
-    implementation deps.bintrayPlugin
-    implementation deps.dokkaPlugin
-    implementation deps.kotlinPlugin
-    implementation deps.kotlinStdLib
+private fun readPropertiesFiles(vararg files: File): Properties = Properties().apply {
+    files.filter { file -> file.exists() }.forEach { file -> load(file.inputStream()) }
 }

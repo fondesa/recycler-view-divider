@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-new AndroidSharedPlugin(
-        type: AndroidSharedPlugin.LIBRARY
-).apply(project)
+apply plugin: 'com.android.library'
+apply plugin: 'recycler-view-divider-android'
 
 new BintrayDeployPlugin().apply(project)
 
