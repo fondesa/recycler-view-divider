@@ -25,7 +25,21 @@ buildscript {
         classpath Deps.bintrayPlugin
         classpath Deps.dokkaPlugin
         classpath Deps.kotlinPlugin
+        classpath Deps.releasesHubPlugin
     }
+}
+
+apply plugin: "com.releaseshub.gradle.plugin"
+
+releasesHub {
+    dependenciesBasePath = "buildSrc/src/main/kotlin/"
+    dependenciesClassNames = ["Deps.kt"]
+    pullRequestEnabled = true
+    pullRequestLabels = ["dependencies"]
+    headBranchPrefix = "update-dependency/"
+    gitHubRepositoryOwner = "Fondesa"
+    gitHubRepositoryName = "RecyclerViewDivider"
+    excludes = ["gradle"]
 }
 
 allprojects {
