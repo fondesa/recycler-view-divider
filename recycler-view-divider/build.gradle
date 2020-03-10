@@ -16,8 +16,7 @@
 
 apply plugin: 'com.android.library'
 apply plugin: 'recycler-view-divider-android'
-
-new BintrayDeployPlugin().apply(project)
+apply plugin: 'recycler-view-divider-deploy'
 
 dependencies {
     api Deps.androidxRecyclerView
