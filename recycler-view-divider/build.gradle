@@ -21,6 +21,6 @@ new AndroidSharedPlugin(
 new BintrayDeployPlugin().apply(project)
 
 dependencies {
-    api "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
-    api "androidx.recyclerview:recyclerview:$ANDROIDX_RECYCLER_VIEW_VERSION"
+    api Deps.androidxRecyclerView
+    api Deps.kotlinStdLib
 }
