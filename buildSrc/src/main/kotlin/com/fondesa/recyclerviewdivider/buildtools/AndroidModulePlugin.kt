@@ -21,6 +21,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jlleitschuh.gradle.ktlint.KtlintExtension
 
 /**
  * Applies the base configuration to all the Android modules of this project.
@@ -30,6 +31,7 @@ class AndroidModulePlugin : Plugin<Project> {
     override fun apply(project: Project) = with(project) {
         plugins.apply("kotlin-android")
         plugins.apply("org.jetbrains.dokka")
+        plugins.apply("org.jlleitschuh.gradle.ktlint")
 
         withAndroidPlugin {
             val androidProperties = readPropertiesOf("android-config.properties")
@@ -55,6 +57,10 @@ class AndroidModulePlugin : Plugin<Project> {
         }
         tasks.withType(KotlinCompile::class.java) {
             it.kotlinOptions.jvmTarget = "1.8"
+        }
+        extensions.configure(KtlintExtension::class.java) {
+            it.version.set("0.35.0")
+            it.enableExperimentalRules.set(true)
         }
         Unit
     }

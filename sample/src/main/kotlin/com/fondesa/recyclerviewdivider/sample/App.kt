@@ -24,6 +24,6 @@ import com.fondesa.recyclerviewdivider.RecyclerViewDivider
 class App : Application(), RecyclerViewDivider.BuilderProvider {
 
     override fun provideDividerBuilder(context: Context) = RecyclerViewDivider.Builder(context)
-            .color(ContextCompat.getColor(context, R.color.divider_color))
-            .size(context.resources.getDimensionPixelSize(R.dimen.divider_size))
+        .color(ContextCompat.getColor(context, R.color.divider_color))
+        .size(context.resources.getDimensionPixelSize(R.dimen.divider_size))
 }

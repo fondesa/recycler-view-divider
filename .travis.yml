@@ -31,10 +31,8 @@ branches:
     - master
 
 script:
-  # Build the library project.
-  - ./gradlew :recycler-view-divider:build -s
-  # Assemble the sample with the local libs.
-  - ./gradlew :sample:assembleLocal -s
+  # Builds the library project and assembles the sample with the local libs.
+  - ./gradlew :recycler-view-divider:check :recycler-view-divider:build :sample:assembleLocal -s
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock

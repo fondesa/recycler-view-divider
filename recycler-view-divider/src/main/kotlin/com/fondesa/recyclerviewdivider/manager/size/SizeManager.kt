@@ -34,7 +34,7 @@ interface SizeManager {
     /**
      * Defines a custom size for each group of divider.
      *
-     * @param drawable    current divider's [Drawable].
+     * @param drawable current divider's [Drawable].
      * @param orientation [RecyclerView.VERTICAL] or [RecyclerView.HORIZONTAL].
      * @param groupCount number of groups in a list (equal to the list size when the span count is 1).
      * @param groupIndex position of the group (equal to the item position when the span count is 1).
