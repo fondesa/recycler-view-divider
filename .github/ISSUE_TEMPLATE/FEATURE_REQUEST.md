@@ -7,8 +7,8 @@ assignees: ''
 
 ---
 
-<!-- A description of the feature you'd like. -->
 **Description**
+<!-- Describe the feature you'd like. -->
 
-<!-- Explain why this feature would be useful. -->
 **Motivation**
+<!-- Explain why this feature would be useful. -->
