@@ -18,13 +18,17 @@ package com.fondesa.recyclerviewdivider.sample
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider
-import java.util.*
+import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
 

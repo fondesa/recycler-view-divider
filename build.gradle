@@ -25,6 +25,7 @@ buildscript {
         classpath Deps.bintrayPlugin
         classpath Deps.dokkaPlugin
         classpath Deps.kotlinPlugin
+        classpath Deps.ktlint
         classpath Deps.releasesHubPlugin
     }
 }

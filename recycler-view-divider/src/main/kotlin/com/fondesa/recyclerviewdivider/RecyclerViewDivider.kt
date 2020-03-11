@@ -29,7 +29,15 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder
-import com.fondesa.recyclerviewdivider.extension.*
+import com.fondesa.recyclerviewdivider.extension.endMarginCompat
+import com.fondesa.recyclerviewdivider.extension.getAccumulatedSpanInLine
+import com.fondesa.recyclerviewdivider.extension.getGroupCount
+import com.fondesa.recyclerviewdivider.extension.getGroupIndex
+import com.fondesa.recyclerviewdivider.extension.getSpanSize
+import com.fondesa.recyclerviewdivider.extension.isRTL
+import com.fondesa.recyclerviewdivider.extension.orientation
+import com.fondesa.recyclerviewdivider.extension.spanCount
+import com.fondesa.recyclerviewdivider.extension.startMarginCompat
 import com.fondesa.recyclerviewdivider.manager.drawable.DefaultDrawableManager
 import com.fondesa.recyclerviewdivider.manager.drawable.DrawableManager
 import com.fondesa.recyclerviewdivider.manager.drawable.asFixed
@@ -109,8 +117,9 @@ class RecyclerViewDivider internal constructor(
         state: RecyclerView.State
     ) {
         val listSize = parent.adapter?.itemCount ?: 0
-        if (listSize <= 0)
+        if (listSize <= 0) {
             return
+        }
 
         val lm = parent.layoutManager ?: return
         val itemPosition = parent.getChildAdapterPosition(view)
@@ -132,11 +141,10 @@ class RecyclerViewDivider internal constructor(
             val lp = view.layoutParams as StaggeredGridLayoutManager.LayoutParams
             spanSize = lm.getSpanSize(lp)
             lineAccumulatedSpan = lm.getAccumulatedSpanInLine(lp)
-
             showDivider = visibilityManager.asFixed().itemVisibility()
-            if (showDivider == VisibilityManager.VisibilityType.NONE)
+            if (showDivider == VisibilityManager.VisibilityType.NONE) {
                 return
-
+            }
             divider = drawableManager.asFixed().itemDrawable()
             size = sizeManager.asFixed().itemSize(divider, orientation)
         } else {
@@ -145,9 +153,9 @@ class RecyclerViewDivider internal constructor(
             spanSize = lm.getSpanSize(itemPosition)
             lineAccumulatedSpan = lm.getAccumulatedSpanInLine(spanSize, itemPosition, groupIndex)
             showDivider = visibilityManager.itemVisibility(groupCount, groupIndex)
-            if (showDivider == VisibilityManager.VisibilityType.NONE)
+            if (showDivider == VisibilityManager.VisibilityType.NONE) {
                 return
-
+            }
             divider = drawableManager.itemDrawable(groupCount, groupIndex)
             size = sizeManager.itemSize(divider, orientation, groupCount, groupIndex)
         }
@@ -196,9 +204,9 @@ class RecyclerViewDivider internal constructor(
         val listSize = adapter?.itemCount ?: 0
 
         // if the divider isn't a simple space, it will be drawn
-        if (isSpace || listSize == 0)
+        if (isSpace || listSize == 0) {
             return
-
+        }
         var left: Int
         var top: Int
         var right: Int
@@ -221,7 +229,6 @@ class RecyclerViewDivider internal constructor(
                 // Avoid the computation if the position of at least one view cannot be retrieved.
                 return
             }
-
             val spanSize: Int
             val lineAccumulatedSpan: Int
             val showDivider: VisibilityManager.VisibilityType
@@ -351,9 +358,7 @@ class RecyclerViewDivider internal constructor(
                     left = childLeft + insetBefore - startMargin
                     right = childRight - insetAfter + endMargin
                 }
-
                 drawWithBounds(left, top, right, bottom)
-
             } else {
                 // The RecyclerView is horizontal.
                 if (spanCount > 1 && spanSize < spanCount) {
@@ -365,7 +370,6 @@ class RecyclerViewDivider internal constructor(
                         left = childLeft - startMargin
                         right = childRight + endMargin + size
                     }
-
 
                     when (lineAccumulatedSpan) {
                         spanSize -> {
@@ -410,7 +414,6 @@ class RecyclerViewDivider internal constructor(
                     left = childRight + endMargin
                     right = left + size
                 }
-
                 drawWithBounds(left, top, right, bottom)
             }
         }

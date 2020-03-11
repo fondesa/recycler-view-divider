@@ -87,8 +87,7 @@ internal fun StaggeredGridLayoutManager.getSpanSize(lp: StaggeredGridLayoutManag
  */
 internal fun RecyclerView.LayoutManager.getGroupIndex(itemPosition: Int): Int =
     when (this) {
-        is GridLayoutManager -> spanSizeLookup?.getSpanGroupIndex(itemPosition, spanCount)
-            ?: itemPosition
+        is GridLayoutManager -> spanSizeLookup?.getSpanGroupIndex(itemPosition, spanCount) ?: itemPosition
         is StaggeredGridLayoutManager -> throw IllegalStateException(
             "The method getGroupIndex(Int) shouldn't be invoked on a ${StaggeredGridLayoutManager::class.java.simpleName}"
         )
@@ -131,9 +130,9 @@ internal fun RecyclerView.LayoutManager.getGroupCount(itemCount: Int): Int = whe
  * This span is calculated through the sum of the previous items' spans
  * in this line and the current item's span.
  *
- * @param spanSize     span size of the item.
+ * @param spanSize span size of the item.
  * @param itemPosition position of the current item.
- * @param groupIndex   current index of the group.
+ * @param groupIndex current index of the group.
  * @return accumulated span.
  */
 internal fun RecyclerView.LayoutManager.getAccumulatedSpanInLine(
@@ -142,7 +141,10 @@ internal fun RecyclerView.LayoutManager.getAccumulatedSpanInLine(
     groupIndex: Int
 ): Int {
     if (this is StaggeredGridLayoutManager) {
-        throw IllegalStateException("The method getAccumulatedSpanInLine(Int, Int, Int) shouldn't be invoked on a ${StaggeredGridLayoutManager::class.java.simpleName}")
+        throw IllegalStateException(
+            "The method getAccumulatedSpanInLine(Int, Int, Int) shouldn't be invoked on a " +
+                StaggeredGridLayoutManager::class.java.simpleName
+        )
     }
     var lineAccumulatedSpan = spanSize
     var tempPos: Int = itemPosition - 1

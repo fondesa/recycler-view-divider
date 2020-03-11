@@ -40,4 +40,5 @@ dependencies {
     implementation deps.dokkaPlugin
     implementation deps.kotlinPlugin
     implementation deps.kotlinStdLib
+    implementation deps.ktlint
 }

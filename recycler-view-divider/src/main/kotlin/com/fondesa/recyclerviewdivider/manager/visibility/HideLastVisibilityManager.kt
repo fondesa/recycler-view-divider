@@ -25,8 +25,9 @@ class HideLastVisibilityManager : VisibilityManager {
     override fun itemVisibility(
         groupCount: Int,
         groupIndex: Int
-    ): VisibilityManager.VisibilityType = if (groupIndex == groupCount - 1)
+    ): VisibilityManager.VisibilityType = if (groupIndex == groupCount - 1) {
         VisibilityManager.VisibilityType.ITEMS_ONLY
-    else
+    } else {
         VisibilityManager.VisibilityType.ALL
+    }
 }

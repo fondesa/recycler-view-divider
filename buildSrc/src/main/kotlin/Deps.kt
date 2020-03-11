@@ -22,6 +22,7 @@ object Deps {
     const val dokkaPlugin = "org.jetbrains.dokka:dokka-gradle-plugin:0.9.18"
     const val kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.70"
     const val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.70"
+    const val ktlint = "org.jlleitschuh.gradle:ktlint-gradle:9.2.1"
     const val recyclerViewDivider = "com.github.fondesa:recycler-view-divider:3.1.0"
     const val releasesHubPlugin = "com.releaseshub:releases-hub-gradle-plugin:1.3.1"
 }
