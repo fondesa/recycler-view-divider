@@ -20,8 +20,8 @@ object Deps {
     const val androidxRecyclerView = "androidx.recyclerview:recyclerview:1.0.0"
     const val bintrayPlugin = "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"
     const val dokkaPlugin = "org.jetbrains.dokka:dokka-gradle-plugin:0.9.18"
-    const val kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.50"
-    const val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.50"
+    const val kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.70"
+    const val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.70"
     const val recyclerViewDivider = "com.github.fondesa:recycler-view-divider:3.1.0"
     const val releasesHubPlugin = "com.releaseshub:releases-hub-gradle-plugin:1.3.1"
 }
