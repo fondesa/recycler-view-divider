@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Fondesa
+ * Copyright (c) 2020 Giorgio Antonioli
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package com.fondesa.recyclerviewdivider.buildtools
 
 import org.gradle.api.Project
 import java.io.File
-import java.util.*
+import java.util.Properties
 
 internal fun Project.readPropertiesOf(fileName: String): Properties {
     val rootPropsFile = rootProject.file(fileName)
