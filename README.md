@@ -1,10 +1,10 @@
 RecyclerViewDivider
 ===============
-[![Build Status](https://travis-ci.org/Fondesa/RecyclerViewDivider.svg?branch=master)](https://travis-ci.org/Fondesa/RecyclerViewDivider)
+[![Build Status](https://travis-ci.org/fondesa/RecyclerViewDivider.svg?branch=master)](https://travis-ci.org/fondesa/RecyclerViewDivider)
 
 A RecyclerView's divider that can be customized with simple properties or advanced ones.
 
-<img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/art/screenshot_div_simple.png" height="500">   <img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/art/screenshot_grid.png" height="500">   <img src="https://raw.githubusercontent.com/Fondesa/RecyclerViewDivider/master/art/screenshot_div_draw.png" height="500">
+<img src="https://raw.githubusercontent.com/fondesa/RecyclerViewDivider/master/art/screenshot_div_simple.png" height="500">   <img src="https://raw.githubusercontent.com/fondesa/RecyclerViewDivider/master/art/screenshot_grid.png" height="500">   <img src="https://raw.githubusercontent.com/fondesa/RecyclerViewDivider/master/art/screenshot_div_draw.png" height="500">
 
 It supports:
 - `LinearLayoutManager` (completely)
@@ -23,7 +23,7 @@ RecyclerViewDivider.with(context).build().addTo(recyclerView);
 Each divider can be customized with various properties.
 These properties can have a common value for every divider or a specific value related to a divider instance.
 
-For further information, check the [wiki](https://github.com/Fondesa/RecyclerViewDivider/wiki).
+For further information, check the [wiki](https://github.com/fondesa/RecyclerViewDivider/wiki).
 
 Compatibility
 ------
@@ -35,7 +35,7 @@ Compatibility
 Integration
 ------
 
-You can download a jar from GitHub's [releases page](https://github.com/Fondesa/RecyclerViewDivider/releases) or grab it from ```jcenter()``` or ```mavenCentral()```.
+You can download a jar from GitHub's [releases page](https://github.com/fondesa/RecyclerViewDivider/releases) or grab it from ```jcenter()``` or ```mavenCentral()```.
 
 ### Gradle ###
 
