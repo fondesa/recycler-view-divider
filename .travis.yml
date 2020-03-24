@@ -1,7 +1,6 @@
+os: linux
 language: android
 jdk: oraclejdk8
-# Use the Travis container-based infrastructure.
-sudo: false
 
 env:
   global:
