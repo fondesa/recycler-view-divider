@@ -17,24 +17,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'recycler-view-divider-android'
 
-android {
-    defaultConfig.applicationId "com.fondesa.recyclerviewdivider.sample"
-
-    flavorDimensions "app"
-
-    productFlavors {
-        local {
-            dimension "app"
-            isDefault.set(true)
-        }
-        remote.dimension "app"
-    }
-}
+android.defaultConfig.applicationId "com.fondesa.recyclerviewdivider.sample"
 
 dependencies {
+    implementation project(":recycler-view-divider")
     implementation Deps.androidxAppCompat
-
-    localImplementation project(":recycler-view-divider")
-
-    remoteImplementation Deps.recyclerViewDivider
 }

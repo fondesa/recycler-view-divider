@@ -16,8 +16,8 @@ Usage
 
 A basic version of the divider can be attached to a ```RecyclerView``` through this line:
 
-```java
-RecyclerViewDivider.with(context).build().addTo(recyclerView);
+```kotlin
+RecyclerViewDivider.with(context).build().addTo(recyclerView)
 ```
 
 Each divider can be customized with various properties.
@@ -39,19 +39,10 @@ You can download a jar from GitHub's [releases page](https://github.com/fondesa/
 
 ### Gradle ###
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.fondesa/recycler-view-divider/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.fondesa/recycler-view-divider) 
+
 ```gradle
 dependencies {
-    compile 'com.github.fondesa:recycler-view-divider:3.1.0'
+    implementation 'com.github.fondesa:recycler-view-divider:x.x.x'
 }
-```
-
-### Maven ###
-
-```xml
-<dependency>
-  <groupId>com.github.fondesa</groupId>
-  <artifactId>recycler-view-divider</artifactId>
-  <version>3.1.0</version>
-  <type>pom</type>
-</dependency>
 ```

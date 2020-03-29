@@ -24,10 +24,20 @@ buildscript {
         classpath Deps.androidPlugin
         classpath Deps.bintrayPlugin
         classpath Deps.dokkaPlugin
+        classpath Deps.gitHubReleasePlugin
         classpath Deps.kotlinPlugin
         classpath Deps.ktlint
         classpath Deps.releasesHubPlugin
     }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        google()
+    }
+    // Adds the version of this library to all the projects, including the root project.
+    apply plugin: "recycler-view-divider-version"
 }
 
 apply plugin: "com.releaseshub.gradle.plugin"
@@ -43,11 +53,19 @@ releasesHub {
     excludes = ["gradle"]
 }
 
-allprojects {
-    repositories {
-        jcenter()
-        google()
-    }
+apply plugin: "com.github.breadmoirai.github-release"
+
+// The release assets will be configured through recycler-view-divider-deploy.
+githubRelease {
+    owner "fondesa"
+    repo "recycler-view-divider"
+    tagName version
+    releaseName "RecyclerViewDivider $version"
+    body "TBD"
+}
+def gitHubToken = project.properties["github.token"] ?: System.getenv("GITHUB_TOKEN")
+if (gitHubToken != null) {
+    githubRelease.token = gitHubToken
 }
 
 task clean(type: Delete) {
