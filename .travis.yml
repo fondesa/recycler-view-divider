@@ -8,6 +8,16 @@ env:
     - BUILD_TOOLS_VERSION=29.0.2
     # Android API level used in this project.
     - API=29
+    # Variable "BINTRAY_API_KEY" (deploy).
+    - secure: "lXuZ7SSfu+ndaOnrfdtPo+Rc6fc2TGlY+WqSFTl7OsqkOPDUOc5hMRbqwifPbFEisNncB/BPyNGS5Tzq19fX9L2+EqWC8UB/cV4QktzaLLrmUuASW8etPjwW3NHL7WzcBr9QxE2309m6gQE/umGReWNvNs788bWw2lUX1HLBv9MZhgCoimz3Y8/CymlTTOP5k7qOBtQG9bISb136Iue1NptFPyKSsVWfB40OtopIaZ+hnwFHZbTvM/y9TZPhEH4HA9NUjn3k5ZdVvKfLqg92wv+wgO4i7gC/vtoh7rnB8ml5Knxu3c1PGDdkbNr+XYHegj150Mr+lidL3g3B3DKwyZRvXTcRq5fxfhGfq+dMA9bGSg3n8s9TEWSy/p8XMzUPqTH8IEJO7crGlhL6EftFENas5oNFyGqPN1V7hCB6iL0MsNCvgMyLD3+vnzPe30m+yH44rnca4dxbCiF79RW5PwPeFzRkOjhnDMWfmgLJJEeDel60A15Cq35iga4m0tNDzZrVInpUtuvUV4sqY+5nlkwEh8+42KBlZfPmTMSb21cAhJZ4q/Cns/VGJFG36iqRcr1rX8apdVFhqb8qruf+xiHnmS6VJN0dp/wM6jOiSADmBSqxjsvwdsRArGcvTnRf03zDW7MzefUKm2V/BFIO4HmLDyLzvv1RfQS+7U9AjU0="
+    # Variable "BINTRAY_GPG_PASSWORD" (deploy).
+    - secure: "Sro833XY/xKhpoSeBcYURKH8JZ3yC8NBviLHIpQQEWca95ZgHwlN+FaQAznXLfqSUw+fP8xr/PCJLX5Kn+uCVTr5oLDTImcO/OhldpTp0SqOaU2XJXnksjjS870tZnuVYSAoDVhvu8b6/entlHwdq05VnAMUrQ+xEl3gbughZ+9KoV+kh0iVcVCdk6bo6dng4nibbko5LMiY1Lo3ft3+Dg+ABGixYqc+18g9GiFlKwI2ozMzk4v5wneP4iCDZDBJiBUYMf7uVeSa4aLSC1fHdp9T0hb9XFu/3mO8YVAJTh/RrGJLjGsPo4Jg+xRL90L8OUdA6jPTYHyNRJwPVTYHNHzu1MKh+LVZoltsZjSV2R1padq+2kP/h4CiD/HlMZwoDB+HR0DwGDzGLdauDtrnA6L4dhwNHrZOqyBgPfuPhBH9Twqlm6SjNnFshoaFKdM3eXPGPA7jWf9XAr4wxfGuELSmWOI6mmEFkhXNWz4kZg0lsJ4nyZ4RkdTXvSi3rtJjyytNv2epgdmDhsybqsZhvbGzo5hABSu44+VE8xLZVqr6B9lq5eXFlFWMKbdMpSUMnx9qH9sVXJl7znAm4gv3uO8kfoT65EV7aPOpya7zs+tNshZhNXtNjV804+ctzXPxIRyHPT/NPZXfs7CiR8yx3ul4YWqDC2vjdX3T+BdP/kU="
+    # Variable "MAVEN_CENTRAL_USERNAME" (deploy).
+    - secure: "WxJbI1sJlAAUFzhaWYjkY+uXzvlAqXaQUZjFnt5T81eKwRj2v8dqak/nc6V5gDfZpvq1IYah4/oi8T1CHPkzWeEsvZ8Djs8W94JHGJ6HHL4asQ47CzcwM236hoEeQDsJP7y3T4RwhmUv5zT1DC4c7gIGxEh+FtuUTd0qIo9LS8DvEhpGLAlkmBeGqNwKlusL0Io9m68cvDf3jE+y7o4rR3qfmLcHieh0p6IOxYOXlKjmuJ6V3usVE/v6TUGapAxfwSBJNpFnj8i86vKb+hk7V1cq8jUyh+rHr69/lKk/tGhel8rv2NItxjjtVykUNFtpXgGh6jHLLDHLFHOZ0R5T5pNTL8O28Is/lfZCM2hSwxUhnzd0lbWQqW24YE4qsC7EHUOyLa182ZnOJ3aSaQknowvPLC7h5tD7645CcunvoHdPzUQdcBEm1j9FfkS335S+FwUntjtot6e06nV1Wf6ilG4IyW9JWupofKAv6bRWdhEVxJGc9dFb6YHw8ydKQrGMGZpBJiHKAmEeA8w9J0nGwGypf1Iqsr6flsGlSe8YzufN50OtZlgfV+QKwdDpLmT9C8T5VFRAwCd4lVhLNE+ygrgXuNVonmjEtkgkObmNI/VzFMXmS+mXuOCGhTzIjCFyCaPviraKyO2H593pT8lsL9L++QPFDLa0jB9oJ9OuYUk="
+    # Variable "MAVEN_CENTRAL_PASSWORD" (deploy).
+    - secure: "NXTdVeEG5NXOM/mJo0V2XwdY6l+xLpkOVuZxSzDQUodJDdPb7rlxBB5hcgDD5c6lsmuEv24i+OGM8fAgqI4wqjdBNC/od/ObEbpxT54zukoF8Vq9YBJn3bjDmtMInXKdmTIaHmnaw+OP8QuCoWYG2JvXeCXxgM8oc9FWVIf4G4dazWrnpwhJSypu9BES/FLRxYChSx4/addWuerSlkvTM5XxR0EJAcuF1SO9Mhyf7FtJYwC2XWTa6xxJyUFciKRxSCQR5SmWwz2rxUbmLnAeo/lVMxe55RaQy0TpOYE+MtatQS1tVFgJaaKPAS14bs6vtuaw50/+93JRttSeguPvgC6VKFbirxHp2oA+PsABRp/v30hHT3+rx3xvYtQvTx/UYNkuc3JH8QySkDaZJJh70qma0crMTX3J50Xg1Sts+DZAXl00Ed8X0arcJQlp5mwQba0eYsIY1+Qa8BqdOT6w+FKCHKx/uLPePB29upPZ3Zkee7VgGFm1DgcRhvXpmmow74i1xnPn6iaTGyUOcjnzOM3mVoSvwUBcR7hIo3BRWC15gEKIkQizSxrkv64Od3P+N9wtkyKewQA6z3oCYDErjoQUNAS2h4KRfTd+jfkQOowpR5QMJGjc2HgNomkWddGyvWs0zMi4v9IftXf+Wcn8qUsar/aYDn4zXls5BxaB1Ro="
+    # Variable "GITHUB_TOKEN" (deploy).
+    - secure: "Ub/JSdCLT0d8lpWeDFx0rfvJnslAYZFQXezX69G/aZBuLUC0J+684Fb2WDQS8v0u3blZeys443Ou5TOu02vBdYP3g3D4yURLtcQGoQYSWu7X5pNZ7ahk/7rj4d3jzcg6fObDuvy2UBRZy5LlzRoghtTeqpUz3vu0QUkXhPVTUoJ/xsfr/Ly8xPZp77fdKCaIPpAH8Pq9ptQg3BF+XaG+sc0zoyPil0+q1OxL+1h1QxubaPEsLDzIQAqaEZoSLo62z9ZeGbcxyaxo0bGvowIEoP7egYUB2SsZADgp7gdYITKzVW+I6tqw6DK+Rc1qHfejUSG7xFCIqJx2IpxxWppfU0TwReGxIF1kHwvEnglYc5+A2TbscnkrQIMXkZ0bF46odEoBpH4TOyXZjSjEF2AW20gFo8d2npTEfPAa+1Lum2+XoEjzx5xsgH9pccp10CmOg+G3XU0f+E78F23AuL/mvwqoshvyGuUz0qVQxSgst//kF0BrJuR88rmCQJcL6bBV9hU4lMS6ZWsg8sSWXxy8d+i4JOOH292xNnrMkc+fvT79ZSBVRuvpysVJfAFcMbstfSLvwESdV9Bl3pfWRKCReTOfchiH9Ju2sYnr2/ns+ealGxPqvWfDvPmngegfpylKdT/gUpjS/++DDQnIOn9c3kx36/LLv5zJ5wRmh3N1WRw="
 
 before_install:
   - yes | sdkmanager "platforms;android-${API}"
@@ -28,10 +38,18 @@ notifications:
 branches:
   only:
     - master
+    # Matches all the tags in the format major.minor.patch (e.g. 1.12.3).
+    # The regex must be surrounded with "/" following the Travis specs.
+    - /^(\d+)\.(\d+)\.(\d+)$/
 
 script:
-  # Builds the library project and assembles the sample with the local libs.
-  - ./gradlew :recycler-view-divider:check :recycler-view-divider:build :sample:assembleLocal -s
+  - ./gradlew build -s
+
+deploy:
+  provider: script
+  script: ./gradlew publishLibrary -Pversion.name=$TRAVIS_TAG
+  on:
+    tags: true
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock

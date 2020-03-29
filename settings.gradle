@@ -14,5 +14,7 @@
  * limitations under the License.
  */
 
+rootProject.name = "recycler-view-divider-root"
+
 include ':recycler-view-divider'
 include ':sample'
