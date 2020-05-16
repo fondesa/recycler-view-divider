@@ -16,144 +16,38 @@
 
 package com.fondesa.recyclerviewdivider.sample
 
-import android.graphics.Color
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Button
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.fondesa.recyclerviewdivider.RecyclerViewDivider
-import java.util.ArrayList
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.fondesa.recyclerviewdivider.sample.grid.GridSampleActivity
+import com.fondesa.recyclerviewdivider.sample.linear.LinearSampleActivity
+import com.fondesa.recyclerviewdivider.sample.staggered.StaggeredSampleActivity
 
 class MainActivity : AppCompatActivity() {
-
-    companion object {
-        private const val LIST_SIZE = 16
-        private const val SPAN_COUNT = 3
-        private const val SHOW = "ALL"
-        private const val REMOVE = "REMOVE"
-    }
-
-    private var dividerShown: Boolean = false
-
-    private lateinit var firstDivider: RecyclerViewDivider
-    private lateinit var secondDivider: RecyclerViewDivider
-
-    private val firstRecyclerView by lazy { findViewById<RecyclerView>(R.id.first_recycler_view) }
-    private val secondRecyclerView by lazy { findViewById<RecyclerView>(R.id.second_recycler_view) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val firstManager = firstRecyclerView.layoutManager as GridLayoutManager
-        firstManager.spanCount = SPAN_COUNT
-        firstManager.spanSizeLookup = DummyLookup()
-
-        val secondManager = secondRecyclerView.layoutManager as GridLayoutManager
-        secondManager.spanCount = 1
-//        secondManager.spanSizeLookup = DummyLookup()
-
-        firstDivider = RecyclerViewDivider.with(this)
-            .size(24)
-            .build()
-
-        firstDivider.addTo(firstRecyclerView)
-
-        secondDivider = RecyclerViewDivider.with(this)
-            .color(Color.BLACK)
-            .inset(0, 70)
-            .build()
-
-        secondDivider.addTo(secondRecyclerView)
-
-        dividerShown = true
-
-        val dummyList = (0 until LIST_SIZE).map { it + 1 }.toList()
-        val firstDummyAdapter = DummyAdapter(true)
-        firstRecyclerView.adapter = firstDummyAdapter
-        val secondDummyAdapter = DummyAdapter(false)
-        secondRecyclerView.adapter = secondDummyAdapter
-
-        firstDummyAdapter.updateList(dummyList)
-        secondDummyAdapter.updateList(dummyList)
+        setupButton<LinearLayoutManager>(R.id.linearButton) { launch<LinearSampleActivity>() }
+        setupButton<GridLayoutManager>(R.id.gridButton) { launch<GridSampleActivity>() }
+        setupButton<StaggeredGridLayoutManager>(R.id.staggeredButton) { launch<StaggeredSampleActivity>() }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.main, menu)
-        return true
+    private inline fun <reified T : Activity> launch() {
+        startActivity(Intent(this, T::class.java))
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        super.onPrepareOptionsMenu(menu)
-        menu.findItem(R.id.action_toggle_div).title = if (dividerShown) REMOVE else SHOW
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        super.onOptionsItemSelected(item)
-        if (item.itemId == R.id.action_toggle_div) {
-            if (dividerShown) {
-                firstDivider.removeFrom(firstRecyclerView)
-                secondDivider.removeFrom(secondRecyclerView)
-            } else {
-                firstDivider.addTo(firstRecyclerView)
-                secondDivider.addTo(secondRecyclerView)
-            }
-            dividerShown = !dividerShown
-            invalidateOptionsMenu()
-        }
-        return true
-    }
-
-    private inner class DummyAdapter internal constructor(private val first: Boolean) :
-        RecyclerView.Adapter<DummyViewHolder>() {
-        private var list: List<Int>? = null
-
-        init {
-            this.list = ArrayList()
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DummyViewHolder =
-            DummyViewHolder(
-                LayoutInflater.from(this@MainActivity)
-                    .inflate(
-                        if (first) R.layout.dummy_cell_first else R.layout.dummy_cell_second,
-                        parent,
-                        false
-                    )
-            )
-
-        override fun onBindViewHolder(holder: DummyViewHolder, position: Int) {
-            holder.setItemText(list!![position])
-        }
-
-        override fun getItemCount(): Int = list!!.size
-
-        internal fun updateList(list: List<Int>) {
-            if (list !== this.list) {
-                this.list = list
-                notifyDataSetChanged()
-            }
-        }
-    }
-
-    private class DummyViewHolder internal constructor(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
-
-        internal fun setItemText(item: Int) {
-            (itemView as TextView).text = item.toString()
-        }
-    }
-
-    private class DummyLookup : GridLayoutManager.SpanSizeLookup() {
-
-        override fun getSpanSize(position: Int): Int = position % 3 + 1
+    private inline fun <reified T : RecyclerView.LayoutManager> setupButton(@IdRes id: Int, crossinline onClick: () -> Unit) {
+        val button = findViewById<Button>(id)
+        button.text = T::class.java.simpleName
+        button.setOnClickListener { onClick() }
     }
 }

@@ -35,6 +35,7 @@ allprojects {
     repositories {
         jcenter()
         google()
+        maven { url 'https://jitpack.io' }
     }
     // Adds the version of this library to all the projects, including the root project.
     apply plugin: "recycler-view-divider-version"

@@ -44,6 +44,8 @@ class AndroidModulePlugin : Plugin<Project> {
                 it.sourceCompatibility = JavaVersion.VERSION_1_8
                 it.targetCompatibility = JavaVersion.VERSION_1_8
             }
+            // Used by Robolectric since Android resources can be used in unit tests.
+            testOptions.unitTests.isIncludeAndroidResources = true
             // Adds the Kotlin source set for each Java source set.
             sourceSets { sourceSetContainer ->
                 sourceSetContainer.all { sourceSet ->
@@ -56,7 +58,10 @@ class AndroidModulePlugin : Plugin<Project> {
             it.skipEmptyPackages = true
         }
         tasks.withType(KotlinCompile::class.java) {
-            it.kotlinOptions.jvmTarget = "1.8"
+            it.kotlinOptions {
+                jvmTarget = "1.8"
+                freeCompilerArgs = freeCompilerArgs + "-XXLanguage:+InlineClasses"
+            }
         }
         extensions.configure(KtlintExtension::class.java) {
             it.version.set("0.35.0")

@@ -16,9 +16,5 @@
   -->
 
 <resources>
-    <dimen name="divider_size">4dp</dimen>
-
-    <dimen name="first_div_size">16dp</dimen>
-
-    <dimen name="second_div_size">16dp</dimen>
+    <dimen name="recycler_view_padding">0dp</dimen>
 </resources>

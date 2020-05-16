@@ -21,23 +21,23 @@ import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider.Builder
 import com.fondesa.recyclerviewdivider.extension.endMarginCompat
-import com.fondesa.recyclerviewdivider.extension.getAccumulatedSpanInLine
-import com.fondesa.recyclerviewdivider.extension.getGroupCount
-import com.fondesa.recyclerviewdivider.extension.getGroupIndex
-import com.fondesa.recyclerviewdivider.extension.getSpanSize
-import com.fondesa.recyclerviewdivider.extension.isRTL
-import com.fondesa.recyclerviewdivider.extension.orientation
-import com.fondesa.recyclerviewdivider.extension.spanCount
 import com.fondesa.recyclerviewdivider.extension.startMarginCompat
+import com.fondesa.recyclerviewdivider.legacy.getAccumulatedSpanInLine
+import com.fondesa.recyclerviewdivider.legacy.getGroupCount
+import com.fondesa.recyclerviewdivider.legacy.getGroupIndex
+import com.fondesa.recyclerviewdivider.legacy.getSpanSize
+import com.fondesa.recyclerviewdivider.legacy.orientation
+import com.fondesa.recyclerviewdivider.legacy.spanCount
+import com.fondesa.recyclerviewdivider.log.logWarning
 import com.fondesa.recyclerviewdivider.manager.drawable.DefaultDrawableManager
 import com.fondesa.recyclerviewdivider.manager.drawable.DrawableManager
 import com.fondesa.recyclerviewdivider.manager.drawable.asFixed
@@ -75,7 +75,6 @@ class RecyclerViewDivider internal constructor(
 ) : RecyclerView.ItemDecoration() {
 
     companion object {
-        private val TAG = RecyclerViewDivider::class.java.simpleName
 
         /**
          * Creates a new [Builder] for the current [Context].
@@ -136,8 +135,10 @@ class RecyclerViewDivider internal constructor(
         val showDivider: VisibilityManager.VisibilityType
         val divider: Drawable
         @Px var size: Int
+        val isRTL: Boolean
 
         if (lm is StaggeredGridLayoutManager) {
+            val result = lm.findLastVisibleItemPositions(null)
             val lp = view.layoutParams as StaggeredGridLayoutManager.LayoutParams
             spanSize = lm.getSpanSize(lp)
             lineAccumulatedSpan = lm.getAccumulatedSpanInLine(lp)
@@ -147,6 +148,7 @@ class RecyclerViewDivider internal constructor(
             }
             divider = drawableManager.asFixed().itemDrawable()
             size = sizeManager.asFixed().itemSize(divider, orientation)
+            isRTL = lm.obtainLayoutDirection().isRightToLeft
         } else {
             val groupCount = lm.getGroupCount(listSize)
             val groupIndex = lm.getGroupIndex(itemPosition)
@@ -158,6 +160,7 @@ class RecyclerViewDivider internal constructor(
             }
             divider = drawableManager.itemDrawable(groupCount, groupIndex)
             size = sizeManager.itemSize(divider, orientation, groupCount, groupIndex)
+            isRTL = (lm as? LinearLayoutManager)?.obtainLayoutDirection()?.isRightToLeft == true
         }
 
         var halfSize = size / 2
@@ -165,7 +168,6 @@ class RecyclerViewDivider internal constructor(
         size = if (showDivider == VisibilityManager.VisibilityType.ITEMS_ONLY) 0 else size
         halfSize = if (showDivider == VisibilityManager.VisibilityType.GROUP_ONLY) 0 else halfSize
 
-        val isRTL = parent.isRTL
         val setRect = { leftB: Int, topB: Int, rightB: Int, bottomB: Int ->
             if (isRTL) {
                 outRect.set(rightB, topB, leftB, bottomB)
@@ -218,8 +220,11 @@ class RecyclerViewDivider internal constructor(
         val childCount = parent.childCount
 
         val groupCount = if (lm is StaggeredGridLayoutManager) -1 else lm.getGroupCount(listSize)
-
-        val isRTL = parent.isRTL
+        val isRTL = when (lm) {
+            is StaggeredGridLayoutManager -> lm.obtainLayoutDirection().isRightToLeft
+            is LinearLayoutManager -> lm.obtainLayoutDirection().isRightToLeft
+            else -> false
+        }
 
         for (i in 0 until childCount) {
             val child = parent.getChildAt(i)
@@ -270,7 +275,7 @@ class RecyclerViewDivider internal constructor(
             if (spanCount > 1 && (insetBefore > 0 || insetAfter > 0)) {
                 insetBefore = 0
                 insetAfter = 0
-                Log.e(TAG, "the inset won't be applied with a span major than 1.")
+                logWarning("the inset won't be applied with a span major than 1.")
             }
 
             tint?.let {

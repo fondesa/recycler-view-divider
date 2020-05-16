@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!--
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
   ~ Copyright (c) 2020 Giorgio Antonioli
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +15,7 @@
   -->
 
 <resources>
-    <string name="app_name">RecyclerViewDivider</string>
-
-    <string name="first_recycler_label">Horizontal divider</string>
-
-    <string name="second_recycler_label">Vertical divider</string>
+    <string name="app_name">RecyclerViewDivider Sample</string>
+    <string name="horizontal_recycler_label">Horizontal RecyclerView</string>
+    <string name="vertical_recycler_label">Vertical RecyclerView</string>
 </resources>
