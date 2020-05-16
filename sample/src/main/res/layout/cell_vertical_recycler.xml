@@ -26,4 +26,5 @@
     android:textColor="@android:color/black"
     android:textSize="20sp"
     android:textStyle="bold"
+    tools:ignore="Overdraw"
     tools:text="4" />
