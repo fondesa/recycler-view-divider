@@ -16,5 +16,5 @@
 
 rootProject.name = "recycler-view-divider-root"
 
-include ':recycler-view-divider'
-include ':sample'
+include ":recycler-view-divider"
+include ":sample"
