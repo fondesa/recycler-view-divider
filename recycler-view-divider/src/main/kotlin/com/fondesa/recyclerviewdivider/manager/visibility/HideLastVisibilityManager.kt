@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
+@file:Suppress("DEPRECATION", "OverridingDeprecatedMember")
+
 package com.fondesa.recyclerviewdivider.manager.visibility
 
 /**
  * Default implementation of [VisibilityManager] that will show all dividers
  * excluding the one after the last group.
  */
+@Deprecated("Use the new divider API instead.")
 class HideLastVisibilityManager : VisibilityManager {
 
     override fun itemVisibility(

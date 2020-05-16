@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("OverridingDeprecatedMember", "DEPRECATION")
+
 package com.fondesa.recyclerviewdivider.manager.inset
 
 import androidx.annotation.Px
@@ -22,6 +24,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 /**
  * Defines a [InsetManager] which doesn't depend on the item's position.
  */
+@Deprecated("Use the new divider API instead.")
 abstract class FixedInsetManager : InsetManager {
 
     @Px
@@ -33,12 +36,14 @@ abstract class FixedInsetManager : InsetManager {
     /**
      * @see InsetManager.itemInsetBefore
      */
+    @Deprecated("Use the new divider API instead.")
     @Px
     abstract fun itemInsetBefore(): Int
 
     /**
      * @see InsetManager.itemInsetAfter
      */
+    @Deprecated("Use the new divider API instead.")
     @Px
     abstract fun itemInsetAfter(): Int
 }
@@ -49,6 +54,7 @@ abstract class FixedInsetManager : InsetManager {
  * @return the [InsetManager] casted to [FixedInsetManager].
  * @throws IllegalArgumentException if [InsetManager] isn't a [FixedInsetManager].
  */
+@Deprecated("Use the new divider API instead.")
 internal fun InsetManager.asFixed(): FixedInsetManager {
     require(this is FixedInsetManager) {
         "Only ${FixedInsetManager::class.java.name} is supported with ${StaggeredGridLayoutManager::class.java.name}"

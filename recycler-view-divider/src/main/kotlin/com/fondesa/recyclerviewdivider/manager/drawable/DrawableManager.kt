@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("DEPRECATION")
+
 package com.fondesa.recyclerviewdivider.manager.drawable
 
 import android.graphics.drawable.Drawable
@@ -25,6 +27,7 @@ import com.fondesa.recyclerviewdivider.RecyclerViewDivider
  * You can add a custom [DrawableManager] in your [RecyclerViewDivider.Builder] using
  * the [RecyclerViewDivider.Builder.drawableManager] method.
  */
+@Deprecated("Use the new divider API instead.")
 interface DrawableManager {
 
     /**
@@ -34,5 +37,6 @@ interface DrawableManager {
      * @param groupIndex position of the group (equal to the item position when the span count is 1).
      * @return [Drawable] resource for the divider int the current position.
      */
+    @Deprecated("Use the new divider API instead.")
     fun itemDrawable(groupCount: Int, groupIndex: Int): Drawable
 }

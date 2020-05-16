@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
+@file:Suppress("DEPRECATION", "OverridingDeprecatedMember")
+
 package com.fondesa.recyclerviewdivider.manager.visibility
 
 /**
  * Default implementation of [VisibilityManager] that will show all dividers.
  */
+@Deprecated("Use the new divider API instead.")
 class DefaultVisibilityManager : FixedVisibilityManager() {
 
     override fun itemVisibility(): VisibilityManager.VisibilityType =

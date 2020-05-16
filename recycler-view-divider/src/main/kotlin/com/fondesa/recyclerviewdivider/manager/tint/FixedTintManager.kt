@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("OverridingDeprecatedMember", "DEPRECATION")
+
 package com.fondesa.recyclerviewdivider.manager.tint
 
 import androidx.annotation.ColorInt
@@ -22,6 +24,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 /**
  * Defines a [TintManager] which doesn't depend on the item's position.
  */
+@Deprecated("Use the new divider API instead.")
 abstract class FixedTintManager : TintManager {
 
     @ColorInt
@@ -30,6 +33,7 @@ abstract class FixedTintManager : TintManager {
     /**
      * @see TintManager.itemTint
      */
+    @Deprecated("Use the new divider API instead.")
     @ColorInt
     abstract fun itemTint(): Int
 }
@@ -40,6 +44,7 @@ abstract class FixedTintManager : TintManager {
  * @return the [TintManager] casted to [FixedTintManager].
  * @throws IllegalArgumentException if [TintManager] isn't a [FixedTintManager].
  */
+@Deprecated("Use the new divider API instead.")
 internal fun TintManager.asFixed(): FixedTintManager {
     require(this is FixedTintManager) {
         "Only ${FixedTintManager::class.java.name} is supported with ${StaggeredGridLayoutManager::class.java.name}"

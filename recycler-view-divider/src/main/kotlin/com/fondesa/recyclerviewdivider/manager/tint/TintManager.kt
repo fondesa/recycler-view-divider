@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("DEPRECATION")
+
 package com.fondesa.recyclerviewdivider.manager.tint
 
 import androidx.annotation.ColorInt
@@ -25,6 +27,7 @@ import com.fondesa.recyclerviewdivider.RecyclerViewDivider
  * You can add a custom [TintManager] in your [RecyclerViewDivider.Builder] using
  * the [RecyclerViewDivider.Builder.tintManager] method.
  */
+@Deprecated("Use the new divider API instead.")
 interface TintManager {
 
     /**
@@ -34,6 +37,7 @@ interface TintManager {
      * @param groupIndex position of the group (equal to the item position when the span count is 1).
      * @return tint color for the divider's drawable in the current position.
      */
+    @Deprecated("Use the new divider API instead.")
     @ColorInt
     fun itemTint(groupCount: Int, groupIndex: Int): Int
 }

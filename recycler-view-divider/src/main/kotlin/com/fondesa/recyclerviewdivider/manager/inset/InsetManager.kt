@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("DEPRECATION")
+
 package com.fondesa.recyclerviewdivider.manager.inset
 
 import androidx.annotation.Px
@@ -26,6 +28,7 @@ import com.fondesa.recyclerviewdivider.manager.drawable.DrawableManager
  * You can add a custom [DrawableManager] in your [RecyclerViewDivider.Builder] using
  * the [RecyclerViewDivider.Builder.drawableManager] method.
  */
+@Deprecated("Use the new divider API instead.")
 interface InsetManager {
 
     /**
@@ -36,6 +39,7 @@ interface InsetManager {
      * @param groupIndex position of the group (equal to the item position when the span count is 1).
      * @return inset before the item (expressed in pixels).
      */
+    @Deprecated("Use the new divider API instead.")
     @Px
     fun itemInsetBefore(groupCount: Int, groupIndex: Int): Int
 
@@ -47,6 +51,7 @@ interface InsetManager {
      * @param groupIndex position of the group (equal to the item position when the span count is 1).
      * @return inset after the item (expressed in pixels).
      */
+    @Deprecated("Use the new divider API instead.")
     @Px
     fun itemInsetAfter(groupCount: Int, groupIndex: Int): Int
 }

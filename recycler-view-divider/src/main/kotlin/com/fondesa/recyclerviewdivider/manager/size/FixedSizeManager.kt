@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("DEPRECATION", "OverridingDeprecatedMember")
+
 package com.fondesa.recyclerviewdivider.manager.size
 
 import android.graphics.drawable.Drawable
@@ -23,6 +25,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 /**
  * Defines a [SizeManager] which doesn't depend on the item's position.
  */
+@Deprecated("Use the new divider API instead.")
 abstract class FixedSizeManager : SizeManager {
 
     @Px
@@ -36,6 +39,7 @@ abstract class FixedSizeManager : SizeManager {
     /**
      * @see SizeManager.itemSize
      */
+    @Deprecated("Use the new divider API instead.")
     @Px
     abstract fun itemSize(drawable: Drawable, orientation: Int): Int
 }
@@ -46,6 +50,7 @@ abstract class FixedSizeManager : SizeManager {
  * @return the [SizeManager] casted to [FixedSizeManager].
  * @throws IllegalArgumentException if [SizeManager] isn't a [FixedSizeManager].
  */
+@Deprecated("Use the new divider API instead.")
 internal fun SizeManager.asFixed(): FixedSizeManager {
     require(this is FixedSizeManager) {
         "Only ${FixedSizeManager::class.java.name} is supported with ${StaggeredGridLayoutManager::class.java.name}"

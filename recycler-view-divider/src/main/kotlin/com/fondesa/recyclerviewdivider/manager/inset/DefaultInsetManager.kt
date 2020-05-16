@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("DEPRECATION", "OverridingDeprecatedMember")
+
 package com.fondesa.recyclerviewdivider.manager.inset
 
 import androidx.annotation.Px
@@ -24,6 +26,7 @@ import androidx.annotation.Px
  * @param insetBefore the inset that will be applied before each item.
  * @param insetAfter the inset that will be applied after each item.
  */
+@Deprecated("Use the new divider API instead.")
 class DefaultInsetManager(
     @Px private val insetBefore: Int,
     @Px private val insetAfter: Int
