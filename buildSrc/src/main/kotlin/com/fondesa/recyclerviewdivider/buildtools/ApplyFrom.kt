@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-apply plugin: "com.android.library"
-apply plugin: "recycler-view-divider-android"
-apply plugin: "recycler-view-divider-android-coverage"
-apply plugin: "recycler-view-divider-deploy"
+package com.fondesa.recyclerviewdivider.buildtools
 
-dependencies {
-    api Deps.androidxRecyclerView
-    api Deps.kotlinStdLib
+import org.gradle.api.Project
 
-    testImplementation Deps.androidxAppCompat
-    testImplementation Deps.androidxJUnit
-    testImplementation Deps.mockitoCore
-    testImplementation Deps.mockitoKotlin
-    testImplementation Deps.junit
-    testImplementation Deps.robolectric
+/**
+ * Applies a script defined in [scriptRootProjectPath].
+ *
+ * @param scriptRootProjectPath the path relative to the root project in which the script is defined.
+ */
+internal fun Project.applyFrom(scriptRootProjectPath: String) {
+    apply(mapOf("from" to rootProject.file(scriptRootProjectPath)))
 }
