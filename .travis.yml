@@ -43,7 +43,7 @@ branches:
     - /^(\d+)\.(\d+)\.(\d+)$/
 
 script:
-  - ./gradlew build -s
+  - travis_wait 30 ./gradlew build -s
 
 deploy:
   provider: script
