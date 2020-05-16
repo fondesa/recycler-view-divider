@@ -24,7 +24,11 @@ import androidx.core.view.MarginLayoutParamsCompat
  *
  * @return the start margin of these [ViewGroup.MarginLayoutParams].
  */
-val ViewGroup.MarginLayoutParams.startMarginCompat
+@Deprecated(
+    message = "Use the Android API instead.",
+    replaceWith = ReplaceWith("MarginLayoutParamsCompat.getMarginStart(this)", "androidx.core.view.MarginLayoutParamsCompat")
+)
+val ViewGroup.MarginLayoutParams.startMarginCompat: Int
     get() = MarginLayoutParamsCompat.getMarginStart(this)
 
 /**
@@ -32,5 +36,9 @@ val ViewGroup.MarginLayoutParams.startMarginCompat
  *
  * @return the end margin of these [ViewGroup.MarginLayoutParams].
  */
-val ViewGroup.MarginLayoutParams.endMarginCompat
+@Deprecated(
+    message = "Use the Android API instead.",
+    replaceWith = ReplaceWith("MarginLayoutParamsCompat.getMarginEnd(this)", "androidx.core.view.MarginLayoutParamsCompat")
+)
+val ViewGroup.MarginLayoutParams.endMarginCompat: Int
     get() = MarginLayoutParamsCompat.getMarginEnd(this)
