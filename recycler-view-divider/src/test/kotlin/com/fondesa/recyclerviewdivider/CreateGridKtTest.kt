@@ -16,6 +16,7 @@
 
 package com.fondesa.recyclerviewdivider
 
+import android.os.Build
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -26,7 +27,6 @@ import com.fondesa.recyclerviewdivider.test.rtl
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.annotation.Config
 
 /**
  * Tests of CreateGrid.kt file.
@@ -58,9 +58,9 @@ class CreateGridKtTest {
         assertEquals(expectedGrid, actualGrid)
     }
 
-    @Config(minSdk = 17)
     @Test
     fun `grid - horizontal RTL LinearLayoutManager`() {
+        if (Build.VERSION.SDK_INT < 17) return
         val layoutManager = linearLayoutManager(Orientation.HORIZONTAL, false)
         RecyclerView(context).rtl().layoutManager = layoutManager
         val expectedGrid = Grid(

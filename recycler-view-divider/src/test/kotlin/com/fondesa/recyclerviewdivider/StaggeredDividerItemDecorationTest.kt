@@ -19,6 +19,7 @@ package com.fondesa.recyclerviewdivider
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -37,7 +38,6 @@ import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.annotation.Config
 
 /**
  * Tests of [StaggeredDividerItemDecoration].
@@ -172,9 +172,10 @@ class StaggeredDividerItemDecorationTest {
         )
     }
 
-    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal RTL staggered, 1 row`() {
+        if (Build.VERSION.SDK_INT < 17) return
+
         decoration().getItemOffsets(
             staggeredLayoutManager(1, Orientation.HORIZONTAL, false),
             true,
@@ -251,9 +252,10 @@ class StaggeredDividerItemDecorationTest {
         )
     }
 
-    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal RTL reversed staggered, 1 row`() {
+        if (Build.VERSION.SDK_INT < 17) return
+
         decoration().getItemOffsets(
             staggeredLayoutManager(1, Orientation.HORIZONTAL, true),
             true,
@@ -462,9 +464,10 @@ class StaggeredDividerItemDecorationTest {
         )
     }
 
-    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal RTL staggered - multiple rows`() {
+        if (Build.VERSION.SDK_INT < 17) return
+
         decoration().getItemOffsets(
             staggeredLayoutManager(2, Orientation.HORIZONTAL, false),
             true,
@@ -577,9 +580,10 @@ class StaggeredDividerItemDecorationTest {
         )
     }
 
-    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal RTL reversed staggered - multiple rows`() {
+        if (Build.VERSION.SDK_INT < 17) return
+
         decoration().getItemOffsets(
             staggeredLayoutManager(2, Orientation.HORIZONTAL, true),
             true,
@@ -825,9 +829,10 @@ class StaggeredDividerItemDecorationTest {
         )
     }
 
-    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal RTL staggered, 1 row`() {
+        if (Build.VERSION.SDK_INT < 17) return
+
         decoration().onDraw(
             staggeredLayoutManager(1, Orientation.HORIZONTAL, false),
             true,
@@ -946,9 +951,10 @@ class StaggeredDividerItemDecorationTest {
         )
     }
 
-    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal RTL reversed staggered, 1 row`() {
+        if (Build.VERSION.SDK_INT < 17) return
+
         decoration().onDraw(
             staggeredLayoutManager(1, Orientation.HORIZONTAL, true),
             true,
@@ -1235,9 +1241,10 @@ class StaggeredDividerItemDecorationTest {
         )
     }
 
-    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal RTL staggered, multiple rows`() {
+        if (Build.VERSION.SDK_INT < 17) return
+
         decoration().onDraw(
             staggeredLayoutManager(2, Orientation.HORIZONTAL, false),
             true,
@@ -1388,9 +1395,10 @@ class StaggeredDividerItemDecorationTest {
         )
     }
 
-    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal reversed RTL staggered, multiple rows`() {
+        if (Build.VERSION.SDK_INT < 17) return
+
         decoration().onDraw(
             staggeredLayoutManager(2, Orientation.HORIZONTAL, true),
             true,
