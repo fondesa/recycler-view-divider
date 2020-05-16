@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("DEPRECATION")
+
 package com.fondesa.recyclerviewdivider.manager.visibility
 
 import com.fondesa.recyclerviewdivider.RecyclerViewDivider
@@ -24,6 +26,7 @@ import com.fondesa.recyclerviewdivider.RecyclerViewDivider
  * You can add a custom [VisibilityManager] in your [RecyclerViewDivider.Builder] using
  * the [RecyclerViewDivider.Builder.visibilityManager] method.
  */
+@Deprecated("Use the new divider API instead.")
 interface VisibilityManager {
 
     /**
@@ -33,11 +36,13 @@ interface VisibilityManager {
      * @param groupIndex position of the group (equal to the item position when the span count is 1).
      * @return the type of visibility related to the current group of dividers.
      */
+    @Deprecated("Use the new divider API instead.")
     fun itemVisibility(groupCount: Int, groupIndex: Int): VisibilityType
 
     /**
      * Identifies the visibility of the dividers.
      */
+    @Deprecated("Use the new divider API instead.")
     enum class VisibilityType {
         NONE,
         ITEMS_ONLY,

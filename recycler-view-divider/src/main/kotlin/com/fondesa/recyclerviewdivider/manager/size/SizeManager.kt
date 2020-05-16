@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("DEPRECATION")
+
 package com.fondesa.recyclerviewdivider.manager.size
 
 import android.graphics.drawable.Drawable
@@ -29,6 +31,7 @@ import com.fondesa.recyclerviewdivider.RecyclerViewDivider
  * You can add a custom [SizeManager] in your [RecyclerViewDivider.Builder] using
  * the [RecyclerViewDivider.Builder.sizeManager] method.
  */
+@Deprecated("Use the new divider API instead.")
 interface SizeManager {
 
     /**
@@ -40,6 +43,7 @@ interface SizeManager {
      * @param groupIndex position of the group (equal to the item position when the span count is 1).
      * @return height for an horizontal divider, width for a vertical divider (expressed in pixels).
      */
+    @Deprecated("Use the new divider API instead.")
     @Px
     fun itemSize(drawable: Drawable, orientation: Int, groupCount: Int, groupIndex: Int): Int
 }

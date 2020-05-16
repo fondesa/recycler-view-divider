@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("DEPRECATION", "OverridingDeprecatedMember")
+
 package com.fondesa.recyclerviewdivider.manager.drawable
 
 import android.graphics.drawable.ColorDrawable
@@ -25,6 +27,7 @@ import androidx.annotation.ColorInt
  *
  * @param drawable the [Drawable] that will be drawn for each item.
  */
+@Deprecated("Use the new divider API instead.")
 class DefaultDrawableManager(private val drawable: Drawable) : FixedDrawableManager() {
 
     /**

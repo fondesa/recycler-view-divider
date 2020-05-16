@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("DEPRECATION", "OverridingDeprecatedMember")
+
 package com.fondesa.recyclerviewdivider.manager.size
 
 import android.content.Context
@@ -26,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView
  * drawable's dimensions.
  * If the dimensions can't be calculated, a default size will be used.
  */
+@Deprecated("Use the new divider API instead.")
 class DefaultSizeManager : FixedSizeManager {
 
     private val defaultSize: Int

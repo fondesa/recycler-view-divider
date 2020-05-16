@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("DEPRECATION")
+
 package com.fondesa.recyclerviewdivider.legacy
 
 import androidx.recyclerview.widget.GridLayoutManager
@@ -28,6 +30,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
  * @param lp the layout params of the item.
  * @return span size of the current item
  */
+@Suppress("DeprecatedCallableAddReplaceWith")
+@Deprecated("Use the new divider API instead.")
 internal fun StaggeredGridLayoutManager.getSpanSize(lp: StaggeredGridLayoutManager.LayoutParams): Int =
     if (lp.isFullSpan) spanCount else 1
 
@@ -36,6 +40,8 @@ internal fun StaggeredGridLayoutManager.getSpanSize(lp: StaggeredGridLayoutManag
  *
  * @return [RecyclerView.VERTICAL] or [RecyclerView.HORIZONTAL]
  */
+@Suppress("DeprecatedCallableAddReplaceWith")
+@Deprecated("Use the new divider API instead.")
 internal val RecyclerView.LayoutManager.orientation: Int
     get() = when (this) {
         is LinearLayoutManager -> orientation
@@ -50,6 +56,8 @@ internal val RecyclerView.LayoutManager.orientation: Int
  *
  * @return span count of the [RecyclerView].
  */
+@Suppress("DeprecatedCallableAddReplaceWith")
+@Deprecated("Use the new divider API instead.")
 internal val RecyclerView.LayoutManager.spanCount: Int
     get() = when (this) {
         is GridLayoutManager -> spanCount
@@ -65,6 +73,8 @@ internal val RecyclerView.LayoutManager.spanCount: Int
  * @param itemPosition position of the current item.
  * @return span size of the current item
  */
+@Suppress("DeprecatedCallableAddReplaceWith")
+@Deprecated("Use the new divider API instead.")
 internal fun RecyclerView.LayoutManager.getSpanSize(itemPosition: Int): Int =
     when (this) {
         is GridLayoutManager -> spanSizeLookup.getSpanSize(itemPosition)
@@ -82,6 +92,8 @@ internal fun RecyclerView.LayoutManager.getSpanSize(itemPosition: Int): Int =
  * @param itemPosition position of the current item.
  * @return the index of the group.
  */
+@Suppress("DeprecatedCallableAddReplaceWith")
+@Deprecated("Use the new divider API instead.")
 internal fun RecyclerView.LayoutManager.getGroupIndex(itemPosition: Int): Int =
     when (this) {
         is GridLayoutManager -> spanSizeLookup?.getSpanGroupIndex(itemPosition, spanCount) ?: itemPosition
@@ -100,6 +112,7 @@ internal fun RecyclerView.LayoutManager.getGroupIndex(itemPosition: Int): Int =
  * @param itemCount number of items in the list.
  * @return the number of groups
  */
+@Deprecated("Use the new divider API instead.")
 internal fun RecyclerView.LayoutManager.getGroupCount(itemCount: Int): Int = when (this) {
     is GridLayoutManager -> {
         val spanSizeLookup = spanSizeLookup
@@ -132,6 +145,7 @@ internal fun RecyclerView.LayoutManager.getGroupCount(itemCount: Int): Int = whe
  * @param groupIndex current index of the group.
  * @return accumulated span.
  */
+@Deprecated("Use the new divider API instead.")
 internal fun RecyclerView.LayoutManager.getAccumulatedSpanInLine(
     spanSize: Int,
     itemPosition: Int,
@@ -168,6 +182,8 @@ internal fun RecyclerView.LayoutManager.getAccumulatedSpanInLine(
  * @param lp the layout params of the item.
  * @return accumulated span.
  */
+@Suppress("DeprecatedCallableAddReplaceWith")
+@Deprecated("Use the new divider API instead.")
 internal fun StaggeredGridLayoutManager.getAccumulatedSpanInLine(lp: StaggeredGridLayoutManager.LayoutParams): Int {
     val isFullSpan = lp.isFullSpan
     return if (isFullSpan) spanCount else lp.spanIndex + 1

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("OverridingDeprecatedMember", "DEPRECATION")
+
 package com.fondesa.recyclerviewdivider.manager.tint
 
 import androidx.annotation.ColorInt
@@ -24,6 +26,7 @@ import com.fondesa.recyclerviewdivider.manager.size.SizeManager
  *
  * @param tint the color used to tint each item.
  */
+@Deprecated("Use the new divider API instead.")
 class DefaultTintManager(@ColorInt private val tint: Int) : FixedTintManager() {
 
     @ColorInt

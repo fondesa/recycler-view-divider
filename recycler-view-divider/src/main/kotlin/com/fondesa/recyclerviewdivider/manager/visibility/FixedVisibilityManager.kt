@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("DEPRECATION", "OverridingDeprecatedMember")
+
 package com.fondesa.recyclerviewdivider.manager.visibility
 
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -21,6 +23,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 /**
  * Defines a [VisibilityManager] which doesn't depend on the item's position.
  */
+@Deprecated("Use the new divider API instead.")
 abstract class FixedVisibilityManager : VisibilityManager {
 
     final override fun itemVisibility(
@@ -31,6 +34,7 @@ abstract class FixedVisibilityManager : VisibilityManager {
     /**
      * @see VisibilityManager.itemVisibility
      */
+    @Deprecated("Use the new divider API instead.")
     abstract fun itemVisibility(): VisibilityManager.VisibilityType
 }
 
@@ -40,6 +44,7 @@ abstract class FixedVisibilityManager : VisibilityManager {
  * @return the [VisibilityManager] casted to [FixedVisibilityManager].
  * @throws IllegalArgumentException if [VisibilityManager] isn't a [FixedVisibilityManager].
  */
+@Deprecated("Use the new divider API instead.")
 internal fun VisibilityManager.asFixed(): FixedVisibilityManager {
     require(this is FixedVisibilityManager) {
         "Only ${FixedVisibilityManager::class.java.name} is supported with ${StaggeredGridLayoutManager::class.java.name}"

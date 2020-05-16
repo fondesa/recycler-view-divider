@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("DEPRECATION", "OverridingDeprecatedMember")
+
 package com.fondesa.recyclerviewdivider.manager.drawable
 
 import android.graphics.drawable.Drawable
@@ -22,6 +24,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 /**
  * Defines a [DrawableManager] which doesn't depend on the item's position.
  */
+@Deprecated("Use the new divider API instead.")
 abstract class FixedDrawableManager : DrawableManager {
 
     final override fun itemDrawable(groupCount: Int, groupIndex: Int): Drawable = itemDrawable()
@@ -29,6 +32,7 @@ abstract class FixedDrawableManager : DrawableManager {
     /**
      * @see DrawableManager.itemDrawable
      */
+    @Deprecated("Use the new divider API instead.")
     abstract fun itemDrawable(): Drawable
 }
 
@@ -38,6 +42,7 @@ abstract class FixedDrawableManager : DrawableManager {
  * @return the [DrawableManager] casted to [FixedDrawableManager].
  * @throws IllegalArgumentException if [DrawableManager] isn't a [FixedDrawableManager].
  */
+@Deprecated("Use the new divider API instead.")
 internal fun DrawableManager.asFixed(): FixedDrawableManager {
     require(this is FixedDrawableManager) {
         "Only ${FixedDrawableManager::class.java.name} is supported with ${StaggeredGridLayoutManager::class.java.name}"
