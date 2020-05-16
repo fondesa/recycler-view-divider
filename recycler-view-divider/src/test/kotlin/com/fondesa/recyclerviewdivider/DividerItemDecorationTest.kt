@@ -43,6 +43,7 @@ import com.fondesa.recyclerviewdivider.tint.TintProviderImpl
 import com.fondesa.recyclerviewdivider.visibility.VisibilityProviderImpl
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 /**
  * Tests of [DividerItemDecoration].
@@ -223,6 +224,7 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal RTL LinearLayoutManager`() {
         decoration().getItemOffsets(
@@ -264,6 +266,7 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal reversed RTL LinearLayoutManager`() {
         decoration().getItemOffsets(
@@ -469,6 +472,7 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal RTL GridLayoutManager, 1 row`() {
         decoration().getItemOffsets(
@@ -510,6 +514,7 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal reversed RTL GridLayoutManager, 1 row`() {
         decoration().getItemOffsets(
@@ -831,6 +836,7 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal RTL GridLayoutManager, multiple rows`() {
         decoration().getItemOffsets(
@@ -901,6 +907,7 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal reversed RTL GridLayoutManager, multiple rows`() {
         decoration().getItemOffsets(
@@ -1103,6 +1110,7 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - vertical RTL LinearLayoutManager`() {
         decoration().onDraw(
@@ -1164,6 +1172,7 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - vertical reversed RTL LinearLayoutManager`() {
         decoration().onDraw(
@@ -1347,6 +1356,7 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal RTL LinearLayoutManager`() {
         decoration().onDraw(
@@ -1408,6 +1418,7 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal reversed RTL LinearLayoutManager`() {
         decoration().onDraw(
@@ -1591,6 +1602,7 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - vertical RTL GridLayoutManager, 1 column`() {
         decoration().onDraw(
@@ -1652,6 +1664,7 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - vertical reversed RTL GridLayoutManager, 1 column`() {
         decoration().onDraw(
@@ -1835,6 +1848,7 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal RTL GridLayoutManager, 1 row`() {
         decoration().onDraw(
@@ -1896,6 +1910,7 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal reversed RTL GridLayoutManager, 1 row`() {
         decoration().onDraw(
@@ -2219,6 +2234,7 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - vertical RTL GridLayoutManager, multiple column`() {
         decoration().onDraw(
@@ -2350,6 +2366,7 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - vertical reversed RTL GridLayoutManager, multiple columns`() {
         decoration().onDraw(
@@ -2743,6 +2760,7 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal RTL GridLayoutManager, multiple rows`() {
         decoration().onDraw(
@@ -2874,6 +2892,7 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal reversed RTL GridLayoutManager, multiple rows`() {
         decoration().onDraw(

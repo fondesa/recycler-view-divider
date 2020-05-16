@@ -26,6 +26,7 @@ import com.fondesa.recyclerviewdivider.test.rtl
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 /**
  * Tests of CreateGrid.kt file.
@@ -57,6 +58,7 @@ class CreateGridKtTest {
         assertEquals(expectedGrid, actualGrid)
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `grid - horizontal RTL LinearLayoutManager`() {
         val layoutManager = linearLayoutManager(Orientation.HORIZONTAL, false)
