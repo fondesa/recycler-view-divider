@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("DEPRECATION")
+
 package com.fondesa.recyclerviewdivider
 
 import android.content.Context
@@ -138,7 +140,6 @@ class RecyclerViewDivider internal constructor(
         val isRTL: Boolean
 
         if (lm is StaggeredGridLayoutManager) {
-            val result = lm.findLastVisibleItemPositions(null)
             val lp = view.layoutParams as StaggeredGridLayoutManager.LayoutParams
             spanSize = lm.getSpanSize(lp)
             lineAccumulatedSpan = lm.getAccumulatedSpanInLine(lp)
