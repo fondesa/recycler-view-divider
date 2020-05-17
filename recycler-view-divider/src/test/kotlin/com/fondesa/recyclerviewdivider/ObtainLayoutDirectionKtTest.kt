@@ -23,6 +23,7 @@ import com.fondesa.recyclerviewdivider.test.linearLayoutManager
 import com.fondesa.recyclerviewdivider.test.rtl
 import com.fondesa.recyclerviewdivider.test.staggeredLayoutManager
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
@@ -35,8 +36,9 @@ class ObtainLayoutDirectionKtTest {
 
     @Test
     fun emptyTest() {
-
+        assertTrue(true)
     }
+
     @Test
     fun `obtainLayoutDirection - vertical LTR LinearLayoutManager - returns top-to-bottom, left-to-right`() {
         val layoutManager = linearLayoutManager(Orientation.VERTICAL, false).also {
