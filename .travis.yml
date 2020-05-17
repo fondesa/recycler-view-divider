@@ -55,17 +55,17 @@ jobs:
         # -X -> excludes the tools not needed by this project
         - bash <(curl -s https://codecov.io/bash) -Z -s "**/build/coverageReport/test*Coverage/test*Coverage.xml" -f "*.xml" -X gcov -X coveragepy -X xcode -X gcovout
     - stage: Test
-      name: Tests API 16, 17, 18, 19
+      name: Run tests on API 16, 17, 18, 19
       script: ./ci/run-tests.sh
       env:
         - ROBOLECTRIC_MIN_API=16
         - ROBOLECTRIC_MAX_API=19
-    - name: Tests API 21, 22, 23, 24
+    - name: Run tests on API 21, 22, 23, 24
       script: ./ci/run-tests.sh
       env:
         - ROBOLECTRIC_MIN_API=21
         - ROBOLECTRIC_MAX_API=24
-    - name: Tests API 25, 26, 27, 28
+    - name: Run tests on API 25, 26, 27, 28
       script: ./ci/run-tests.sh
       env:
         - ROBOLECTRIC_MIN_API=25
