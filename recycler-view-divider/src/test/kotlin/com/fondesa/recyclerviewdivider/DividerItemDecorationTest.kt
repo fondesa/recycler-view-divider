@@ -19,7 +19,6 @@ package com.fondesa.recyclerviewdivider
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorInt
@@ -44,6 +43,7 @@ import com.fondesa.recyclerviewdivider.tint.TintProviderImpl
 import com.fondesa.recyclerviewdivider.visibility.VisibilityProviderImpl
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 /**
  * Tests of [DividerItemDecoration].
@@ -224,10 +224,9 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal RTL LinearLayoutManager`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         decoration().getItemOffsets(
             linearLayoutManager(Orientation.HORIZONTAL, false),
             true,
@@ -267,10 +266,9 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal reversed RTL LinearLayoutManager`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         decoration().getItemOffsets(
             linearLayoutManager(Orientation.HORIZONTAL, true),
             true,
@@ -474,10 +472,9 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal RTL GridLayoutManager, 1 row`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         decoration().getItemOffsets(
             gridLayoutManager(1, Orientation.HORIZONTAL, false),
             true,
@@ -517,10 +514,9 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal reversed RTL GridLayoutManager, 1 row`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         decoration().getItemOffsets(
             gridLayoutManager(1, Orientation.HORIZONTAL, true),
             true,
@@ -840,10 +836,9 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal RTL GridLayoutManager, multiple rows`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         decoration().getItemOffsets(
             gridLayoutManager(2, Orientation.HORIZONTAL, false),
             true,
@@ -912,10 +907,9 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal reversed RTL GridLayoutManager, multiple rows`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         decoration().getItemOffsets(
             gridLayoutManager(2, Orientation.HORIZONTAL, true),
             true,
@@ -1116,10 +1110,9 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - vertical RTL LinearLayoutManager`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         decoration().onDraw(
             linearLayoutManager(Orientation.VERTICAL, false),
             true,
@@ -1179,10 +1172,9 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - vertical reversed RTL LinearLayoutManager`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         decoration().onDraw(
             linearLayoutManager(Orientation.VERTICAL, true),
             true,
@@ -1364,10 +1356,9 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal RTL LinearLayoutManager`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         decoration().onDraw(
             linearLayoutManager(Orientation.HORIZONTAL, false),
             true,
@@ -1427,10 +1418,9 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal reversed RTL LinearLayoutManager`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         decoration().onDraw(
             linearLayoutManager(Orientation.HORIZONTAL, true),
             true,
@@ -1612,10 +1602,9 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - vertical RTL GridLayoutManager, 1 column`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         decoration().onDraw(
             gridLayoutManager(1, Orientation.VERTICAL, false),
             true,
@@ -1675,10 +1664,9 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - vertical reversed RTL GridLayoutManager, 1 column`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         decoration().onDraw(
             gridLayoutManager(1, Orientation.VERTICAL, true),
             true,
@@ -1860,10 +1848,9 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal RTL GridLayoutManager, 1 row`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         decoration().onDraw(
             gridLayoutManager(1, Orientation.HORIZONTAL, false),
             true,
@@ -1923,10 +1910,9 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal reversed RTL GridLayoutManager, 1 row`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         decoration().onDraw(
             gridLayoutManager(1, Orientation.HORIZONTAL, true),
             true,
@@ -2248,10 +2234,9 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - vertical RTL GridLayoutManager, multiple column`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         decoration().onDraw(
             gridLayoutManager(2, Orientation.VERTICAL, false),
             true,
@@ -2381,10 +2366,9 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - vertical reversed RTL GridLayoutManager, multiple columns`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         decoration().onDraw(
             gridLayoutManager(2, Orientation.VERTICAL, true),
             true,
@@ -2776,10 +2760,9 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal RTL GridLayoutManager, multiple rows`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         decoration().onDraw(
             gridLayoutManager(2, Orientation.HORIZONTAL, false),
             true,
@@ -2909,10 +2892,9 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal reversed RTL GridLayoutManager, multiple rows`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         decoration().onDraw(
             gridLayoutManager(2, Orientation.HORIZONTAL, true),
             true,

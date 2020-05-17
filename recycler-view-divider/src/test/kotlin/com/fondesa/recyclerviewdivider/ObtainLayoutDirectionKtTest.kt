@@ -16,7 +16,6 @@
 
 package com.fondesa.recyclerviewdivider
 
-import android.os.Build
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.fondesa.recyclerviewdivider.test.context
@@ -26,6 +25,7 @@ import com.fondesa.recyclerviewdivider.test.staggeredLayoutManager
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 /**
  * Tests of ObtainLayoutDirection.kt file.
@@ -63,10 +63,9 @@ class ObtainLayoutDirectionKtTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `obtainLayoutDirection - vertical RTL LinearLayoutManager - returns top-to-bottom, right-to-left`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         val layoutManager = linearLayoutManager(Orientation.VERTICAL, false).also {
             RecyclerView(context).rtl().layoutManager = it
         }
@@ -80,10 +79,9 @@ class ObtainLayoutDirectionKtTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `obtainLayoutDirection - vertical reversed RTL LinearLayoutManager - returns bottom-to-top, right-to-left`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         val layoutManager = linearLayoutManager(Orientation.VERTICAL, true).also {
             RecyclerView(context).rtl().layoutManager = it
         }
@@ -112,10 +110,9 @@ class ObtainLayoutDirectionKtTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `obtainLayoutDirection - horizontal RTL LinearLayoutManager - returns top-to-bottom, right-to-left`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         val layoutManager = linearLayoutManager(Orientation.HORIZONTAL, false).also {
             RecyclerView(context).rtl().layoutManager = it
         }
@@ -144,10 +141,9 @@ class ObtainLayoutDirectionKtTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `obtainLayoutDirection - reversed horizontal RTL LinearLayoutManager - returns top-to-bottom, left-to-right`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         val layoutManager = linearLayoutManager(Orientation.HORIZONTAL, true).also {
             RecyclerView(context).rtl().layoutManager = it
         }
@@ -191,10 +187,9 @@ class ObtainLayoutDirectionKtTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `obtainLayoutDirection - vertical RTL StaggeredGridLayoutManager - returns top-to-bottom, right-to-left`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         val layoutManager = staggeredLayoutManager(2, Orientation.VERTICAL, false).also {
             RecyclerView(context).rtl().layoutManager = it
         }
@@ -238,10 +233,9 @@ class ObtainLayoutDirectionKtTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `obtainLayoutDirection - horizontal RTL StaggeredGridLayoutManager - returns top-to-bottom, right-to-left`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         val layoutManager = staggeredLayoutManager(2, Orientation.HORIZONTAL, false).also {
             RecyclerView(context).rtl().layoutManager = it
         }
@@ -270,10 +264,9 @@ class ObtainLayoutDirectionKtTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `obtainLayoutDirection - reversed horizontal RTL StaggeredGridLayoutManager - returns top-to-bottom, left-to-right`() {
-        if (Build.VERSION.SDK_INT < 17) return
-
         val layoutManager = staggeredLayoutManager(2, Orientation.HORIZONTAL, true).also {
             RecyclerView(context).rtl().layoutManager = it
         }
