@@ -42,12 +42,22 @@ branches:
     # The regex must be surrounded with "/" following the Travis specs.
     - /^(\d+)\.(\d+)\.(\d+)$/
 
-script:
-  - travis_wait 30 ./gradlew build -s
+jobs:
+  include:
+    - stage: build
+      name: Build library & sample
+      script: ./gradlew :recycler-view-divider:build :sample:build -x :recycler-view-divider:test -s
+    - stage: test
+      name: Tests API 16
+      script: ./gradlew :recycler-view-divider:test
+      env: ROBOLECTRIC_API=16
+    - name: Tests API 28
+      script: ./gradlew :recycler-view-divider:test
+      env: ROBOLECTRIC_API=28
 
 deploy:
   provider: script
-  script: ./gradlew publishLibrary -Pversion.name=$TRAVIS_TAG
+  script: echo LYRA DEPLOY
   on:
     tags: true
 
