@@ -72,7 +72,7 @@ jobs:
         - ROBOLECTRIC_MAX_API=28
     - stage: Deploy
       name: Deploy library
-      script: echo LYRA DEPLOY
+      script: ./gradlew publishLibrary -Pversion.name=$TRAVIS_TAG
       if: tag IS present
 
 before_cache:
