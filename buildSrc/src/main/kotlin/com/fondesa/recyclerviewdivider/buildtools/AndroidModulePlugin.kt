@@ -48,9 +48,7 @@ class AndroidModulePlugin : Plugin<Project> {
                 isIncludeAndroidResources = true
                 all(
                     closureOf {
-                        testLogging {
-                            it.events("passed", "skipped", "failed")
-                        }
+                        testLogging.events("passed", "skipped", "failed")
                         systemProperty("robolectric.logging.enabled", true)
                     }
                 )
