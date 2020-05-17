@@ -34,6 +34,10 @@ import org.robolectric.annotation.Config
 class ObtainLayoutDirectionKtTest {
 
     @Test
+    fun emptyTest() {
+
+    }
+    @Test
     fun `obtainLayoutDirection - vertical LTR LinearLayoutManager - returns top-to-bottom, left-to-right`() {
         val layoutManager = linearLayoutManager(Orientation.VERTICAL, false).also {
             RecyclerView(context).layoutManager = it
