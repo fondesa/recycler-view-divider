@@ -203,6 +203,7 @@ class ObtainLayoutDirectionKtTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `obtainLayoutDirection - vertical reversed RTL StaggeredGridLayoutManager - returns bottom-to-top, right-to-left`() {
         val layoutManager = staggeredLayoutManager(2, Orientation.VERTICAL, true).also {
