@@ -44,17 +44,27 @@ branches:
 
 jobs:
   include:
-    - stage: build
+    - stage: Build
       name: Build library & sample
       script: ./gradlew :recycler-view-divider:build :sample:build -x :recycler-view-divider:test -s
-    - stage: test
-      name: Tests API 16
-      script: ./gradlew :recycler-view-divider:test
-      env: ROBOLECTRIC_API=16
-    - name: Tests API 28
-      script: ./gradlew :recycler-view-divider:test
-      env: ROBOLECTRIC_API=28
+    - stage: Test
+      name: Tests API 16, 17, 18, 19
+      script: ./ci/run-tests.sh
+      env:
+        - ROBOLECTRIC_MIN_API=16
+        - ROBOLECTRIC_MAX_API=19
+    - name: Tests API 21, 22, 23, 24
+      script: ./ci/run-tests.sh
+      env:
+        - ROBOLECTRIC_MIN_API=21
+        - ROBOLECTRIC_MAX_API=24
+    - name: Tests API 25, 26, 27, 28
+      script: ./ci/run-tests.sh
+      env:
+        - ROBOLECTRIC_MIN_API=25
+        - ROBOLECTRIC_MAX_API=28
 
+#TODO: fix deploy
 deploy:
   provider: script
   script: echo LYRA DEPLOY
