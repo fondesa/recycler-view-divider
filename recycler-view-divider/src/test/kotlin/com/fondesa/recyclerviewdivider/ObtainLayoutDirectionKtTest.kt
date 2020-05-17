@@ -16,7 +16,6 @@
 
 package com.fondesa.recyclerviewdivider
 
-import android.os.Build
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.fondesa.recyclerviewdivider.test.context
@@ -26,6 +25,7 @@ import com.fondesa.recyclerviewdivider.test.staggeredLayoutManager
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 /**
  * Tests of ObtainLayoutDirection.kt file.
@@ -63,6 +63,7 @@ class ObtainLayoutDirectionKtTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `obtainLayoutDirection - vertical RTL LinearLayoutManager - returns top-to-bottom, right-to-left`() {
         val layoutManager = linearLayoutManager(Orientation.VERTICAL, false).also {
@@ -71,17 +72,14 @@ class ObtainLayoutDirectionKtTest {
 
         assertEquals(
             LayoutDirection(
-                horizontal = if (Build.VERSION.SDK_INT >= 17) {
-                    LayoutDirection.Horizontal.RIGHT_TO_LEFT
-                } else {
-                    LayoutDirection.Horizontal.LEFT_TO_RIGHT
-                },
+                horizontal = LayoutDirection.Horizontal.RIGHT_TO_LEFT,
                 vertical = LayoutDirection.Vertical.TOP_TO_BOTTOM
             ),
             layoutManager.obtainLayoutDirection()
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `obtainLayoutDirection - vertical reversed RTL LinearLayoutManager - returns bottom-to-top, right-to-left`() {
         val layoutManager = linearLayoutManager(Orientation.VERTICAL, true).also {
@@ -90,11 +88,7 @@ class ObtainLayoutDirectionKtTest {
 
         assertEquals(
             LayoutDirection(
-                horizontal = if (Build.VERSION.SDK_INT >= 17) {
-                    LayoutDirection.Horizontal.RIGHT_TO_LEFT
-                } else {
-                    LayoutDirection.Horizontal.LEFT_TO_RIGHT
-                },
+                horizontal = LayoutDirection.Horizontal.RIGHT_TO_LEFT,
                 vertical = LayoutDirection.Vertical.BOTTOM_TO_TOP
             ),
             layoutManager.obtainLayoutDirection()
@@ -116,6 +110,7 @@ class ObtainLayoutDirectionKtTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `obtainLayoutDirection - horizontal RTL LinearLayoutManager - returns top-to-bottom, right-to-left`() {
         val layoutManager = linearLayoutManager(Orientation.HORIZONTAL, false).also {
@@ -124,11 +119,7 @@ class ObtainLayoutDirectionKtTest {
 
         assertEquals(
             LayoutDirection(
-                horizontal = if (Build.VERSION.SDK_INT >= 17) {
-                    LayoutDirection.Horizontal.RIGHT_TO_LEFT
-                } else {
-                    LayoutDirection.Horizontal.LEFT_TO_RIGHT
-                },
+                horizontal = LayoutDirection.Horizontal.RIGHT_TO_LEFT,
                 vertical = LayoutDirection.Vertical.TOP_TO_BOTTOM
             ),
             layoutManager.obtainLayoutDirection()
@@ -150,6 +141,7 @@ class ObtainLayoutDirectionKtTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `obtainLayoutDirection - reversed horizontal RTL LinearLayoutManager - returns top-to-bottom, left-to-right`() {
         val layoutManager = linearLayoutManager(Orientation.HORIZONTAL, true).also {
@@ -158,11 +150,7 @@ class ObtainLayoutDirectionKtTest {
 
         assertEquals(
             LayoutDirection(
-                horizontal = if (Build.VERSION.SDK_INT >= 17) {
-                    LayoutDirection.Horizontal.LEFT_TO_RIGHT
-                } else {
-                    LayoutDirection.Horizontal.RIGHT_TO_LEFT
-                },
+                horizontal = LayoutDirection.Horizontal.LEFT_TO_RIGHT,
                 vertical = LayoutDirection.Vertical.TOP_TO_BOTTOM
             ),
             layoutManager.obtainLayoutDirection()
@@ -199,6 +187,7 @@ class ObtainLayoutDirectionKtTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `obtainLayoutDirection - vertical RTL StaggeredGridLayoutManager - returns top-to-bottom, right-to-left`() {
         val layoutManager = staggeredLayoutManager(2, Orientation.VERTICAL, false).also {
@@ -207,17 +196,14 @@ class ObtainLayoutDirectionKtTest {
 
         assertEquals(
             LayoutDirection(
-                horizontal = if (Build.VERSION.SDK_INT >= 17) {
-                    LayoutDirection.Horizontal.RIGHT_TO_LEFT
-                } else {
-                    LayoutDirection.Horizontal.LEFT_TO_RIGHT
-                },
+                horizontal = LayoutDirection.Horizontal.RIGHT_TO_LEFT,
                 vertical = LayoutDirection.Vertical.TOP_TO_BOTTOM
             ),
             layoutManager.obtainLayoutDirection()
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `obtainLayoutDirection - vertical reversed RTL StaggeredGridLayoutManager - returns bottom-to-top, right-to-left`() {
         val layoutManager = staggeredLayoutManager(2, Orientation.VERTICAL, true).also {
@@ -226,11 +212,7 @@ class ObtainLayoutDirectionKtTest {
 
         assertEquals(
             LayoutDirection(
-                horizontal = if (Build.VERSION.SDK_INT >= 17) {
-                    LayoutDirection.Horizontal.RIGHT_TO_LEFT
-                } else {
-                    LayoutDirection.Horizontal.LEFT_TO_RIGHT
-                },
+                horizontal = LayoutDirection.Horizontal.RIGHT_TO_LEFT,
                 vertical = LayoutDirection.Vertical.BOTTOM_TO_TOP
             ),
             layoutManager.obtainLayoutDirection()
@@ -252,6 +234,7 @@ class ObtainLayoutDirectionKtTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `obtainLayoutDirection - horizontal RTL StaggeredGridLayoutManager - returns top-to-bottom, right-to-left`() {
         val layoutManager = staggeredLayoutManager(2, Orientation.HORIZONTAL, false).also {
@@ -260,11 +243,7 @@ class ObtainLayoutDirectionKtTest {
 
         assertEquals(
             LayoutDirection(
-                horizontal = if (Build.VERSION.SDK_INT >= 17) {
-                    LayoutDirection.Horizontal.RIGHT_TO_LEFT
-                } else {
-                    LayoutDirection.Horizontal.LEFT_TO_RIGHT
-                },
+                horizontal = LayoutDirection.Horizontal.RIGHT_TO_LEFT,
                 vertical = LayoutDirection.Vertical.TOP_TO_BOTTOM
             ),
             layoutManager.obtainLayoutDirection()
@@ -286,6 +265,7 @@ class ObtainLayoutDirectionKtTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `obtainLayoutDirection - reversed horizontal RTL StaggeredGridLayoutManager - returns top-to-bottom, left-to-right`() {
         val layoutManager = staggeredLayoutManager(2, Orientation.HORIZONTAL, true).also {
@@ -294,11 +274,7 @@ class ObtainLayoutDirectionKtTest {
 
         assertEquals(
             LayoutDirection(
-                horizontal = if (Build.VERSION.SDK_INT >= 17) {
-                    LayoutDirection.Horizontal.LEFT_TO_RIGHT
-                } else {
-                    LayoutDirection.Horizontal.RIGHT_TO_LEFT
-                },
+                horizontal = LayoutDirection.Horizontal.LEFT_TO_RIGHT,
                 vertical = LayoutDirection.Vertical.TOP_TO_BOTTOM
             ),
             layoutManager.obtainLayoutDirection()

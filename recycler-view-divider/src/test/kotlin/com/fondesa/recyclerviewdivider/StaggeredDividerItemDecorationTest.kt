@@ -37,6 +37,7 @@ import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 /**
  * Tests of [StaggeredDividerItemDecoration].
@@ -171,6 +172,7 @@ class StaggeredDividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal RTL staggered, 1 row`() {
         decoration().getItemOffsets(
@@ -249,6 +251,7 @@ class StaggeredDividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal RTL reversed staggered, 1 row`() {
         decoration().getItemOffsets(
@@ -459,6 +462,7 @@ class StaggeredDividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal RTL staggered - multiple rows`() {
         decoration().getItemOffsets(
@@ -573,6 +577,7 @@ class StaggeredDividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `getItemOffsets - horizontal RTL reversed staggered - multiple rows`() {
         decoration().getItemOffsets(
@@ -820,6 +825,7 @@ class StaggeredDividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal RTL staggered, 1 row`() {
         decoration().onDraw(
@@ -940,6 +946,7 @@ class StaggeredDividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal RTL reversed staggered, 1 row`() {
         decoration().onDraw(
@@ -1228,6 +1235,7 @@ class StaggeredDividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal RTL staggered, multiple rows`() {
         decoration().onDraw(
@@ -1380,6 +1388,7 @@ class StaggeredDividerItemDecorationTest {
         )
     }
 
+    @Config(minSdk = 17)
     @Test
     fun `onDraw - horizontal reversed RTL staggered, multiple rows`() {
         decoration().onDraw(

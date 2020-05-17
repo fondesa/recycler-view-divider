@@ -42,22 +42,38 @@ branches:
     # The regex must be surrounded with "/" following the Travis specs.
     - /^(\d+)\.(\d+)\.(\d+)$/
 
-script:
-  - ./gradlew build -s
-
-deploy:
-  provider: script
-  script: ./gradlew publishLibrary -Pversion.name=$TRAVIS_TAG
-  on:
-    tags: true
-
-after_success:
-  # Uploads all the coverage reports to Codecov.io:
-  # -Z -> if the upload of a report fails, the build fails too
-  # -s -> searches in the paths in which CoveragePlugin generates the coverage reports
-  # -f -> uploads the XML files found in the search paths (specified with -s)
-  # -X -> excludes the tools not needed by this project
-  - bash <(curl -s https://codecov.io/bash) -Z -s "**/build/coverageReport/test*Coverage/test*Coverage.xml" -f "*.xml" -X gcov -X coveragepy -X xcode -X gcovout
+jobs:
+  include:
+    - stage: Build
+      name: Build library & sample
+      script:
+        - ./gradlew build -s
+        # Uploads all the coverage reports to Codecov.io:
+        # -Z -> if the upload of a report fails, the build fails too
+        # -s -> searches in the paths in which CoveragePlugin generates the coverage reports
+        # -f -> uploads the XML files found in the search paths (specified with -s)
+        # -X -> excludes the tools not needed by this project
+        - bash <(curl -s https://codecov.io/bash) -Z -s "**/build/coverageReport/test*Coverage/test*Coverage.xml" -f "*.xml" -X gcov -X coveragepy -X xcode -X gcovout
+    - stage: Test
+      name: Run tests on API 16, 17, 18, 19
+      script: ./ci/run-tests.sh
+      env:
+        - ROBOLECTRIC_MIN_API=16
+        - ROBOLECTRIC_MAX_API=19
+    - name: Run tests on API 21, 22, 23, 24
+      script: ./ci/run-tests.sh
+      env:
+        - ROBOLECTRIC_MIN_API=21
+        - ROBOLECTRIC_MAX_API=24
+    - name: Run tests on API 25, 26, 27, 28
+      script: ./ci/run-tests.sh
+      env:
+        - ROBOLECTRIC_MIN_API=25
+        - ROBOLECTRIC_MAX_API=28
+    - stage: Deploy
+      name: Deploy library
+      script: echo LYRA DEPLOY
+      if: tag IS present
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
