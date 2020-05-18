@@ -2,22 +2,31 @@ RecyclerViewDivider
 ===============
 [![Build Status](https://travis-ci.com/fondesa/recycler-view-divider.svg?branch=master)](https://travis-ci.com/fondesa/recycler-view-divider)
 
-A RecyclerView's divider that can be customized with simple properties or advanced ones.
+A RecyclerView's divider which can be customized with simple properties or advanced ones.
 
-<img src="https://raw.githubusercontent.com/fondesa/recycler-view-divider/master/art/screenshot_div_simple.png" height="500">   <img src="https://raw.githubusercontent.com/fondesa/recycler-view-divider/master/art/screenshot_grid.png" height="500">   <img src="https://raw.githubusercontent.com/fondesa/recycler-view-divider/master/art/screenshot_div_draw.png" height="500">
+<img src="https://raw.githubusercontent.com/fondesa/recycler-view-divider/master/art/screenshot_linear.png" height="500">   <img src="https://raw.githubusercontent.com/fondesa/recycler-view-divider/master/art/screenshot_grid.png" height="500">   <img src="https://raw.githubusercontent.com/fondesa/recycler-view-divider/master/art/screenshot_staggered.png" height="500">
 
 It supports:
-- `LinearLayoutManager` (completely)
-- `GridLayoutManager` (completely)
-- `StaggeredGridLayoutManager` (partially)
+- `LinearLayoutManager`
+- `GridLayoutManager`
+- `StaggeredGridLayoutManager`
 
 Usage
 ------
 
-A basic version of the divider can be attached to a ```RecyclerView``` through this line:
+A basic version of the divider can be attached to a ```RecyclerView``` in these ways:
 
 ```kotlin
-RecyclerViewDivider.with(context).build().addTo(recyclerView)
+// Default configuration.
+recyclerView.addDivider()
+```
+**OR**
+```kotlin
+// Custom configuration.
+context.dividerBuilder()
+    // [...]
+    .build()
+    .addTo(recyclerView)
 ```
 
 Each divider can be customized with various properties.
