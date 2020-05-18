@@ -24,6 +24,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.util.TypedValue
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
@@ -172,7 +173,9 @@ class DividerBuilderTest {
         val resources = mock<Resources> {
             @Suppress("DEPRECATION")
             on(it.getDrawable(any())) doReturn null
-            on(it.getDrawable(any(), anyOrNull())) doReturn null
+            if (Build.VERSION.SDK_INT >= 21) {
+                on(it.getDrawable(any(), anyOrNull())) doReturn null
+            }
         }
         val context = spy(context) {
             on(it.resources) doReturn resources
