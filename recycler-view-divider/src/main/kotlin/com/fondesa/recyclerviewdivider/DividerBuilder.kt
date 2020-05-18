@@ -21,7 +21,9 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import androidx.annotation.Px
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -111,6 +113,14 @@ class DividerBuilder internal constructor(private val context: Context) {
      * @return this [DividerBuilder] instance.
      */
     fun asSpace(): DividerBuilder = apply { asSpace = true }
+
+    /**
+     * Sets the divider's drawable as a solid color.
+     *
+     * @param colorRes the resource of the color used for each divider.
+     * @return this [DividerBuilder] instance.
+     */
+    fun colorRes(@ColorRes colorRes: Int): DividerBuilder = color(ContextCompat.getColor(context, colorRes))
 
     /**
      * Sets the divider's drawable as a solid color.

@@ -109,6 +109,22 @@ class DividerBuilderTest {
     }
 
     @Test
+    fun `build - colorRes invoked - returns decoration with color`() {
+        scenario = launchThemeActivity(R.style.TestTheme_All)
+
+        val decoration = dividerBuilder()
+            .colorRes(R.color.test_recyclerViewDividerDrawable)
+            .build()
+
+        val provider = (decoration as DividerItemDecoration).drawableProvider
+        assertTrue(provider is DrawableProviderImpl)
+        val providerDrawable = (provider as DrawableProviderImpl).drawable
+        assertTrue(providerDrawable is ColorDrawable)
+        assertEquals(ContextCompat.getColor(context, R.color.test_recyclerViewDividerDrawable), (providerDrawable as ColorDrawable).color)
+        verifyZeroInteractions(logger)
+    }
+
+    @Test
     fun `build - color invoked - returns decoration with color`() {
         scenario = launchThemeActivity(R.style.TestTheme_All)
 

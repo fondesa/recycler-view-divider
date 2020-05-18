@@ -112,6 +112,20 @@ class StaggeredDividerBuilderTest {
     }
 
     @Test
+    fun `build - colorRes invoked - returns decoration with color`() {
+        scenario = launchThemeActivity(R.style.TestTheme_All)
+
+        val decoration = staggeredDividerBuilder()
+            .colorRes(R.color.test_recyclerViewDividerDrawable)
+            .build()
+
+        val drawable = (decoration as StaggeredDividerItemDecoration).drawable
+        assertTrue(drawable is ColorDrawable)
+        assertEquals(ContextCompat.getColor(context, R.color.test_recyclerViewDividerDrawable), (drawable as ColorDrawable).color)
+        verifyZeroInteractions(logger)
+    }
+
+    @Test
     fun `build - color invoked - returns decoration with color`() {
         scenario = launchThemeActivity(R.style.TestTheme_All)
 
