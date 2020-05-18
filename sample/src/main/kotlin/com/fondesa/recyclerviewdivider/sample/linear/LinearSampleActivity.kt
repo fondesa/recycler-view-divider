@@ -18,6 +18,7 @@ package com.fondesa.recyclerviewdivider.sample.linear
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -43,7 +44,7 @@ class LinearSampleActivity : AppCompatActivity() {
 
         dividerBuilder()
             .color(Color.RED)
-            .size(1)
+            .size(1, TypedValue.COMPLEX_UNIT_DIP)
             .build()
             .addTo(verticalRecyclerView)
 
@@ -55,8 +56,8 @@ class LinearSampleActivity : AppCompatActivity() {
         horizontalRecyclerView.adapter = StringAdapter(isRecyclerViewVertical = false).apply { submitList(items) }
 
         dividerBuilder()
-            .size(1)
             .color(Color.RED)
+            .size(1, TypedValue.COMPLEX_UNIT_DIP)
             .build()
             .addTo(horizontalRecyclerView)
     }
