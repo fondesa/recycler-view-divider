@@ -18,6 +18,7 @@ package com.fondesa.recyclerviewdivider.sample.staggered
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -47,7 +48,7 @@ class StaggeredSampleActivity : AppCompatActivity() {
 
         staggeredDividerBuilder()
             .color(Color.RED)
-            .size(1)
+            .size(1, TypedValue.COMPLEX_UNIT_DIP)
             .build()
             .addTo(verticalRecyclerView)
 
@@ -65,8 +66,8 @@ class StaggeredSampleActivity : AppCompatActivity() {
         ).apply { submitList(horizontalItems) }
 
         staggeredDividerBuilder()
-            .size(1)
             .color(Color.RED)
+            .size(1, TypedValue.COMPLEX_UNIT_DIP)
             .build()
             .addTo(horizontalRecyclerView)
     }
