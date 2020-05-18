@@ -16,6 +16,7 @@
 
 package com.fondesa.recyclerviewdivider
 
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -46,7 +47,11 @@ import com.fondesa.recyclerviewdivider.tint.TintProvider
 import com.fondesa.recyclerviewdivider.tint.TintProviderImpl
 import com.fondesa.recyclerviewdivider.visibility.VisibilityProvider
 import com.fondesa.recyclerviewdivider.visibility.VisibilityProviderImpl
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.anyOrNull
+import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import org.junit.After
@@ -160,6 +165,19 @@ class DividerBuilderTest {
         assertTrue(providerDrawable is GradientDrawable)
         assertTrue(expectedDrawable.getBitmap().sameAs(providerDrawable.getBitmap()))
         verifyZeroInteractions(logger)
+    }
+
+    @Test(expected = NullPointerException::class)
+    fun `build - drawableRes invoked with invalid Drawable - throws NullPointerException`() {
+        val resources = mock<Resources> {
+            @Suppress("DEPRECATION")
+            on(it.getDrawable(any())) doReturn null
+            on(it.getDrawable(any(), anyOrNull())) doReturn null
+        }
+        val context = spy(context) {
+            on(it.resources) doReturn resources
+        }
+        DividerBuilder(context).drawableRes(R.drawable.test_recycler_view_drawable_not_solid)
     }
 
     @Test
