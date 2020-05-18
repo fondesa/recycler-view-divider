@@ -16,8 +16,13 @@
 
 package com.fondesa.recyclerviewdivider
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
 import android.util.TypedValue
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
@@ -137,6 +142,23 @@ class DividerBuilderTest {
         val providerDrawable = (provider as DrawableProviderImpl).drawable
         assertTrue(providerDrawable is ColorDrawable)
         assertEquals(Color.RED, (providerDrawable as ColorDrawable).color)
+        verifyZeroInteractions(logger)
+    }
+
+    @Test
+    fun `build - drawableRes invoked - returns decoration with drawable`() {
+        scenario = launchThemeActivity(R.style.TestTheme_All)
+        val expectedDrawable = requireNotNull(ContextCompat.getDrawable(context, R.drawable.test_recycler_view_drawable_not_solid))
+
+        val decoration = dividerBuilder()
+            .drawableRes(R.drawable.test_recycler_view_drawable_not_solid)
+            .build()
+
+        val provider = (decoration as DividerItemDecoration).drawableProvider
+        assertTrue(provider is DrawableProviderImpl)
+        val providerDrawable = (provider as DrawableProviderImpl).drawable
+        assertTrue(providerDrawable is GradientDrawable)
+        assertTrue(expectedDrawable.getBitmap().sameAs(providerDrawable.getBitmap()))
         verifyZeroInteractions(logger)
     }
 
@@ -666,5 +688,17 @@ class DividerBuilderTest {
         scenario.letActivity { DividerBuilder(it) }
     } else {
         DividerBuilder(context)
+    }
+
+    private fun Drawable.getBitmap(): Bitmap = if (this is BitmapDrawable) {
+        bitmap
+    } else {
+        val width = intrinsicWidth.takeIf { it >= 0 } ?: 1
+        val height = intrinsicHeight.takeIf { it >= 0 } ?: 1
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        setBounds(0, 0, canvas.width, canvas.height)
+        draw(canvas)
+        bitmap
     }
 }
