@@ -16,8 +16,15 @@
 
 package com.fondesa.recyclerviewdivider
 
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.util.TypedValue
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
@@ -41,7 +48,11 @@ import com.fondesa.recyclerviewdivider.tint.TintProvider
 import com.fondesa.recyclerviewdivider.tint.TintProviderImpl
 import com.fondesa.recyclerviewdivider.visibility.VisibilityProvider
 import com.fondesa.recyclerviewdivider.visibility.VisibilityProviderImpl
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.anyOrNull
+import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import org.junit.After
@@ -109,6 +120,22 @@ class DividerBuilderTest {
     }
 
     @Test
+    fun `build - colorRes invoked - returns decoration with color`() {
+        scenario = launchThemeActivity(R.style.TestTheme_All)
+
+        val decoration = dividerBuilder()
+            .colorRes(R.color.test_recyclerViewDividerDrawable)
+            .build()
+
+        val provider = (decoration as DividerItemDecoration).drawableProvider
+        assertTrue(provider is DrawableProviderImpl)
+        val providerDrawable = (provider as DrawableProviderImpl).drawable
+        assertTrue(providerDrawable is ColorDrawable)
+        assertEquals(ContextCompat.getColor(context, R.color.test_recyclerViewDividerDrawable), (providerDrawable as ColorDrawable).color)
+        verifyZeroInteractions(logger)
+    }
+
+    @Test
     fun `build - color invoked - returns decoration with color`() {
         scenario = launchThemeActivity(R.style.TestTheme_All)
 
@@ -122,6 +149,38 @@ class DividerBuilderTest {
         assertTrue(providerDrawable is ColorDrawable)
         assertEquals(Color.RED, (providerDrawable as ColorDrawable).color)
         verifyZeroInteractions(logger)
+    }
+
+    @Test
+    fun `build - drawableRes invoked - returns decoration with drawable`() {
+        scenario = launchThemeActivity(R.style.TestTheme_All)
+        val expectedDrawable = requireNotNull(ContextCompat.getDrawable(context, R.drawable.test_recycler_view_drawable_not_solid))
+
+        val decoration = dividerBuilder()
+            .drawableRes(R.drawable.test_recycler_view_drawable_not_solid)
+            .build()
+
+        val provider = (decoration as DividerItemDecoration).drawableProvider
+        assertTrue(provider is DrawableProviderImpl)
+        val providerDrawable = (provider as DrawableProviderImpl).drawable
+        assertTrue(providerDrawable is GradientDrawable)
+        assertTrue(expectedDrawable.getBitmap().sameAs(providerDrawable.getBitmap()))
+        verifyZeroInteractions(logger)
+    }
+
+    @Test(expected = NullPointerException::class)
+    fun `build - drawableRes invoked with invalid Drawable - throws NullPointerException`() {
+        val resources = mock<Resources> {
+            @Suppress("DEPRECATION")
+            on(it.getDrawable(any())) doReturn null
+            if (Build.VERSION.SDK_INT >= 21) {
+                on(it.getDrawable(any(), anyOrNull())) doReturn null
+            }
+        }
+        val context = spy(context) {
+            on(it.resources) doReturn resources
+        }
+        DividerBuilder(context).drawableRes(R.drawable.test_recycler_view_drawable_not_solid)
     }
 
     @Test
@@ -650,5 +709,17 @@ class DividerBuilderTest {
         scenario.letActivity { DividerBuilder(it) }
     } else {
         DividerBuilder(context)
+    }
+
+    private fun Drawable.getBitmap(): Bitmap = if (this is BitmapDrawable) {
+        bitmap
+    } else {
+        val width = intrinsicWidth.takeIf { it >= 0 } ?: 1
+        val height = intrinsicHeight.takeIf { it >= 0 } ?: 1
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        setBounds(0, 0, canvas.width, canvas.height)
+        draw(canvas)
+        bitmap
     }
 }

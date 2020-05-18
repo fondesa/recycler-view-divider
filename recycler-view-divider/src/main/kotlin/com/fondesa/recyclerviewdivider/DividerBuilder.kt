@@ -21,7 +21,10 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.annotation.Px
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -115,10 +118,26 @@ class DividerBuilder internal constructor(private val context: Context) {
     /**
      * Sets the divider's drawable as a solid color.
      *
+     * @param colorRes the resource of the color used for each divider.
+     * @return this [DividerBuilder] instance.
+     */
+    fun colorRes(@ColorRes colorRes: Int): DividerBuilder = color(ContextCompat.getColor(context, colorRes))
+
+    /**
+     * Sets the divider's drawable as a solid color.
+     *
      * @param color the color used for each divider.
      * @return this [DividerBuilder] instance.
      */
     fun color(@ColorInt color: Int): DividerBuilder = drawable(drawable = ColorDrawable(color))
+
+    /**
+     * Sets the divider's drawable.
+     *
+     * @param drawableRes the resource of the [Drawable] used for each divider.
+     * @return this [DividerBuilder] instance.
+     */
+    fun drawableRes(@DrawableRes drawableRes: Int): DividerBuilder = drawable(context.getDrawableCompat(drawableRes))
 
     /**
      * Sets the divider's drawable.
@@ -293,4 +312,7 @@ class DividerBuilder internal constructor(private val context: Context) {
         }
         return transparentDrawable()
     }
+
+    private fun Context.getDrawableCompat(@DrawableRes drawableRes: Int): Drawable = ContextCompat.getDrawable(this, drawableRes)
+        ?: throw NullPointerException("The drawable with resource id $drawableRes can't be loaded. Use the method .drawable() instead.")
 }

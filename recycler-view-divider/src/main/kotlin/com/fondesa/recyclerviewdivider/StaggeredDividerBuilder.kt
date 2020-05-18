@@ -21,7 +21,9 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import androidx.annotation.Px
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.fondesa.recyclerviewdivider.drawable.getThemeDrawable
@@ -81,6 +83,15 @@ class StaggeredDividerBuilder(private val context: Context) {
      * @return this [StaggeredDividerBuilder] instance.
      */
     fun asSpace(): StaggeredDividerBuilder = apply { asSpace = true }
+
+    /**
+     * Sets the divider's color.
+     * If the color of this divider is not completely opaque (contains some transparency), this builder can't ensure a correct rendering.
+     *
+     * @param colorRes the resource of the color used for each divider.
+     * @return this [StaggeredDividerBuilder] instance.
+     */
+    fun colorRes(@ColorRes colorRes: Int): StaggeredDividerBuilder = color(ContextCompat.getColor(context, colorRes))
 
     /**
      * Sets the divider's color.
