@@ -16,8 +16,9 @@
 
 package com.fondesa.recyclerviewdivider
 
-import android.content.res.ColorStateList
 import android.graphics.Canvas
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.view.View
@@ -202,9 +203,17 @@ internal class DividerItemDecoration(
     }
 
     private fun Drawable.tinted(@ColorInt tintColor: Int?): Drawable {
-        val tintList = tintColor?.let { color -> ColorStateList.valueOf(color) }
+        // We can't use setColorTintList() here because setColorTintList(null) doesn't behave correctly when the drawable which
+        // should be tinted is completely opaque.
+        // A similar issue is reported here: https://issuetracker.google.com/issues/141678225.
+        // e.g. using `addDivider()` with a DayNight theme and the dark mode on, the original drawable color is changed after
+        // the call to setColorTintList(null) used to reset the tint list for each divider.
         val wrappedDrawable = DrawableCompat.wrap(this)
-        DrawableCompat.setTintList(wrappedDrawable, tintList)
+        if (tintColor == null) {
+            wrappedDrawable.clearColorFilter()
+        } else {
+            wrappedDrawable.colorFilter = PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_ATOP)
+        }
         return wrappedDrawable
     }
 
