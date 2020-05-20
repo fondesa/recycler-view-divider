@@ -16,11 +16,13 @@
 
 package com.fondesa.recyclerviewdivider.test
 
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import org.junit.Assert.assertTrue
 
 /**
@@ -47,10 +49,11 @@ private fun Drawable?.isEqualTo(other: Drawable?): Boolean {
             // However, the opposite is not necessarily true.
             return true
         }
+        if (constantState == null || other.constantState == null) return false
         when (this) {
             is ColorDrawable -> isEqualTo(other as ColorDrawable)
-            is GradientDrawable -> isEqualTo(other as GradientDrawable)
             is BitmapDrawable -> isEqualTo(other as BitmapDrawable)
+            is GradientDrawable -> isEqualTo(other as GradientDrawable)
             else -> throw IllegalArgumentException("The drawable class ${this::class.java.name} isn't supported.")
         }
     } else {
@@ -60,7 +63,46 @@ private fun Drawable?.isEqualTo(other: Drawable?): Boolean {
 
 private fun ColorDrawable.isEqualTo(other: ColorDrawable): Boolean = color == other.color
 
-private fun GradientDrawable.isEqualTo(other: GradientDrawable): Boolean {
+private fun BitmapDrawable.isEqualTo(other: BitmapDrawable): Boolean = bitmap == other.bitmap
+
+private fun GradientDrawable.isEqualTo(other: GradientDrawable): Boolean = when (Build.VERSION.SDK_INT) {
+    in 14 until 21 -> false
+    21, 22 -> isEqualToApi21(other)
+    23 -> isEqualToApi23(other)
+    else -> isEqualToApi25(other)
+}
+
+private fun GradientDrawable.isEqualToApi21(other: GradientDrawable): Boolean {
+    val thisState = checkNotNull(constantState)
+    val otherState = checkNotNull(other.constantState)
+    val thisDefaultColor = thisState.fieldValue<ColorStateList?>("mColorStateList")?.defaultColor
+    val otherDefaultColor = otherState.fieldValue<ColorStateList?>("mColorStateList")?.defaultColor
+    if (thisDefaultColor != null && otherDefaultColor != null) return thisDefaultColor == otherDefaultColor
+    if (thisDefaultColor == null && otherDefaultColor == null) {
+        val thisColors = thisState.fieldValue<IntArray?>("mColors")
+        val otherColors = otherState.fieldValue<IntArray?>("mColors")
+        if (thisColors != null && otherColors != null) return thisColors.contentEquals(otherColors)
+        return thisColors == null && otherColors == null
+    }
+    return false
+}
+
+private fun GradientDrawable.isEqualToApi23(other: GradientDrawable): Boolean {
+    val thisState = checkNotNull(constantState)
+    val otherState = checkNotNull(other.constantState)
+    val thisDefaultColor = thisState.fieldValue<ColorStateList?>("mSolidColors")?.defaultColor
+    val otherDefaultColor = otherState.fieldValue<ColorStateList?>("mSolidColors")?.defaultColor
+    if (thisDefaultColor != null && otherDefaultColor != null) return thisDefaultColor == otherDefaultColor
+    if (thisDefaultColor == null && otherDefaultColor == null) {
+        val thisColors = thisState.fieldValue<IntArray?>("mGradientColors")
+        val otherColors = otherState.fieldValue<IntArray?>("mGradientColors")
+        if (thisColors != null && otherColors != null) return thisColors.contentEquals(otherColors)
+        return thisColors == null && otherColors == null
+    }
+    return false
+}
+
+private fun GradientDrawable.isEqualToApi25(other: GradientDrawable): Boolean {
     val thisDefaultColor = color?.defaultColor
     val otherDefaultColor = other.color?.defaultColor
     if (thisDefaultColor != null && otherDefaultColor != null) return thisDefaultColor == otherDefaultColor
@@ -73,4 +115,5 @@ private fun GradientDrawable.isEqualTo(other: GradientDrawable): Boolean {
     return false
 }
 
-private fun BitmapDrawable.isEqualTo(other: BitmapDrawable): Boolean = bitmap == other.bitmap
+private inline fun <reified T> Any.fieldValue(fieldName: String): T =
+    this::class.java.fields.first { it.name == fieldName }.get(this) as T
