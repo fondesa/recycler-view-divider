@@ -16,23 +16,20 @@
 
 package com.fondesa.recyclerviewdivider
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.GradientDrawable
 import android.util.TypedValue
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
 import androidx.core.content.ContextCompat
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.fondesa.recyclerviewdivider.drawable.transparentDrawable
 import com.fondesa.recyclerviewdivider.log.RecyclerViewDividerLog
 import com.fondesa.recyclerviewdivider.size.getDefaultSize
 import com.fondesa.recyclerviewdivider.test.R
 import com.fondesa.recyclerviewdivider.test.ThemeTestActivity
+import com.fondesa.recyclerviewdivider.test.assertEqualDrawables
 import com.fondesa.recyclerviewdivider.test.context
 import com.fondesa.recyclerviewdivider.test.launchThemeActivity
 import com.fondesa.recyclerviewdivider.test.letActivity
@@ -120,8 +117,7 @@ class StaggeredDividerBuilderTest {
             .build()
 
         val drawable = (decoration as StaggeredDividerItemDecoration).drawable
-        assertTrue(drawable is ColorDrawable)
-        assertEquals(ContextCompat.getColor(context, R.color.test_recyclerViewDividerDrawable), (drawable as ColorDrawable).color)
+        assertEqualDrawables(ColorDrawable(ContextCompat.getColor(context, R.color.test_recyclerViewDividerDrawable)), drawable)
         verifyZeroInteractions(logger)
     }
 
@@ -134,8 +130,7 @@ class StaggeredDividerBuilderTest {
             .build()
 
         val drawable = (decoration as StaggeredDividerItemDecoration).drawable
-        assertTrue(drawable is ColorDrawable)
-        assertEquals(Color.RED, (drawable as ColorDrawable).color)
+        assertEqualDrawables(ColorDrawable(Color.RED), drawable)
         verifyZeroInteractions(logger)
     }
 
@@ -147,8 +142,7 @@ class StaggeredDividerBuilderTest {
         val decoration = staggeredDividerBuilder().build()
 
         val drawable = (decoration as StaggeredDividerItemDecoration).drawable
-        assertTrue(drawable is ColorDrawable)
-        assertEquals(expectedColor, (drawable as ColorDrawable).color)
+        assertEqualDrawables(ColorDrawable(expectedColor), drawable)
         verifyZeroInteractions(logger)
     }
 
@@ -160,8 +154,7 @@ class StaggeredDividerBuilderTest {
         val decoration = staggeredDividerBuilder().build()
 
         val drawable = (decoration as StaggeredDividerItemDecoration).drawable
-        assertTrue(drawable is ColorDrawable)
-        assertEquals(expectedColor, (drawable as ColorDrawable).color)
+        assertEqualDrawables(ColorDrawable(expectedColor), drawable)
         verifyZeroInteractions(logger)
     }
 
@@ -173,8 +166,7 @@ class StaggeredDividerBuilderTest {
         val decoration = staggeredDividerBuilder().build()
 
         val drawable = (decoration as StaggeredDividerItemDecoration).drawable
-        assertTrue(drawable is GradientDrawable)
-        assertTrue(drawable.getBitmap().sameAs(expectedDrawable?.getBitmap()))
+        assertEqualDrawables(expectedDrawable, drawable)
         verify(logger).logWarning(
             "Can't ensure the correct rendering of a divider drawable which isn't a solid color in a StaggeredGridLayoutManager."
         )
@@ -188,8 +180,7 @@ class StaggeredDividerBuilderTest {
         val decoration = staggeredDividerBuilder().build()
 
         val drawable = (decoration as StaggeredDividerItemDecoration).drawable
-        assertTrue(drawable is GradientDrawable)
-        assertTrue(drawable.getBitmap().sameAs(expectedDrawable?.getBitmap()))
+        assertEqualDrawables(drawable, expectedDrawable)
         verifyZeroInteractions(logger)
     }
 
@@ -201,8 +192,7 @@ class StaggeredDividerBuilderTest {
         val decoration = staggeredDividerBuilder().build()
 
         val drawable = (decoration as StaggeredDividerItemDecoration).drawable
-        assertTrue(drawable is ColorDrawable)
-        assertEquals(expectedColor, (drawable as ColorDrawable).color)
+        assertEqualDrawables(ColorDrawable(expectedColor), drawable)
         verify(logger).logWarning(
             "Can't ensure the correct rendering of a divider color which has alpha in a StaggeredGridLayoutManager."
         )
@@ -216,8 +206,7 @@ class StaggeredDividerBuilderTest {
         val decoration = staggeredDividerBuilder().build()
 
         val drawable = (decoration as StaggeredDividerItemDecoration).drawable
-        assertTrue(drawable is ColorDrawable)
-        assertEquals(expectedColor, (drawable as ColorDrawable).color)
+        assertEqualDrawables(ColorDrawable(expectedColor), drawable)
         verifyZeroInteractions(logger)
     }
 
@@ -227,8 +216,7 @@ class StaggeredDividerBuilderTest {
         val decoration = staggeredDividerBuilder().build()
 
         val drawable = (decoration as StaggeredDividerItemDecoration).drawable
-        assertTrue(drawable is ColorDrawable)
-        assertEquals(Color.TRANSPARENT, (drawable as ColorDrawable).color)
+        assertEqualDrawables(transparentDrawable(), drawable)
         verify(logger).logWarning(
             "Can't render the divider without a color. " +
                 "Specify \"recyclerViewDividerDrawable\" or \"android:listDivider\" in the theme or set a color " +
@@ -244,8 +232,7 @@ class StaggeredDividerBuilderTest {
             .build()
 
         val drawable = (decoration as StaggeredDividerItemDecoration).drawable
-        assertTrue(drawable is ColorDrawable)
-        assertEquals(Color.TRANSPARENT, (drawable as ColorDrawable).color)
+        assertEqualDrawables(transparentDrawable(), drawable)
         verifyZeroInteractions(logger)
     }
 
@@ -326,7 +313,7 @@ class StaggeredDividerBuilderTest {
         val decoration = staggeredDividerBuilder().build()
 
         assertFalse((decoration as StaggeredDividerItemDecoration).asSpace)
-        assertEquals(Color.TRANSPARENT, (decoration.drawable as ColorDrawable).color)
+        assertEqualDrawables(transparentDrawable(), decoration.drawable)
         assertEquals(context.getDefaultSize(), decoration.size)
         assertTrue(decoration.areSideDividersVisible)
         verify(logger).logWarning(
@@ -344,7 +331,7 @@ class StaggeredDividerBuilderTest {
 
         assertTrue((decoration as StaggeredDividerItemDecoration).asSpace)
         @ColorInt val expectedDrawableColor = ContextCompat.getColor(context, R.color.test_recyclerViewDividerDrawable)
-        assertEquals(expectedDrawableColor, (decoration.drawable as ColorDrawable).color)
+        assertEqualDrawables(ColorDrawable(expectedDrawableColor), decoration.drawable)
         assertEquals(resources.pxFromSize(21, TypedValue.COMPLEX_UNIT_DIP), decoration.size)
         assertTrue(decoration.areSideDividersVisible)
         verifyZeroInteractions(logger)
@@ -362,7 +349,7 @@ class StaggeredDividerBuilderTest {
             .build()
 
         assertTrue((decoration as StaggeredDividerItemDecoration).asSpace)
-        assertEquals(Color.RED, (decoration.drawable as ColorDrawable).color)
+        assertEqualDrawables(ColorDrawable(Color.RED), decoration.drawable)
         assertEquals(34, decoration.size)
         assertFalse(decoration.areSideDividersVisible)
         verifyZeroInteractions(logger)
@@ -372,17 +359,5 @@ class StaggeredDividerBuilderTest {
         scenario.letActivity { StaggeredDividerBuilder(it) }
     } else {
         StaggeredDividerBuilder(context)
-    }
-
-    private fun Drawable.getBitmap(): Bitmap = if (this is BitmapDrawable) {
-        bitmap
-    } else {
-        val width = intrinsicWidth.takeIf { it >= 0 } ?: 1
-        val height = intrinsicHeight.takeIf { it >= 0 } ?: 1
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        setBounds(0, 0, canvas.width, canvas.height)
-        draw(canvas)
-        bitmap
     }
 }

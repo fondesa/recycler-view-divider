@@ -20,9 +20,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.fondesa.recyclerviewdivider.test.allDividers
+import com.fondesa.recyclerviewdivider.test.assertEqualDrawables
 import com.fondesa.recyclerviewdivider.test.dummyGrid
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -41,8 +40,7 @@ class DrawableProviderImplTest {
         grid.allDividers.forEach { divider ->
             val actualDrawable = provider.getDividerDrawable(grid = grid, divider = divider)
 
-            assertTrue(actualDrawable is ColorDrawable)
-            assertEquals(expectedDrawable.color, (actualDrawable as ColorDrawable).color)
+            assertEqualDrawables(expectedDrawable, actualDrawable)
         }
     }
 }

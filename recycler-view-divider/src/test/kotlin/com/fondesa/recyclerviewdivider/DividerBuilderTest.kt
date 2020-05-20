@@ -17,13 +17,8 @@
 package com.fondesa.recyclerviewdivider
 
 import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.util.TypedValue
 import androidx.annotation.ColorInt
@@ -33,6 +28,7 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.fondesa.recyclerviewdivider.drawable.DrawableProvider
 import com.fondesa.recyclerviewdivider.drawable.DrawableProviderImpl
+import com.fondesa.recyclerviewdivider.drawable.transparentDrawable
 import com.fondesa.recyclerviewdivider.inset.InsetProvider
 import com.fondesa.recyclerviewdivider.inset.InsetProviderImpl
 import com.fondesa.recyclerviewdivider.log.RecyclerViewDividerLog
@@ -40,6 +36,7 @@ import com.fondesa.recyclerviewdivider.size.SizeProvider
 import com.fondesa.recyclerviewdivider.size.SizeProviderImpl
 import com.fondesa.recyclerviewdivider.test.R
 import com.fondesa.recyclerviewdivider.test.ThemeTestActivity
+import com.fondesa.recyclerviewdivider.test.assertEqualDrawables
 import com.fondesa.recyclerviewdivider.test.context
 import com.fondesa.recyclerviewdivider.test.launchThemeActivity
 import com.fondesa.recyclerviewdivider.test.letActivity
@@ -130,8 +127,7 @@ class DividerBuilderTest {
         val provider = (decoration as DividerItemDecoration).drawableProvider
         assertTrue(provider is DrawableProviderImpl)
         val providerDrawable = (provider as DrawableProviderImpl).drawable
-        assertTrue(providerDrawable is ColorDrawable)
-        assertEquals(ContextCompat.getColor(context, R.color.test_recyclerViewDividerDrawable), (providerDrawable as ColorDrawable).color)
+        assertEqualDrawables(ColorDrawable(ContextCompat.getColor(context, R.color.test_recyclerViewDividerDrawable)), providerDrawable)
         verifyZeroInteractions(logger)
     }
 
@@ -146,8 +142,7 @@ class DividerBuilderTest {
         val provider = (decoration as DividerItemDecoration).drawableProvider
         assertTrue(provider is DrawableProviderImpl)
         val providerDrawable = (provider as DrawableProviderImpl).drawable
-        assertTrue(providerDrawable is ColorDrawable)
-        assertEquals(Color.RED, (providerDrawable as ColorDrawable).color)
+        assertEqualDrawables(ColorDrawable(Color.RED), providerDrawable)
         verifyZeroInteractions(logger)
     }
 
@@ -163,8 +158,7 @@ class DividerBuilderTest {
         val provider = (decoration as DividerItemDecoration).drawableProvider
         assertTrue(provider is DrawableProviderImpl)
         val providerDrawable = (provider as DrawableProviderImpl).drawable
-        assertTrue(providerDrawable is GradientDrawable)
-        assertTrue(expectedDrawable.getBitmap().sameAs(providerDrawable.getBitmap()))
+        assertEqualDrawables(expectedDrawable, providerDrawable)
         verifyZeroInteractions(logger)
     }
 
@@ -194,8 +188,7 @@ class DividerBuilderTest {
         val provider = (decoration as DividerItemDecoration).drawableProvider
         assertTrue(provider is DrawableProviderImpl)
         val providerDrawable = (provider as DrawableProviderImpl).drawable
-        assertTrue(providerDrawable is ColorDrawable)
-        assertEquals(Color.RED, (providerDrawable as ColorDrawable).color)
+        assertEqualDrawables(ColorDrawable(Color.RED), providerDrawable)
         verifyZeroInteractions(logger)
     }
 
@@ -223,8 +216,7 @@ class DividerBuilderTest {
         val provider = (decoration as DividerItemDecoration).drawableProvider
         assertTrue(provider is DrawableProviderImpl)
         val providerDrawable = (provider as DrawableProviderImpl).drawable
-        assertTrue(providerDrawable is ColorDrawable)
-        assertEquals(expectedColor, (providerDrawable as ColorDrawable).color)
+        assertEqualDrawables(ColorDrawable(expectedColor), providerDrawable)
         verifyZeroInteractions(logger)
     }
 
@@ -236,8 +228,7 @@ class DividerBuilderTest {
         val provider = (decoration as DividerItemDecoration).drawableProvider
         assertTrue(provider is DrawableProviderImpl)
         val providerDrawable = (provider as DrawableProviderImpl).drawable
-        assertTrue(providerDrawable is ColorDrawable)
-        assertEquals(Color.TRANSPARENT, (providerDrawable as ColorDrawable).color)
+        assertEqualDrawables(transparentDrawable(), providerDrawable)
         verify(logger).logWarning(
             "Can't render the divider without a color/drawable. " +
                 "Specify \"recyclerViewDividerDrawable\" or \"android:listDivider\" in the theme or set a color/drawable " +
@@ -255,8 +246,7 @@ class DividerBuilderTest {
         val provider = (decoration as DividerItemDecoration).drawableProvider
         assertTrue(provider is DrawableProviderImpl)
         val providerDrawable = (provider as DrawableProviderImpl).drawable
-        assertTrue(providerDrawable is ColorDrawable)
-        assertEquals(Color.TRANSPARENT, (providerDrawable as ColorDrawable).color)
+        assertEqualDrawables(transparentDrawable(), providerDrawable)
         verifyZeroInteractions(logger)
     }
 
@@ -640,7 +630,7 @@ class DividerBuilderTest {
         val decoration = dividerBuilder().build()
 
         assertFalse((decoration as DividerItemDecoration).asSpace)
-        assertEquals(Color.TRANSPARENT, ((decoration.drawableProvider as DrawableProviderImpl).drawable as ColorDrawable).color)
+        assertEqualDrawables(transparentDrawable(), (decoration.drawableProvider as DrawableProviderImpl).drawable)
         assertEquals(0, (decoration.insetProvider as InsetProviderImpl).dividerInsetStart)
         assertEquals(0, decoration.insetProvider.dividerInsetEnd)
         assertNull((decoration.sizeProvider as SizeProviderImpl).dividerSize)
@@ -663,7 +653,7 @@ class DividerBuilderTest {
 
         assertTrue((decoration as DividerItemDecoration).asSpace)
         @ColorInt val expectedDrawableColor = ContextCompat.getColor(context, R.color.test_recyclerViewDividerDrawable)
-        assertEquals(expectedDrawableColor, ((decoration.drawableProvider as DrawableProviderImpl).drawable as ColorDrawable).color)
+        assertEqualDrawables(ColorDrawable(expectedDrawableColor), (decoration.drawableProvider as DrawableProviderImpl).drawable)
         assertEquals(
             resources.pxFromSize(12, TypedValue.COMPLEX_UNIT_DIP),
             (decoration.insetProvider as InsetProviderImpl).dividerInsetStart
@@ -694,7 +684,7 @@ class DividerBuilderTest {
             .build()
 
         assertTrue((decoration as DividerItemDecoration).asSpace)
-        assertEquals(Color.RED, ((decoration.drawableProvider as DrawableProviderImpl).drawable as ColorDrawable).color)
+        assertEqualDrawables(ColorDrawable(Color.RED), (decoration.drawableProvider as DrawableProviderImpl).drawable)
         assertEquals(19, (decoration.insetProvider as InsetProviderImpl).dividerInsetStart)
         assertEquals(67, decoration.insetProvider.dividerInsetEnd)
         assertEquals(34, (decoration.sizeProvider as SizeProviderImpl).dividerSize)
@@ -709,17 +699,5 @@ class DividerBuilderTest {
         scenario.letActivity { DividerBuilder(it) }
     } else {
         DividerBuilder(context)
-    }
-
-    private fun Drawable.getBitmap(): Bitmap = if (this is BitmapDrawable) {
-        bitmap
-    } else {
-        val width = intrinsicWidth.takeIf { it >= 0 } ?: 1
-        val height = intrinsicHeight.takeIf { it >= 0 } ?: 1
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        setBounds(0, 0, canvas.width, canvas.height)
-        draw(canvas)
-        bitmap
     }
 }
