@@ -16,7 +16,6 @@
 
 package com.fondesa.recyclerviewdivider.drawable
 
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
@@ -24,14 +23,13 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.fondesa.recyclerviewdivider.test.R
 import com.fondesa.recyclerviewdivider.test.ThemeTestActivity
+import com.fondesa.recyclerviewdivider.test.assertEqualDrawables
 import com.fondesa.recyclerviewdivider.test.context
 import com.fondesa.recyclerviewdivider.test.launchThemeActivity
 import com.fondesa.recyclerviewdivider.test.letActivity
 import org.junit.After
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -53,8 +51,7 @@ class GetDefaultDrawableKtTest {
     fun `transparentDrawable - returns transparent ColorDrawable`() {
         val drawable = transparentDrawable()
 
-        assertTrue(drawable is ColorDrawable)
-        assertEquals(Color.TRANSPARENT, (drawable as ColorDrawable).color)
+        assertEqualDrawables(transparentDrawable(), drawable)
     }
 
     @Test
@@ -74,8 +71,7 @@ class GetDefaultDrawableKtTest {
         val drawable = scenario.letActivity { it.getThemeDrawable() }
 
         assertNotNull(drawable)
-        assertTrue(drawable is ColorDrawable)
-        assertEquals(expectedColor, (drawable as ColorDrawable).color)
+        assertEqualDrawables(ColorDrawable(expectedColor), drawable)
     }
 
     @Test
@@ -86,8 +82,7 @@ class GetDefaultDrawableKtTest {
         val drawable = scenario.letActivity { it.getThemeDrawable() }
 
         assertNotNull(drawable)
-        assertTrue(drawable is ColorDrawable)
-        assertEquals(expectedColor, (drawable as ColorDrawable).color)
+        assertEqualDrawables(ColorDrawable(expectedColor), drawable)
     }
 
     @Test
@@ -98,7 +93,6 @@ class GetDefaultDrawableKtTest {
         val drawable = scenario.letActivity { it.getThemeDrawable() }
 
         assertNotNull(drawable)
-        assertTrue(drawable is ColorDrawable)
-        assertEquals(expectedColor, (drawable as ColorDrawable).color)
+        assertEqualDrawables(ColorDrawable(expectedColor), drawable)
     }
 }
