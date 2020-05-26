@@ -30,10 +30,15 @@ import com.fondesa.recyclerviewdivider.Orientation
  *
  * @param orientation the grid's orientation.
  * @param cellsInLines the array of cells count for each line. The lines count is defined with the array size.
+ * @param fillLine true if the sum of the span sizes of the cells in each line should be equal to the span count.
  * E.g. the array [2, 5, 3] creates a grid with 3 lines having 2 cells in the first line, 5 cells in the second line and 3 in the third.
  * @return the grid used in test methods.
  */
-internal fun dummyGrid(orientation: Orientation = Orientation.VERTICAL, cellsInLines: IntArray = intArrayOf()): Grid {
+internal fun dummyGrid(
+    orientation: Orientation = Orientation.VERTICAL,
+    cellsInLines: IntArray = intArrayOf(),
+    fillLine: Boolean = true
+): Grid {
     val spanCount = cellsInLines.max() ?: 1
     return Grid(
         spanCount = spanCount,
@@ -44,7 +49,7 @@ internal fun dummyGrid(orientation: Orientation = Orientation.VERTICAL, cellsInL
         ),
         lines = cellsInLines.map { cellsCount ->
             val cells = List(cellsCount) { index ->
-                val spanSize = if (index == cellsCount - 1) spanCount - cellsCount + 1 else 1
+                val spanSize = if (index == cellsCount - 1 && fillLine) spanCount - cellsCount + 1 else 1
                 Cell(spanSize = spanSize)
             }
             Line(cells = cells)

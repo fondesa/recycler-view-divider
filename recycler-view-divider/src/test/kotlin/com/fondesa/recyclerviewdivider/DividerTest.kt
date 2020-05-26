@@ -114,7 +114,7 @@ class DividerTest {
     }
 
     @Test
-    fun `isBottomDivider - divider horizontal, grid horizontal, originY equal to cells count in given line - returns false`() {
+    fun `isBottomDivider - divider horizontal, grid horizontal, originY not equal to cells count in given line - returns false`() {
         val divider = Divider(
             grid = dummyGrid(orientation = Orientation.HORIZONTAL, cellsInLines = intArrayOf(3, 2, 3)),
             originX = 2,
@@ -126,11 +126,23 @@ class DividerTest {
     }
 
     @Test
-    fun `isBottomDivider - divider horizontal, grid horizontal, originY equal to cells count in given line - returns true`() {
+    fun `isBottomDivider - divider horizontal, grid horizontal, originY equal to cells count in line, line not filled - returns false`() {
         val divider = Divider(
-            grid = dummyGrid(orientation = Orientation.HORIZONTAL, cellsInLines = intArrayOf(3, 2, 3)),
+            grid = dummyGrid(orientation = Orientation.HORIZONTAL, cellsInLines = intArrayOf(3, 2, 2), fillLine = false),
             originX = 2,
-            originY = 3,
+            originY = 2,
+            orientation = Orientation.HORIZONTAL
+        )
+
+        assertFalse(divider.isBottomDivider)
+    }
+
+    @Test
+    fun `isBottomDivider - divider horizontal, grid horizontal, originY equal to cells count in line, line filled - returns true`() {
+        val divider = Divider(
+            grid = dummyGrid(orientation = Orientation.HORIZONTAL, cellsInLines = intArrayOf(3, 2, 2)),
+            originX = 2,
+            originY = 2,
             orientation = Orientation.HORIZONTAL
         )
 
@@ -222,7 +234,19 @@ class DividerTest {
     }
 
     @Test
-    fun `isEndDivider - divider vertical, grid vertical, originX equal to cells count in given line - returns true`() {
+    fun `isEndDivider - divider vertical, grid vertical, originX equal to cells count in given line, line not filled - returns false`() {
+        val divider = Divider(
+            grid = dummyGrid(orientation = Orientation.VERTICAL, cellsInLines = intArrayOf(3, 2, 2), fillLine = false),
+            originX = 2,
+            originY = 2,
+            orientation = Orientation.VERTICAL
+        )
+
+        assertFalse(divider.isEndDivider)
+    }
+
+    @Test
+    fun `isEndDivider - divider vertical, grid vertical, originX equal to cells count in given line, line filled - returns true`() {
         val divider = Divider(
             grid = dummyGrid(orientation = Orientation.VERTICAL, cellsInLines = intArrayOf(3, 2, 3)),
             originX = 3,

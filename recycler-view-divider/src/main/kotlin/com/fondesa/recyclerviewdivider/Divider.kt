@@ -117,8 +117,9 @@ data class Divider(
     val isBottomDivider: Boolean
         get() {
             if (orientation.isVertical) return false
-            val lastY = if (isGridVertical) grid.linesCount else grid.lines[originX].cellsCount
-            return originY == lastY
+            if (isGridVertical) return originY == grid.linesCount
+            val line = grid.lines[originX]
+            return originY == line.cellsCount && line.isFilled
         }
 
     /**
@@ -136,8 +137,9 @@ data class Divider(
     val isEndDivider: Boolean
         get() {
             if (orientation.isHorizontal) return false
-            val lastX = if (isGridVertical) grid.lines[originY].cellsCount else grid.linesCount
-            return originX == lastX
+            if (isGridHorizontal) return originX == grid.linesCount
+            val line = grid.lines[originY]
+            return originX == line.cellsCount && line.isFilled
         }
 
     /**
@@ -167,4 +169,8 @@ data class Divider(
     val isSideDivider: Boolean get() = if (isGridVertical) isStartDivider || isEndDivider else isTopDivider || isBottomDivider
 
     private val isGridVertical: Boolean get() = grid.orientation.isVertical
+
+    private val isGridHorizontal: Boolean get() = grid.orientation.isHorizontal
+
+    private val Line.isFilled: Boolean get() = cells.sumBy { it.spanSize } == grid.spanCount
 }
