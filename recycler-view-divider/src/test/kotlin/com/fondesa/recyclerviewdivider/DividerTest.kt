@@ -126,7 +126,7 @@ class DividerTest {
     }
 
     @Test
-    fun `isBottomDivider - divider horizontal, grid horizontal, originY equal to cells count in line, line not filled - returns false`() {
+    fun `isBottomDivider - divider horizontal, grid horizontal, originY equal to cells count in given line, line not filled - returns false`() {
         val divider = Divider(
             grid = dummyGrid(orientation = Orientation.HORIZONTAL, cellsInLines = intArrayOf(3, 2, 2), fillLine = false),
             originX = 2,
@@ -138,7 +138,7 @@ class DividerTest {
     }
 
     @Test
-    fun `isBottomDivider - divider horizontal, grid horizontal, originY equal to cells count in line, line filled - returns true`() {
+    fun `isBottomDivider - divider horizontal, grid horizontal, originY equal to cells count in given line, line filled - returns true`() {
         val divider = Divider(
             grid = dummyGrid(orientation = Orientation.HORIZONTAL, cellsInLines = intArrayOf(3, 2, 2)),
             originX = 2,
@@ -423,5 +423,49 @@ class DividerTest {
         )
 
         assertTrue(divider.isSideDivider)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `accumulatedSpan - divider horizontal, grid vertical - throws exception`() {
+        Divider(
+            grid = dummyGrid(orientation = Orientation.VERTICAL),
+            originX = 0,
+            originY = 0,
+            orientation = Orientation.HORIZONTAL
+        ).accumulatedSpan
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `accumulatedSpan - divider vertical, grid horizontal - throws exception`() {
+        Divider(
+            grid = dummyGrid(orientation = Orientation.HORIZONTAL),
+            originX = 0,
+            originY = 0,
+            orientation = Orientation.VERTICAL
+        ).accumulatedSpan
+    }
+
+    @Test
+    fun `accumulatedSpan - divider vertical, grid vertical - returns accumulated span`() {
+        val divider = Divider(
+            grid = dummyGrid(orientation = Orientation.VERTICAL, cellsInLines = intArrayOf(3, 2, 3)),
+            originX = 2,
+            originY = 1,
+            orientation = Orientation.VERTICAL
+        )
+
+        assertEquals(3, divider.accumulatedSpan)
+    }
+
+    @Test
+    fun `accumulatedSpan - divider horizontal, grid horizontal - returns accumulated span`() {
+        val divider = Divider(
+            grid = dummyGrid(orientation = Orientation.HORIZONTAL, cellsInLines = intArrayOf(3, 2, 3)),
+            originX = 1,
+            originY = 2,
+            orientation = Orientation.HORIZONTAL
+        )
+
+        assertEquals(3, divider.accumulatedSpan)
     }
 }

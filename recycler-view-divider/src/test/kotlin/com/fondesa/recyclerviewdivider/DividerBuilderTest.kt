@@ -32,6 +32,7 @@ import com.fondesa.recyclerviewdivider.drawable.transparentDrawable
 import com.fondesa.recyclerviewdivider.inset.InsetProvider
 import com.fondesa.recyclerviewdivider.inset.InsetProviderImpl
 import com.fondesa.recyclerviewdivider.log.RecyclerViewDividerLog
+import com.fondesa.recyclerviewdivider.offset.DividerOffsetProvider
 import com.fondesa.recyclerviewdivider.size.SizeProvider
 import com.fondesa.recyclerviewdivider.size.SizeProviderImpl
 import com.fondesa.recyclerviewdivider.test.R
@@ -203,7 +204,6 @@ class DividerBuilderTest {
 
         val actualProvider = (decoration as DividerItemDecoration).drawableProvider
         assertEquals(expectedProvider, actualProvider)
-        verifyZeroInteractions(logger)
     }
 
     @Test
@@ -438,7 +438,6 @@ class DividerBuilderTest {
 
         val actualProvider = (decoration as DividerItemDecoration).sizeProvider
         assertEquals(expectedProvider, actualProvider)
-        verifyZeroInteractions(logger)
     }
 
     @Test
@@ -620,6 +619,84 @@ class DividerBuilderTest {
 
         val actualProvider = (decoration as DividerItemDecoration).visibilityProvider
         assertEquals(expectedProvider, actualProvider)
+    }
+
+    @Test
+    fun `build - offsetProvider invoked - returns decoration with DividerOffsetProvider`() {
+        val expectedProvider = mock<DividerOffsetProvider>()
+
+        val decoration = dividerBuilder()
+            .offsetProvider(expectedProvider)
+            .build()
+
+        val actualProvider = (decoration as DividerItemDecoration).offsetProvider
+        assertEquals(expectedProvider, actualProvider)
+        verifyZeroInteractions(logger)
+    }
+
+    @Test
+    fun `build - drawableProvider invoked, offsetProvider not invoked - logs warning about possible unbalancing`() {
+        dividerBuilder()
+            .drawableProvider(mock())
+            .build()
+
+        verify(logger).logWarning(
+            "The default DividerOffsetProvider can't ensure the same size of the items in a grid " +
+                "with more than 1 column/row using a custom DrawableProvider, SizeProvider or VisibilityProvider."
+        )
+    }
+
+    @Test
+    fun `build - sizeProvider invoked, offsetProvider not invoked - logs warning about possible unbalancing`() {
+        dividerBuilder()
+            .sizeProvider(mock())
+            .build()
+
+        verify(logger).logWarning(
+            "The default DividerOffsetProvider can't ensure the same size of the items in a grid " +
+                "with more than 1 column/row using a custom DrawableProvider, SizeProvider or VisibilityProvider."
+        )
+    }
+
+    @Test
+    fun `build - visibilityProvider invoked, offsetProvider not invoked - logs warning about possible unbalancing`() {
+        dividerBuilder()
+            .visibilityProvider(mock())
+            .build()
+
+        verify(logger).logWarning(
+            "The default DividerOffsetProvider can't ensure the same size of the items in a grid " +
+                "with more than 1 column/row using a custom DrawableProvider, SizeProvider or VisibilityProvider."
+        )
+    }
+
+    @Test
+    fun `build - drawableProvider invoked, offsetProvider invoked - warning is not logged`() {
+        dividerBuilder()
+            .drawableProvider(mock())
+            .offsetProvider(mock())
+            .build()
+
+        verifyZeroInteractions(logger)
+    }
+
+    @Test
+    fun `build - sizeProvider invoked, offsetProvider invoked - warning is not logged`() {
+        dividerBuilder()
+            .sizeProvider(mock())
+            .offsetProvider(mock())
+            .build()
+
+        verifyZeroInteractions(logger)
+    }
+
+    @Test
+    fun `build - visibilityProvider invoked, offsetProvider invoked - warning is not logged`() {
+        dividerBuilder()
+            .visibilityProvider(mock())
+            .offsetProvider(mock())
+            .build()
+
         verifyZeroInteractions(logger)
     }
 

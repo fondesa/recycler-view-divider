@@ -168,6 +168,27 @@ data class Divider(
      */
     val isSideDivider: Boolean get() = if (isGridVertical) isStartDivider || isEndDivider else isTopDivider || isBottomDivider
 
+    /**
+     * @return the total span size of the cells before this divider in its line.
+     */
+    internal val accumulatedSpan: Int
+        get() {
+            require(orientation == grid.orientation) {
+                "The accumulated span can be calculated only if the divider has the same orientation of its grid."
+            }
+            val lineIndex: Int
+            val cellIndex: Int
+            if (isGridVertical) {
+                lineIndex = originY
+                cellIndex = originX
+            } else {
+                lineIndex = originX
+                cellIndex = originY
+            }
+            val line = grid.lines[lineIndex]
+            return (0 until cellIndex).sumBy { i -> line.cells[i].spanSize }
+        }
+
     private val isGridVertical: Boolean get() = grid.orientation.isVertical
 
     private val isGridHorizontal: Boolean get() = grid.orientation.isHorizontal
