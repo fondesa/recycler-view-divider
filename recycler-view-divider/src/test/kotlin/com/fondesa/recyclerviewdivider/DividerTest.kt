@@ -126,7 +126,7 @@ class DividerTest {
     }
 
     @Test
-    fun `isBottomDivider - divider horizontal, grid horizontal, originY equal to cells count in given line, line not filled - returns false`() {
+    fun `isBottomDivider - divider horizontal, grid horizontal, originY equal to cells count in line, line not filled - returns false`() {
         val divider = Divider(
             grid = dummyGrid(orientation = Orientation.HORIZONTAL, cellsInLines = intArrayOf(3, 2, 2), fillLine = false),
             originX = 2,
