@@ -20,6 +20,7 @@ env:
     - secure: "Ub/JSdCLT0d8lpWeDFx0rfvJnslAYZFQXezX69G/aZBuLUC0J+684Fb2WDQS8v0u3blZeys443Ou5TOu02vBdYP3g3D4yURLtcQGoQYSWu7X5pNZ7ahk/7rj4d3jzcg6fObDuvy2UBRZy5LlzRoghtTeqpUz3vu0QUkXhPVTUoJ/xsfr/Ly8xPZp77fdKCaIPpAH8Pq9ptQg3BF+XaG+sc0zoyPil0+q1OxL+1h1QxubaPEsLDzIQAqaEZoSLo62z9ZeGbcxyaxo0bGvowIEoP7egYUB2SsZADgp7gdYITKzVW+I6tqw6DK+Rc1qHfejUSG7xFCIqJx2IpxxWppfU0TwReGxIF1kHwvEnglYc5+A2TbscnkrQIMXkZ0bF46odEoBpH4TOyXZjSjEF2AW20gFo8d2npTEfPAa+1Lum2+XoEjzx5xsgH9pccp10CmOg+G3XU0f+E78F23AuL/mvwqoshvyGuUz0qVQxSgst//kF0BrJuR88rmCQJcL6bBV9hU4lMS6ZWsg8sSWXxy8d+i4JOOH292xNnrMkc+fvT79ZSBVRuvpysVJfAFcMbstfSLvwESdV9Bl3pfWRKCReTOfchiH9Ju2sYnr2/ns+ealGxPqvWfDvPmngegfpylKdT/gUpjS/++DDQnIOn9c3kx36/LLv5zJ5wRmh3N1WRw="
 
 before_install:
+  # Just a fix using build-tools 29.0.3 on Travis, since it seems that the licenses of build-tools 29.0.2 are not accepted.
   - yes | sdkmanager "build-tools;29.0.2"
 
 android:
