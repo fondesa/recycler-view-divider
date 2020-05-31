@@ -23,6 +23,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.fondesa.recyclerviewdivider.offset.StaggeredDividerOffsetProvider
 import com.fondesa.recyclerviewdivider.test.assertEquals
 import com.fondesa.recyclerviewdivider.test.bounds
 import com.fondesa.recyclerviewdivider.test.context
@@ -1472,7 +1473,8 @@ class StaggeredDividerItemDecorationTest {
         asSpace = false,
         drawable = ColorDrawable(Color.RED),
         size = size,
-        areSideDividersVisible = areSideDividersVisible
+        areSideDividersVisible = areSideDividersVisible,
+        offsetProvider = StaggeredDividerOffsetProvider(areSideDividersVisible)
     )
 
     private fun view(spanIndex: Int, isFullSpan: Boolean): View {
