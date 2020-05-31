@@ -17,33 +17,42 @@
 package com.fondesa.recyclerviewdivider.offset
 
 import androidx.annotation.Px
-import com.fondesa.recyclerviewdivider.Divider
-import com.fondesa.recyclerviewdivider.Grid
 import com.fondesa.recyclerviewdivider.Side
+import com.fondesa.recyclerviewdivider.StaggeredCell
+import com.fondesa.recyclerviewdivider.StaggeredGrid
+import com.fondesa.recyclerviewdivider.sidesAdjacentToCell
 
 /**
- * Implementation of [DividerOffsetProvider] which tries to balance the offsets between the items to render an equal size for each cell.
+ * Provides the offset of a [StaggeredCell]'s divider.
  *
  * @param areSideDividersVisible true if the side dividers are visible.
  */
-internal class DividerOffsetProviderImpl(private val areSideDividersVisible: Boolean) : DividerOffsetProvider {
+internal class StaggeredDividerOffsetProvider(private val areSideDividersVisible: Boolean) {
 
+    /**
+     * Gets the divider's offset.
+     * Useful to balance the size of the items in a grid with multiple columns/rows.
+     *
+     * @param grid the [StaggeredGrid] in which the divider is shown.
+     * @param cell the [StaggeredCell] of which the divider is shown.
+     * @param dividerSide the side of the cell on which the divider is shown.
+     * @param size the size of the divider.
+     * @return the offset which should be rendered by the given divider.
+     */
     @Px
-    override fun getOffsetFromSize(grid: Grid, divider: Divider, dividerSide: Side, @Px size: Int): Int {
+    fun getOffsetFromSize(grid: StaggeredGrid, cell: StaggeredCell, dividerSide: Side, @Px size: Int): Int {
         // The dividers adjacent to the grid should always have the same offset.
-        if (divider.isTopDivider || divider.isBottomDivider || divider.isStartDivider || divider.isEndDivider) return size
+        val sidesAdjacentToCell = grid.sidesAdjacentToCell(cell)
+        val isAdjacentToGrid = dividerSide in sidesAdjacentToCell
+        if (isAdjacentToGrid && areSideDividersVisible) return size
+        if (isAdjacentToGrid) return 0
         val gridOrientation = grid.orientation
         // The balancing should be done only if the divider has the same orientation of the grid since it's useless
         // to balance a divider when its container is a scrolling view like a RecyclerView.
         if (gridOrientation.isVertical && dividerSide == Side.TOP || gridOrientation.isHorizontal && dividerSide == Side.START) return 0
         if (gridOrientation.isVertical && dividerSide == Side.BOTTOM || gridOrientation.isHorizontal && dividerSide == Side.END) return size
         val spanCount = grid.spanCount
-        val spanIndex = divider.spanIndex(dividerSide)
+        val spanIndex = cell.spanIndex
         return normalizedOffsetFromSize(dividerSide, size, spanCount, spanIndex, areSideDividersVisible)
-    }
-
-    private fun Divider.spanIndex(dividerSide: Side): Int = when (dividerSide) {
-        Side.START, Side.TOP -> accumulatedSpan
-        Side.END, Side.BOTTOM -> accumulatedSpan - 1
     }
 }
