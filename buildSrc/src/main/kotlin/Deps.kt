@@ -15,7 +15,7 @@
  */
 
 object Deps {
-    const val androidPlugin = "com.android.tools.build:gradle:3.6.3"
+    const val androidPlugin = "com.android.tools.build:gradle:4.0.0"
     const val androidxAppCompat = "androidx.appcompat:appcompat:1.1.0"
     const val androidxJUnit = "androidx.test.ext:junit:1.1.1"
     const val androidxRecyclerView = "androidx.recyclerview:recyclerview:1.1.0"
