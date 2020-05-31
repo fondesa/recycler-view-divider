@@ -16,40 +16,34 @@
 
 package com.fondesa.recyclerviewdivider
 
-import android.view.View
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-
 /**
  * Gets the sides of the grid adjacent to the given item.
  * When the grid is vertical only [Side.START] and [Side.END] can be returned.
  * When the grid is horizontal only [Side.TOP] and [Side.BOTTOM] can be returned.
  *
- * @param itemView the [View] of the item at the given index.
- * @param layoutRightToLeft true if layout of the grid is right-to-left.
+ * @param cell the [StaggeredCell] identifying the cell in the grid.
  * @return a set of [Side] containing:
  * - [Side.TOP] if the item touches the top side of the grid.
  * - [Side.BOTTOM] if the item touches the bottom side of the grid.
  * - [Side.START] if the item touches the start side of the grid.
  * - [Side.END] if the item touches the end side of the grid.
  */
-internal fun StaggeredGridLayoutManager.sidesAdjacentToItem(itemView: View, layoutRightToLeft: Boolean): Sides {
-    val layoutParams = itemView.layoutParams as StaggeredGridLayoutManager.LayoutParams
-    val isFullSpan = layoutParams.isFullSpan
-    val spanIndex = layoutParams.spanIndex
+internal fun StaggeredGrid.sidesAdjacentToCell(cell: StaggeredCell): Sides {
+    val spanIndex = cell.spanIndex
     val isAdjacentToGridTop: Boolean
     val isAdjacentToGridBottom: Boolean
     val isAdjacentToGridStart: Boolean
     val isAdjacentToGridEnd: Boolean
-    if (layoutOrientation.isVertical) {
+    if (orientation.isVertical) {
         val isAdjacentToGridLeft = spanIndex == 0
-        val isAdjacentToGridRight = isFullSpan || spanIndex == spanCount - 1
-        isAdjacentToGridStart = if (layoutRightToLeft) isAdjacentToGridRight else isAdjacentToGridLeft
-        isAdjacentToGridEnd = if (layoutRightToLeft) isAdjacentToGridLeft else isAdjacentToGridRight
+        val isAdjacentToGridRight = cell.isFullSpan || spanIndex == spanCount - 1
+        isAdjacentToGridStart = if (layoutDirection.isRightToLeft) isAdjacentToGridRight else isAdjacentToGridLeft
+        isAdjacentToGridEnd = if (layoutDirection.isRightToLeft) isAdjacentToGridLeft else isAdjacentToGridRight
         isAdjacentToGridTop = false
         isAdjacentToGridBottom = false
     } else {
         isAdjacentToGridTop = spanIndex == 0
-        isAdjacentToGridBottom = isFullSpan || spanIndex == spanCount - 1
+        isAdjacentToGridBottom = cell.isFullSpan || spanIndex == spanCount - 1
         isAdjacentToGridStart = false
         isAdjacentToGridEnd = false
     }

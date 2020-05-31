@@ -30,6 +30,7 @@ import com.fondesa.recyclerviewdivider.drawable.getThemeDrawable
 import com.fondesa.recyclerviewdivider.drawable.isOpaque
 import com.fondesa.recyclerviewdivider.drawable.transparentDrawable
 import com.fondesa.recyclerviewdivider.log.logWarning
+import com.fondesa.recyclerviewdivider.offset.StaggeredDividerOffsetProvider
 import com.fondesa.recyclerviewdivider.size.getDefaultSize
 import com.fondesa.recyclerviewdivider.size.getThemeSize
 import com.fondesa.recyclerviewdivider.space.getThemeAsSpaceOrDefault
@@ -137,7 +138,8 @@ class StaggeredDividerBuilder(private val context: Context) {
             asSpace = asSpace,
             drawable = color?.let { ColorDrawable(it) } ?: context.getThemeDrawableOrDefault(asSpace),
             size = size ?: context.getThemeSize() ?: context.getDefaultSize(),
-            areSideDividersVisible = areSideDividersVisible
+            areSideDividersVisible = areSideDividersVisible,
+            offsetProvider = StaggeredDividerOffsetProvider(areSideDividersVisible)
         )
     }
 

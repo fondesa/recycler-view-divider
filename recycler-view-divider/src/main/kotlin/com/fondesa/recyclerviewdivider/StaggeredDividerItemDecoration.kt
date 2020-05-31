@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.fondesa.recyclerviewdivider.drawable.drawWithBounds
+import com.fondesa.recyclerviewdivider.offset.StaggeredDividerOffsetProvider
 
 /**
  * Implementation of [BaseDividerItemDecoration] used in a [StaggeredGridLayoutManager].
@@ -34,12 +35,14 @@ import com.fondesa.recyclerviewdivider.drawable.drawWithBounds
  * @param drawable the divider's drawable.
  * @param size the divider's size.
  * @param areSideDividersVisible true if the side dividers should be shown.
+ * @param offsetProvider balances the offsets of the divider.
  */
 internal class StaggeredDividerItemDecoration(
     asSpace: Boolean,
     @VisibleForTesting internal val drawable: Drawable,
     @[VisibleForTesting Px] internal val size: Int,
-    @VisibleForTesting internal val areSideDividersVisible: Boolean
+    @VisibleForTesting internal val areSideDividersVisible: Boolean,
+    private val offsetProvider: StaggeredDividerOffsetProvider
 ) : BaseDividerItemDecoration(asSpace) {
 
     override fun getItemOffsets(
@@ -49,47 +52,14 @@ internal class StaggeredDividerItemDecoration(
         itemCount: Int,
         itemIndex: Int
     ) = layoutManager.withStaggered {
-        val layoutDirection = obtainLayoutDirection()
-        val layoutRightToLeft = layoutDirection.isRightToLeft
-        val layoutBottomToTop = layoutDirection.isBottomToTop
-        val adjacentGridSides = sidesAdjacentToItem(itemView, layoutRightToLeft)
-        @Px val topSize: Int
-        @Px val bottomSize: Int
-        @Px val startSize: Int
-        @Px val endSize: Int
-        if (layoutOrientation.isVertical) {
-            topSize = 0
-            bottomSize = size
-            startSize = when {
-                Side.START !in adjacentGridSides -> size / 2
-                areSideDividersVisible -> size
-                else -> 0
-            }
-            endSize = when {
-                // If the divider has an odd size, to render a middle divider equally sized to the ones
-                // adjacent to the grid's sides, 1 pixel is added to the first of two adjacent cells.
-                Side.END !in adjacentGridSides && size % 2 == 1 -> size / 2 + 1
-                Side.END !in adjacentGridSides -> size / 2
-                areSideDividersVisible -> size
-                else -> 0
-            }
-        } else {
-            topSize = when {
-                Side.TOP !in adjacentGridSides -> size / 2
-                areSideDividersVisible -> size
-                else -> 0
-            }
-            bottomSize = when {
-                // If the divider has an odd size, to render a middle divider equally sized to the ones
-                // adjacent to the grid's sides, 1 pixel is added to the first of two adjacent cells.
-                Side.BOTTOM !in adjacentGridSides && size % 2 == 1 -> size / 2 + 1
-                Side.BOTTOM !in adjacentGridSides -> size / 2
-                areSideDividersVisible -> size
-                else -> 0
-            }
-            startSize = 0
-            endSize = size
-        }
+        val grid = staggeredGrid()
+        val cell = itemView.staggeredCell()
+        @Px val topSize = offsetProvider.getOffsetFromSize(grid, cell, Side.TOP, size)
+        @Px val bottomSize = offsetProvider.getOffsetFromSize(grid, cell, Side.BOTTOM, size)
+        @Px val startSize = offsetProvider.getOffsetFromSize(grid, cell, Side.START, size)
+        @Px val endSize = offsetProvider.getOffsetFromSize(grid, cell, Side.END, size)
+        val layoutRightToLeft = grid.layoutDirection.isRightToLeft
+        val layoutBottomToTop = grid.layoutDirection.isBottomToTop
         outRect.top = if (layoutBottomToTop) bottomSize else topSize
         outRect.bottom = if (layoutBottomToTop) topSize else bottomSize
         outRect.left = if (layoutRightToLeft) endSize else startSize
@@ -102,23 +72,24 @@ internal class StaggeredDividerItemDecoration(
         layoutManager: RecyclerView.LayoutManager,
         itemCount: Int
     ) = layoutManager.withStaggered {
-        recyclerView.forEachItem { _, itemView -> drawDividersOfItem(canvas, itemView) }
+        val grid = staggeredGrid()
+        recyclerView.forEachItem { _, itemView -> itemView.drawDividersOfItem(canvas, grid) }
     }
 
-    private fun StaggeredGridLayoutManager.drawDividersOfItem(canvas: Canvas, itemView: View) {
-        val layoutDirection = obtainLayoutDirection()
-        val layoutRightToLeft = layoutDirection.isRightToLeft
-        val layoutBottomToTop = layoutDirection.isBottomToTop
-        val left = itemView.leftWithMargin
-        val right = itemView.rightWithMargin
-        val top = itemView.topWithMargin
-        val bottom = itemView.bottomWithMargin
-        val adjacentGridSides = sidesAdjacentToItem(itemView, layoutRightToLeft)
+    private fun View.drawDividersOfItem(canvas: Canvas, grid: StaggeredGrid) {
+        val layoutRightToLeft = grid.layoutDirection.isRightToLeft
+        val layoutBottomToTop = grid.layoutDirection.isBottomToTop
+        val left = leftWithMargin
+        val right = rightWithMargin
+        val top = topWithMargin
+        val bottom = bottomWithMargin
+        val cell = staggeredCell()
+        val adjacentGridSides = grid.sidesAdjacentToCell(cell)
         val shouldDrawTop: Boolean
         val shouldDrawBottom: Boolean
         val shouldDrawStart: Boolean
         val shouldDrawEnd: Boolean
-        if (layoutOrientation.isVertical) {
+        if (grid.orientation.isVertical) {
             shouldDrawBottom = true
             shouldDrawTop = true
             shouldDrawEnd = Side.END !in adjacentGridSides || areSideDividersVisible
