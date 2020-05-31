@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.fondesa.recyclerviewdivider.drawable.DrawableProvider
 import com.fondesa.recyclerviewdivider.drawable.drawWithBounds
 import com.fondesa.recyclerviewdivider.inset.InsetProvider
+import com.fondesa.recyclerviewdivider.offset.DividerOffsetProvider
 import com.fondesa.recyclerviewdivider.size.SizeProvider
 import com.fondesa.recyclerviewdivider.tint.TintProvider
 import com.fondesa.recyclerviewdivider.visibility.VisibilityProvider
@@ -44,8 +45,9 @@ import com.fondesa.recyclerviewdivider.visibility.VisibilityProvider
  * @param drawableProvider the provider of the divider's drawable.
  * @param insetProvider the provider of the divider's inset.
  * @param sizeProvider the provider of the divider's size.
- * @param sizeProvider the provider of the divider's tint color.
- * @param sizeProvider the provider of the divider's visibility.
+ * @param tintProvider the provider of the divider's tint color.
+ * @param visibilityProvider the provider of the divider's visibility.
+ * @param offsetProvider balances the offsets of the divider.
  */
 internal class DividerItemDecoration(
     asSpace: Boolean,
@@ -53,7 +55,8 @@ internal class DividerItemDecoration(
     @VisibleForTesting internal val insetProvider: InsetProvider,
     @VisibleForTesting internal val sizeProvider: SizeProvider,
     @VisibleForTesting internal val tintProvider: TintProvider,
-    @VisibleForTesting internal val visibilityProvider: VisibilityProvider
+    @VisibleForTesting internal val visibilityProvider: VisibilityProvider,
+    @VisibleForTesting internal val offsetProvider: DividerOffsetProvider
 ) : BaseDividerItemDecoration(asSpace) {
 
     override fun getItemOffsets(
@@ -73,31 +76,19 @@ internal class DividerItemDecoration(
         val layoutBottomToTop = grid.layoutDirection.isBottomToTop
         val layoutRightToLeft = grid.layoutDirection.isRightToLeft
         topDivider.computeOffsetSize(grid) { dividerSize ->
-            val size = if (topDivider.isTopDivider) dividerSize else dividerSize / 2
+            @Px val size = offsetProvider.getOffsetFromSize(grid, topDivider, Side.TOP, dividerSize)
             if (layoutBottomToTop) outRect.bottom = size else outRect.top = size
         }
         startDivider.computeOffsetSize(grid) { dividerSize ->
-            val size = if (startDivider.isStartDivider) dividerSize else dividerSize / 2
+            @Px val size = offsetProvider.getOffsetFromSize(grid, startDivider, Side.START, dividerSize)
             if (layoutRightToLeft) outRect.right = size else outRect.left = size
         }
         bottomDivider.computeOffsetSize(grid) { dividerSize ->
-            val size = when {
-                bottomDivider.isBottomDivider -> dividerSize
-                // If the divider has an odd size, to render a middle divider equally sized to the ones
-                // adjacent to the grid's sides, 1 pixel is added to the first of two adjacent cells.
-                dividerSize % 2 == 1 -> dividerSize / 2 + 1
-                else -> dividerSize / 2
-            }
+            @Px val size = offsetProvider.getOffsetFromSize(grid, bottomDivider, Side.BOTTOM, dividerSize)
             if (layoutBottomToTop) outRect.top = size else outRect.bottom = size
         }
         endDivider.computeOffsetSize(grid) { dividerSize ->
-            val size = when {
-                endDivider.isEndDivider -> dividerSize
-                // If the divider has an odd size, to render a middle divider equally sized to the ones
-                // adjacent to the grid's sides, 1 pixel is added to the first of two adjacent cells.
-                dividerSize % 2 == 1 -> dividerSize / 2 + 1
-                else -> dividerSize / 2
-            }
+            @Px val size = offsetProvider.getOffsetFromSize(grid, endDivider, Side.END, dividerSize)
             if (layoutRightToLeft) outRect.left = size else outRect.right = size
         }
     }

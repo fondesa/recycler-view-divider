@@ -37,6 +37,8 @@ import com.fondesa.recyclerviewdivider.inset.InsetProviderImpl
 import com.fondesa.recyclerviewdivider.inset.getThemeInsetEndOrDefault
 import com.fondesa.recyclerviewdivider.inset.getThemeInsetStartOrDefault
 import com.fondesa.recyclerviewdivider.log.logWarning
+import com.fondesa.recyclerviewdivider.offset.DividerOffsetProvider
+import com.fondesa.recyclerviewdivider.offset.DividerOffsetProviderImpl
 import com.fondesa.recyclerviewdivider.size.SizeProvider
 import com.fondesa.recyclerviewdivider.size.SizeProviderImpl
 import com.fondesa.recyclerviewdivider.size.getThemeSize
@@ -92,6 +94,11 @@ import com.fondesa.recyclerviewdivider.visibility.VisibilityProviderImpl
  * When the divider isn't visible, it means the divider won't exist on the layout so its space between the two adjacent cells won't appear.
  * By default the divider before the first item, after the last item and the side dividers aren't visible, all the others are.
  *
+ * - offsets
+ * Specifies the divider's offset.
+ * It's useful to balance the size of the items in a grid with multiple columns/rows.
+ * By default, all the offsets are balanced between the items to render an equal size for each cell.
+ *
  * @param context the [Context] used to build the divider.
  */
 class DividerBuilder internal constructor(private val context: Context) {
@@ -106,6 +113,8 @@ class DividerBuilder internal constructor(private val context: Context) {
     private var isFirstDividerVisible = false
     private var isLastDividerVisible = false
     private var areSideDividersVisible = false
+    private var offsetProvider: DividerOffsetProvider? = null
+    private var couldUnbalanceItems = false
 
     /**
      * Sets the divider as a simple space, so the divider leaves the space between two cells but it is not rendered.
@@ -145,7 +154,8 @@ class DividerBuilder internal constructor(private val context: Context) {
      * @param drawable the [Drawable] used for each divider.
      * @return this [DividerBuilder] instance.
      */
-    fun drawable(drawable: Drawable): DividerBuilder = drawableProvider(provider = DrawableProviderImpl(drawable = drawable))
+    fun drawable(drawable: Drawable): DividerBuilder =
+        drawableProvider(provider = DrawableProviderImpl(drawable = drawable), couldUnbalanceItems = false)
 
     /**
      * Sets the divider's start inset.
@@ -198,7 +208,7 @@ class DividerBuilder internal constructor(private val context: Context) {
     @JvmOverloads
     fun size(size: Int, sizeUnit: Int = TypedValue.COMPLEX_UNIT_PX): DividerBuilder {
         @Px val pxSize = context.resources.pxFromSize(size = size, sizeUnit = sizeUnit)
-        return sizeProvider(SizeProviderImpl(context = context, dividerSize = pxSize))
+        return sizeProvider(SizeProviderImpl(context = context, dividerSize = pxSize), couldUnbalanceItems = false)
     }
 
     /**
@@ -235,11 +245,13 @@ class DividerBuilder internal constructor(private val context: Context) {
 
     /**
      * Customizes the drawable of each divider in the grid.
+     * IMPORTANT: The default [DividerOffsetProvider] can't ensure the same size of the items in a grid when this method is called.
+     * If you want a different behavior, you can specify a custom [DividerOffsetProvider] with [offsetProvider].
      *
      * @param provider the [DrawableProvider] which will be invoked for each divider in the grid.
      * @return this [DividerBuilder] instance.
      */
-    fun drawableProvider(provider: DrawableProvider): DividerBuilder = apply { drawableProvider = provider }
+    fun drawableProvider(provider: DrawableProvider): DividerBuilder = drawableProvider(provider, couldUnbalanceItems = true)
 
     /**
      * Customizes the insets of each divider in the grid.
@@ -251,11 +263,13 @@ class DividerBuilder internal constructor(private val context: Context) {
 
     /**
      * Customizes the size of each divider in the grid.
+     * IMPORTANT: The default [DividerOffsetProvider] can't ensure the same size of the items in a grid when this method is called.
+     * If you want a different behavior, you can specify a custom [DividerOffsetProvider] with [offsetProvider].
      *
      * @param provider the [SizeProvider] which will be invoked for each divider in the grid.
      * @return this [DividerBuilder] instance.
      */
-    fun sizeProvider(provider: SizeProvider): DividerBuilder = apply { sizeProvider = provider }
+    fun sizeProvider(provider: SizeProvider): DividerBuilder = sizeProvider(provider, couldUnbalanceItems = true)
 
     /**
      * Customizes the tint color of each divider's drawable in the grid.
@@ -267,11 +281,27 @@ class DividerBuilder internal constructor(private val context: Context) {
 
     /**
      * Customizes the visibility of each divider in the grid.
+     * IMPORTANT: The default [DividerOffsetProvider] can't ensure the same size of the items in a grid when this method is called.
+     * If you want a different behavior, you can specify a custom [DividerOffsetProvider] with [offsetProvider].
      *
      * @param provider the [VisibilityProvider] which will be invoked for each divider in the grid.
      * @return this [DividerBuilder] instance.
      */
-    fun visibilityProvider(provider: VisibilityProvider): DividerBuilder = apply { visibilityProvider = provider }
+    fun visibilityProvider(provider: VisibilityProvider): DividerBuilder = apply {
+        visibilityProvider = provider
+        couldUnbalanceItems = true
+    }
+
+    /**
+     * Customizes the offset of each divider in the grid.
+     * This method is useful to balance the size of the items in a grid with multiple columns/rows.
+     *
+     * @param provider the [DividerOffsetProvider] which will be invoked for each divider in the grid.
+     * @return this [DividerBuilder] instance.
+     */
+    fun offsetProvider(provider: DividerOffsetProvider): DividerBuilder = apply {
+        offsetProvider = provider
+    }
 
     /**
      * Creates the [RecyclerView.ItemDecoration] using the configuration specified in this builder.
@@ -282,6 +312,13 @@ class DividerBuilder internal constructor(private val context: Context) {
      */
     fun build(): BaseDividerItemDecoration {
         val asSpace = asSpace || context.getThemeAsSpaceOrDefault()
+        if (offsetProvider == null && couldUnbalanceItems) {
+            logWarning(
+                "The default ${DividerOffsetProvider::class.java.simpleName} can't ensure the same size of the items in a grid " +
+                    "with more than 1 column/row using a custom ${DrawableProvider::class.java.simpleName}, " +
+                    "${SizeProvider::class.java.simpleName} or ${VisibilityProvider::class.java.simpleName}."
+            )
+        }
         return DividerItemDecoration(
             asSpace = asSpace,
             drawableProvider = drawableProvider ?: DrawableProviderImpl(drawable = context.getThemeDrawableOrDefault(asSpace)),
@@ -295,8 +332,23 @@ class DividerBuilder internal constructor(private val context: Context) {
                 isFirstDividerVisible = isFirstDividerVisible,
                 isLastDividerVisible = isLastDividerVisible,
                 areSideDividersVisible = areSideDividersVisible
-            )
+            ),
+            offsetProvider = offsetProvider ?: DividerOffsetProviderImpl(areSideDividersVisible)
         )
+    }
+
+    private fun drawableProvider(provider: DrawableProvider, couldUnbalanceItems: Boolean): DividerBuilder = apply {
+        drawableProvider = provider
+        if (couldUnbalanceItems) {
+            this.couldUnbalanceItems = true
+        }
+    }
+
+    private fun sizeProvider(provider: SizeProvider, couldUnbalanceItems: Boolean): DividerBuilder = apply {
+        sizeProvider = provider
+        if (couldUnbalanceItems) {
+            this.couldUnbalanceItems = true
+        }
     }
 
     private fun Context.getThemeDrawableOrDefault(asSpace: Boolean): Drawable {

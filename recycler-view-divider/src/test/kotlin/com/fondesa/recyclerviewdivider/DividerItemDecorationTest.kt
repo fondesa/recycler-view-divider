@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.fondesa.recyclerviewdivider.drawable.DrawableProviderImpl
 import com.fondesa.recyclerviewdivider.inset.InsetProviderImpl
+import com.fondesa.recyclerviewdivider.offset.DividerOffsetProviderImpl
 import com.fondesa.recyclerviewdivider.size.SizeProviderImpl
 import com.fondesa.recyclerviewdivider.test.assertEquals
 import com.fondesa.recyclerviewdivider.test.bounds
@@ -67,9 +68,9 @@ class DividerItemDecorationTest {
             false,
             3
         ).assertEquals(
-            Rect(0, 0, 0, 5),
-            Rect(0, 5, 0, 5),
-            Rect(0, 5, 0, 0)
+            Rect(0, 0, 0, 10),
+            Rect(0, 0, 0, 10),
+            Rect(0, 0, 0, 0)
         )
 
         decoration(
@@ -95,9 +96,9 @@ class DividerItemDecorationTest {
             false,
             3
         ).assertEquals(
-            Rect(7, 7, 7, 4),
-            Rect(7, 3, 7, 4),
-            Rect(7, 3, 7, 7)
+            Rect(7, 7, 7, 7),
+            Rect(7, 0, 7, 7),
+            Rect(7, 0, 7, 7)
         )
     }
 
@@ -108,9 +109,9 @@ class DividerItemDecorationTest {
             false,
             3
         ).assertEquals(
-            Rect(0, 5, 0, 0),
-            Rect(0, 5, 0, 5),
-            Rect(0, 0, 0, 5)
+            Rect(0, 10, 0, 0),
+            Rect(0, 10, 0, 0),
+            Rect(0, 0, 0, 0)
         )
 
         decoration(
@@ -136,9 +137,9 @@ class DividerItemDecorationTest {
             false,
             3
         ).assertEquals(
-            Rect(7, 4, 7, 7),
-            Rect(7, 4, 7, 3),
-            Rect(7, 7, 7, 3)
+            Rect(7, 7, 7, 7),
+            Rect(7, 7, 7, 0),
+            Rect(7, 7, 7, 0)
         )
     }
 
@@ -149,9 +150,9 @@ class DividerItemDecorationTest {
             false,
             3
         ).assertEquals(
-            Rect(0, 0, 5, 0),
-            Rect(5, 0, 5, 0),
-            Rect(5, 0, 0, 0)
+            Rect(0, 0, 10, 0),
+            Rect(0, 0, 10, 0),
+            Rect(0, 0, 0, 0)
         )
 
         decoration(
@@ -177,9 +178,9 @@ class DividerItemDecorationTest {
             false,
             3
         ).assertEquals(
-            Rect(7, 7, 4, 7),
-            Rect(3, 7, 4, 7),
-            Rect(3, 7, 7, 7)
+            Rect(7, 7, 7, 7),
+            Rect(0, 7, 7, 7),
+            Rect(0, 7, 7, 7)
         )
     }
 
@@ -190,9 +191,9 @@ class DividerItemDecorationTest {
             false,
             3
         ).assertEquals(
-            Rect(5, 0, 0, 0),
-            Rect(5, 0, 5, 0),
-            Rect(0, 0, 5, 0)
+            Rect(10, 0, 0, 0),
+            Rect(10, 0, 0, 0),
+            Rect(0, 0, 0, 0)
         )
 
         decoration(
@@ -218,9 +219,9 @@ class DividerItemDecorationTest {
             false,
             3
         ).assertEquals(
-            Rect(4, 7, 7, 7),
-            Rect(4, 7, 3, 7),
-            Rect(7, 7, 3, 7)
+            Rect(7, 7, 7, 7),
+            Rect(7, 7, 0, 7),
+            Rect(7, 7, 0, 7)
         )
     }
 
@@ -232,9 +233,9 @@ class DividerItemDecorationTest {
             true,
             3
         ).assertEquals(
-            Rect(5, 0, 0, 0),
-            Rect(5, 0, 5, 0),
-            Rect(0, 0, 5, 0)
+            Rect(10, 0, 0, 0),
+            Rect(10, 0, 0, 0),
+            Rect(0, 0, 0, 0)
         )
 
         decoration(
@@ -260,9 +261,9 @@ class DividerItemDecorationTest {
             true,
             3
         ).assertEquals(
-            Rect(4, 7, 7, 7),
-            Rect(4, 7, 3, 7),
-            Rect(7, 7, 3, 7)
+            Rect(7, 7, 7, 7),
+            Rect(7, 7, 0, 7),
+            Rect(7, 7, 0, 7)
         )
     }
 
@@ -274,9 +275,9 @@ class DividerItemDecorationTest {
             true,
             3
         ).assertEquals(
-            Rect(0, 0, 5, 0),
-            Rect(5, 0, 5, 0),
-            Rect(5, 0, 0, 0)
+            Rect(0, 0, 10, 0),
+            Rect(0, 0, 10, 0),
+            Rect(0, 0, 0, 0)
         )
 
         decoration(
@@ -302,9 +303,9 @@ class DividerItemDecorationTest {
             true,
             3
         ).assertEquals(
-            Rect(7, 7, 4, 7),
-            Rect(3, 7, 4, 7),
-            Rect(3, 7, 7, 7)
+            Rect(7, 7, 7, 7),
+            Rect(0, 7, 7, 7),
+            Rect(0, 7, 7, 7)
         )
     }
 
@@ -315,9 +316,9 @@ class DividerItemDecorationTest {
             false,
             3
         ).assertEquals(
-            Rect(0, 0, 0, 5),
-            Rect(0, 5, 0, 5),
-            Rect(0, 5, 0, 0)
+            Rect(0, 0, 0, 10),
+            Rect(0, 0, 0, 10),
+            Rect(0, 0, 0, 0)
         )
 
         decoration(
@@ -343,9 +344,9 @@ class DividerItemDecorationTest {
             false,
             3
         ).assertEquals(
-            Rect(7, 7, 7, 4),
-            Rect(7, 3, 7, 4),
-            Rect(7, 3, 7, 7)
+            Rect(7, 7, 7, 7),
+            Rect(7, 0, 7, 7),
+            Rect(7, 0, 7, 7)
         )
     }
 
@@ -356,9 +357,9 @@ class DividerItemDecorationTest {
             false,
             3
         ).assertEquals(
-            Rect(0, 5, 0, 0),
-            Rect(0, 5, 0, 5),
-            Rect(0, 0, 0, 5)
+            Rect(0, 10, 0, 0),
+            Rect(0, 10, 0, 0),
+            Rect(0, 0, 0, 0)
         )
 
         decoration(
@@ -384,9 +385,9 @@ class DividerItemDecorationTest {
             false,
             3
         ).assertEquals(
-            Rect(7, 4, 7, 7),
-            Rect(7, 4, 7, 3),
-            Rect(7, 7, 7, 3)
+            Rect(7, 7, 7, 7),
+            Rect(7, 7, 7, 0),
+            Rect(7, 7, 7, 0)
         )
     }
 
@@ -397,9 +398,9 @@ class DividerItemDecorationTest {
             false,
             3
         ).assertEquals(
-            Rect(0, 0, 5, 0),
-            Rect(5, 0, 5, 0),
-            Rect(5, 0, 0, 0)
+            Rect(0, 0, 10, 0),
+            Rect(0, 0, 10, 0),
+            Rect(0, 0, 0, 0)
         )
 
         decoration(
@@ -425,9 +426,9 @@ class DividerItemDecorationTest {
             false,
             3
         ).assertEquals(
-            Rect(7, 7, 4, 7),
-            Rect(3, 7, 4, 7),
-            Rect(3, 7, 7, 7)
+            Rect(7, 7, 7, 7),
+            Rect(0, 7, 7, 7),
+            Rect(0, 7, 7, 7)
         )
     }
 
@@ -438,9 +439,9 @@ class DividerItemDecorationTest {
             false,
             3
         ).assertEquals(
-            Rect(5, 0, 0, 0),
-            Rect(5, 0, 5, 0),
-            Rect(0, 0, 5, 0)
+            Rect(10, 0, 0, 0),
+            Rect(10, 0, 0, 0),
+            Rect(0, 0, 0, 0)
         )
 
         decoration(
@@ -466,9 +467,9 @@ class DividerItemDecorationTest {
             false,
             3
         ).assertEquals(
-            Rect(4, 7, 7, 7),
-            Rect(4, 7, 3, 7),
-            Rect(7, 7, 3, 7)
+            Rect(7, 7, 7, 7),
+            Rect(7, 7, 0, 7),
+            Rect(7, 7, 0, 7)
         )
     }
 
@@ -480,9 +481,9 @@ class DividerItemDecorationTest {
             true,
             3
         ).assertEquals(
-            Rect(5, 0, 0, 0),
-            Rect(5, 0, 5, 0),
-            Rect(0, 0, 5, 0)
+            Rect(10, 0, 0, 0),
+            Rect(10, 0, 0, 0),
+            Rect(0, 0, 0, 0)
         )
 
         decoration(
@@ -508,9 +509,9 @@ class DividerItemDecorationTest {
             true,
             3
         ).assertEquals(
-            Rect(4, 7, 7, 7),
-            Rect(4, 7, 3, 7),
-            Rect(7, 7, 3, 7)
+            Rect(7, 7, 7, 7),
+            Rect(7, 7, 0, 7),
+            Rect(7, 7, 0, 7)
         )
     }
 
@@ -522,9 +523,9 @@ class DividerItemDecorationTest {
             true,
             3
         ).assertEquals(
-            Rect(0, 0, 5, 0),
-            Rect(5, 0, 5, 0),
-            Rect(5, 0, 0, 0)
+            Rect(0, 0, 10, 0),
+            Rect(0, 0, 10, 0),
+            Rect(0, 0, 0, 0)
         )
 
         decoration(
@@ -550,9 +551,9 @@ class DividerItemDecorationTest {
             true,
             3
         ).assertEquals(
-            Rect(7, 7, 4, 7),
-            Rect(3, 7, 4, 7),
-            Rect(3, 7, 7, 7)
+            Rect(7, 7, 7, 7),
+            Rect(0, 7, 7, 7),
+            Rect(0, 7, 7, 7)
         )
     }
 
@@ -563,12 +564,12 @@ class DividerItemDecorationTest {
             false,
             6
         ).assertEquals(
-            Rect(0, 0, 5, 5),
-            Rect(5, 0, 0, 5),
-            Rect(0, 5, 5, 5),
-            Rect(5, 5, 0, 5),
-            Rect(0, 5, 5, 0),
-            Rect(5, 5, 0, 0)
+            Rect(0, 0, 5, 10),
+            Rect(5, 0, 0, 10),
+            Rect(0, 0, 5, 10),
+            Rect(5, 0, 0, 10),
+            Rect(0, 0, 5, 0),
+            Rect(5, 0, 0, 0)
         )
 
         decoration(
@@ -598,12 +599,12 @@ class DividerItemDecorationTest {
             false,
             6
         ).assertEquals(
-            Rect(7, 7, 4, 4),
-            Rect(3, 7, 7, 4),
-            Rect(7, 3, 4, 4),
-            Rect(3, 3, 7, 4),
-            Rect(7, 3, 4, 7),
-            Rect(3, 3, 7, 7)
+            Rect(7, 7, 4, 7),
+            Rect(3, 7, 7, 7),
+            Rect(7, 0, 4, 7),
+            Rect(3, 0, 7, 7),
+            Rect(7, 0, 4, 7),
+            Rect(3, 0, 7, 7)
         )
 
         decoration(
@@ -616,13 +617,13 @@ class DividerItemDecorationTest {
             false,
             7
         ).assertEquals(
-            Rect(9, 0, 9, 5),
-            Rect(9, 4, 5, 5),
-            Rect(4, 4, 9, 5),
-            Rect(9, 4, 9, 5),
-            Rect(9, 4, 5, 5),
-            Rect(4, 4, 9, 5),
-            Rect(9, 4, 9, 9)
+            Rect(9, 0, 9, 9),
+            Rect(9, 0, 5, 9),
+            Rect(4, 0, 9, 9),
+            Rect(9, 0, 9, 9),
+            Rect(9, 0, 5, 9),
+            Rect(4, 0, 9, 9),
+            Rect(9, 0, 9, 9)
         )
     }
 
@@ -633,12 +634,12 @@ class DividerItemDecorationTest {
             false,
             6
         ).assertEquals(
-            Rect(0, 5, 5, 0),
-            Rect(5, 5, 0, 0),
-            Rect(0, 5, 5, 5),
-            Rect(5, 5, 0, 5),
-            Rect(0, 0, 5, 5),
-            Rect(5, 0, 0, 5)
+            Rect(0, 10, 5, 0),
+            Rect(5, 10, 0, 0),
+            Rect(0, 10, 5, 0),
+            Rect(5, 10, 0, 0),
+            Rect(0, 0, 5, 0),
+            Rect(5, 0, 0, 0)
         )
 
         decoration(
@@ -668,12 +669,12 @@ class DividerItemDecorationTest {
             false,
             6
         ).assertEquals(
-            Rect(7, 4, 4, 7),
-            Rect(3, 4, 7, 7),
-            Rect(7, 4, 4, 3),
-            Rect(3, 4, 7, 3),
-            Rect(7, 7, 4, 3),
-            Rect(3, 7, 7, 3)
+            Rect(7, 7, 4, 7),
+            Rect(3, 7, 7, 7),
+            Rect(7, 7, 4, 0),
+            Rect(3, 7, 7, 0),
+            Rect(7, 7, 4, 0),
+            Rect(3, 7, 7, 0)
         )
 
         decoration(
@@ -686,13 +687,13 @@ class DividerItemDecorationTest {
             false,
             7
         ).assertEquals(
-            Rect(9, 5, 9, 0),
-            Rect(9, 5, 5, 4),
-            Rect(4, 5, 9, 4),
-            Rect(9, 5, 9, 4),
-            Rect(9, 5, 5, 4),
-            Rect(4, 5, 9, 4),
-            Rect(9, 9, 9, 4)
+            Rect(9, 9, 9, 0),
+            Rect(9, 9, 5, 0),
+            Rect(4, 9, 9, 0),
+            Rect(9, 9, 9, 0),
+            Rect(9, 9, 5, 0),
+            Rect(4, 9, 9, 0),
+            Rect(9, 9, 9, 0)
         )
     }
 
@@ -703,12 +704,12 @@ class DividerItemDecorationTest {
             false,
             6
         ).assertEquals(
-            Rect(0, 0, 5, 5),
-            Rect(0, 5, 5, 0),
-            Rect(5, 0, 5, 5),
-            Rect(5, 5, 5, 0),
-            Rect(5, 0, 0, 5),
-            Rect(5, 5, 0, 0)
+            Rect(0, 0, 10, 5),
+            Rect(0, 5, 10, 0),
+            Rect(0, 0, 10, 5),
+            Rect(0, 5, 10, 0),
+            Rect(0, 0, 0, 5),
+            Rect(0, 5, 0, 0)
         )
 
         decoration(
@@ -738,12 +739,12 @@ class DividerItemDecorationTest {
             false,
             6
         ).assertEquals(
-            Rect(7, 7, 4, 4),
-            Rect(7, 3, 4, 7),
-            Rect(3, 7, 4, 4),
-            Rect(3, 3, 4, 7),
-            Rect(3, 7, 7, 4),
-            Rect(3, 3, 7, 7)
+            Rect(7, 7, 7, 4),
+            Rect(7, 3, 7, 7),
+            Rect(0, 7, 7, 4),
+            Rect(0, 3, 7, 7),
+            Rect(0, 7, 7, 4),
+            Rect(0, 3, 7, 7)
         )
 
         decoration(
@@ -756,13 +757,13 @@ class DividerItemDecorationTest {
             false,
             7
         ).assertEquals(
-            Rect(0, 9, 5, 9),
-            Rect(4, 9, 5, 5),
-            Rect(4, 4, 5, 9),
-            Rect(4, 9, 5, 9),
-            Rect(4, 9, 5, 5),
-            Rect(4, 4, 5, 9),
-            Rect(4, 9, 9, 9)
+            Rect(0, 9, 9, 9),
+            Rect(0, 9, 9, 5),
+            Rect(0, 4, 9, 9),
+            Rect(0, 9, 9, 9),
+            Rect(0, 9, 9, 5),
+            Rect(0, 4, 9, 9),
+            Rect(0, 9, 9, 9)
         )
     }
 
@@ -773,12 +774,12 @@ class DividerItemDecorationTest {
             false,
             6
         ).assertEquals(
-            Rect(5, 0, 0, 5),
-            Rect(5, 5, 0, 0),
-            Rect(5, 0, 5, 5),
-            Rect(5, 5, 5, 0),
-            Rect(0, 0, 5, 5),
-            Rect(0, 5, 5, 0)
+            Rect(10, 0, 0, 5),
+            Rect(10, 5, 0, 0),
+            Rect(10, 0, 0, 5),
+            Rect(10, 5, 0, 0),
+            Rect(0, 0, 0, 5),
+            Rect(0, 5, 0, 0)
         )
 
         decoration(
@@ -808,12 +809,12 @@ class DividerItemDecorationTest {
             false,
             6
         ).assertEquals(
-            Rect(4, 7, 7, 4),
-            Rect(4, 3, 7, 7),
-            Rect(4, 7, 3, 4),
-            Rect(4, 3, 3, 7),
-            Rect(7, 7, 3, 4),
-            Rect(7, 3, 3, 7)
+            Rect(7, 7, 7, 4),
+            Rect(7, 3, 7, 7),
+            Rect(7, 7, 0, 4),
+            Rect(7, 3, 0, 7),
+            Rect(7, 7, 0, 4),
+            Rect(7, 3, 0, 7)
         )
 
         decoration(
@@ -826,13 +827,13 @@ class DividerItemDecorationTest {
             false,
             7
         ).assertEquals(
-            Rect(5, 9, 0, 9),
-            Rect(5, 9, 4, 5),
-            Rect(5, 4, 4, 9),
-            Rect(5, 9, 4, 9),
-            Rect(5, 9, 4, 5),
-            Rect(5, 4, 4, 9),
-            Rect(9, 9, 4, 9)
+            Rect(9, 9, 0, 9),
+            Rect(9, 9, 0, 5),
+            Rect(9, 4, 0, 9),
+            Rect(9, 9, 0, 9),
+            Rect(9, 9, 0, 5),
+            Rect(9, 4, 0, 9),
+            Rect(9, 9, 0, 9)
         )
     }
 
@@ -844,12 +845,12 @@ class DividerItemDecorationTest {
             true,
             6
         ).assertEquals(
-            Rect(5, 0, 0, 5),
-            Rect(5, 5, 0, 0),
-            Rect(5, 0, 5, 5),
-            Rect(5, 5, 5, 0),
-            Rect(0, 0, 5, 5),
-            Rect(0, 5, 5, 0)
+            Rect(10, 0, 0, 5),
+            Rect(10, 5, 0, 0),
+            Rect(10, 0, 0, 5),
+            Rect(10, 5, 0, 0),
+            Rect(0, 0, 0, 5),
+            Rect(0, 5, 0, 0)
         )
 
         decoration(
@@ -879,12 +880,12 @@ class DividerItemDecorationTest {
             true,
             6
         ).assertEquals(
-            Rect(4, 7, 7, 4),
-            Rect(4, 3, 7, 7),
-            Rect(4, 7, 3, 4),
-            Rect(4, 3, 3, 7),
-            Rect(7, 7, 3, 4),
-            Rect(7, 3, 3, 7)
+            Rect(7, 7, 7, 4),
+            Rect(7, 3, 7, 7),
+            Rect(7, 7, 0, 4),
+            Rect(7, 3, 0, 7),
+            Rect(7, 7, 0, 4),
+            Rect(7, 3, 0, 7)
         )
 
         decoration(
@@ -897,13 +898,13 @@ class DividerItemDecorationTest {
             true,
             7
         ).assertEquals(
-            Rect(5, 9, 0, 9),
-            Rect(5, 9, 4, 5),
-            Rect(5, 4, 4, 9),
-            Rect(5, 9, 4, 9),
-            Rect(5, 9, 4, 5),
-            Rect(5, 4, 4, 9),
-            Rect(9, 9, 4, 9)
+            Rect(9, 9, 0, 9),
+            Rect(9, 9, 0, 5),
+            Rect(9, 4, 0, 9),
+            Rect(9, 9, 0, 9),
+            Rect(9, 9, 0, 5),
+            Rect(9, 4, 0, 9),
+            Rect(9, 9, 0, 9)
         )
     }
 
@@ -915,12 +916,12 @@ class DividerItemDecorationTest {
             true,
             6
         ).assertEquals(
-            Rect(0, 0, 5, 5),
-            Rect(0, 5, 5, 0),
-            Rect(5, 0, 5, 5),
-            Rect(5, 5, 5, 0),
-            Rect(5, 0, 0, 5),
-            Rect(5, 5, 0, 0)
+            Rect(0, 0, 10, 5),
+            Rect(0, 5, 10, 0),
+            Rect(0, 0, 10, 5),
+            Rect(0, 5, 10, 0),
+            Rect(0, 0, 0, 5),
+            Rect(0, 5, 0, 0)
         )
 
         decoration(
@@ -950,12 +951,12 @@ class DividerItemDecorationTest {
             true,
             6
         ).assertEquals(
-            Rect(7, 7, 4, 4),
-            Rect(7, 3, 4, 7),
-            Rect(3, 7, 4, 4),
-            Rect(3, 3, 4, 7),
-            Rect(3, 7, 7, 4),
-            Rect(3, 3, 7, 7)
+            Rect(7, 7, 7, 4),
+            Rect(7, 3, 7, 7),
+            Rect(0, 7, 7, 4),
+            Rect(0, 3, 7, 7),
+            Rect(0, 7, 7, 4),
+            Rect(0, 3, 7, 7)
         )
 
         decoration(
@@ -968,13 +969,13 @@ class DividerItemDecorationTest {
             true,
             7
         ).assertEquals(
-            Rect(0, 9, 5, 9),
-            Rect(4, 9, 5, 5),
-            Rect(4, 4, 5, 9),
-            Rect(4, 9, 5, 9),
-            Rect(4, 9, 5, 5),
-            Rect(4, 4, 5, 9),
-            Rect(4, 9, 9, 9)
+            Rect(0, 9, 9, 9),
+            Rect(0, 9, 9, 5),
+            Rect(0, 4, 9, 9),
+            Rect(0, 9, 9, 9),
+            Rect(0, 9, 9, 5),
+            Rect(0, 4, 9, 9),
+            Rect(0, 9, 9, 9)
         )
     }
 
@@ -3039,6 +3040,7 @@ class DividerItemDecorationTest {
         tintProvider = TintProviderImpl(tint),
         sizeProvider = SizeProviderImpl(context, size),
         insetProvider = InsetProviderImpl(dividerInsetStart = insetStart, dividerInsetEnd = insetEnd),
+        offsetProvider = DividerOffsetProviderImpl(areSideDividersVisible),
         visibilityProvider = VisibilityProviderImpl(
             isFirstDividerVisible = isFirstDividerVisible,
             isLastDividerVisible = isLastDividerVisible,
