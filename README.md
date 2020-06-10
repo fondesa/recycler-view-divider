@@ -1,6 +1,7 @@
 RecyclerViewDivider
 ===============
 [![Build Status](https://travis-ci.com/fondesa/recycler-view-divider.svg?branch=master)](https://travis-ci.com/fondesa/recycler-view-divider)
+[![RecyclerViewDivider](https://www.appbrain.com/stats/libraries/shield/recyclerviewdivider.svg)](https://www.appbrain.com/stats/libraries/details/recyclerviewdivider/recyclerviewdivider)
 
 A RecyclerView's divider which can be customized with simple properties or advanced ones.
 
