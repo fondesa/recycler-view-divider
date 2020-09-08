@@ -15,9 +15,9 @@
  */
 
 object Deps {
-    const val androidPlugin = "com.android.tools.build:gradle:4.0.0"
-    const val androidxAppCompat = "androidx.appcompat:appcompat:1.1.0"
-    const val androidxJUnit = "androidx.test.ext:junit:1.1.1"
+    const val androidPlugin = "com.android.tools.build:gradle:4.0.1"
+    const val androidxAppCompat = "androidx.appcompat:appcompat:1.2.0"
+    const val androidxJUnit = "androidx.test.ext:junit:1.1.2"
     const val androidxRecyclerView = "androidx.recyclerview:recyclerview:1.1.0"
     const val bintrayPlugin = "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5"
     const val dokkaPlugin = "org.jetbrains.dokka:dokka-gradle-plugin:0.9.18"
