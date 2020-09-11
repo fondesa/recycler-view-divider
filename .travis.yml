@@ -5,9 +5,9 @@ jdk: oraclejdk8
 env:
   global:
     # The same build tools version in the project.
-    - BUILD_TOOLS_VERSION=29.0.3
+    - BUILD_TOOLS_VERSION=30.0.2
     # Android API level used in this project.
-    - API=29
+    - API=30
     # Variable "BINTRAY_API_KEY" (deploy).
     - secure: "lXuZ7SSfu+ndaOnrfdtPo+Rc6fc2TGlY+WqSFTl7OsqkOPDUOc5hMRbqwifPbFEisNncB/BPyNGS5Tzq19fX9L2+EqWC8UB/cV4QktzaLLrmUuASW8etPjwW3NHL7WzcBr9QxE2309m6gQE/umGReWNvNs788bWw2lUX1HLBv9MZhgCoimz3Y8/CymlTTOP5k7qOBtQG9bISb136Iue1NptFPyKSsVWfB40OtopIaZ+hnwFHZbTvM/y9TZPhEH4HA9NUjn3k5ZdVvKfLqg92wv+wgO4i7gC/vtoh7rnB8ml5Knxu3c1PGDdkbNr+XYHegj150Mr+lidL3g3B3DKwyZRvXTcRq5fxfhGfq+dMA9bGSg3n8s9TEWSy/p8XMzUPqTH8IEJO7crGlhL6EftFENas5oNFyGqPN1V7hCB6iL0MsNCvgMyLD3+vnzPe30m+yH44rnca4dxbCiF79RW5PwPeFzRkOjhnDMWfmgLJJEeDel60A15Cq35iga4m0tNDzZrVInpUtuvUV4sqY+5nlkwEh8+42KBlZfPmTMSb21cAhJZ4q/Cns/VGJFG36iqRcr1rX8apdVFhqb8qruf+xiHnmS6VJN0dp/wM6jOiSADmBSqxjsvwdsRArGcvTnRf03zDW7MzefUKm2V/BFIO4HmLDyLzvv1RfQS+7U9AjU0="
     # Variable "BINTRAY_GPG_PASSWORD" (deploy).
