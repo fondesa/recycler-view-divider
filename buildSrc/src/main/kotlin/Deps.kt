@@ -28,6 +28,6 @@ object Deps {
     const val ktlint = "org.jlleitschuh.gradle:ktlint-gradle:9.4.1"
     const val mockitoCore = "org.mockito:mockito-core:3.3.3"
     const val mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
-    const val releasesHubPlugin = "com.releaseshub:releases-hub-gradle-plugin:1.6.0"
+    const val releasesHubPlugin = "com.releaseshub:releases-hub-gradle-plugin:1.6.1"
     const val robolectric = "org.robolectric:robolectric:4.4"
 }
