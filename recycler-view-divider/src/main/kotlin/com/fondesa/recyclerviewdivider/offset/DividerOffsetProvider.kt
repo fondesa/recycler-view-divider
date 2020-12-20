@@ -24,7 +24,7 @@ import com.fondesa.recyclerviewdivider.Side
 /**
  * Provides the divider's offset.
  */
-interface DividerOffsetProvider {
+fun interface DividerOffsetProvider {
 
     /**
      * Gets the divider's offset.
