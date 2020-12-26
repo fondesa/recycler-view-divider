@@ -28,7 +28,7 @@ import com.fondesa.recyclerviewdivider.RecyclerViewDivider
  * the [RecyclerViewDivider.Builder.tintManager] method.
  */
 @Deprecated("Use the new divider API instead.")
-interface TintManager {
+public interface TintManager {
 
     /**
      * Defines a custom tint color for each group of divider.
@@ -39,5 +39,5 @@ interface TintManager {
      */
     @Deprecated("Use the new divider API instead.")
     @ColorInt
-    fun itemTint(groupCount: Int, groupIndex: Int): Int
+    public fun itemTint(groupCount: Int, groupIndex: Int): Int
 }

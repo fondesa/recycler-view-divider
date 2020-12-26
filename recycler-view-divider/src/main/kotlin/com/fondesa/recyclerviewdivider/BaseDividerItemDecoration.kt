@@ -28,7 +28,7 @@ import androidx.recyclerview.widget.RecyclerView
  *
  * @param asSpace true if the divider should behave as a space.
  */
-abstract class BaseDividerItemDecoration(
+public abstract class BaseDividerItemDecoration(
     @VisibleForTesting internal val asSpace: Boolean
 ) : RecyclerView.ItemDecoration() {
 
@@ -38,7 +38,7 @@ abstract class BaseDividerItemDecoration(
      *
      * @param recyclerView the [RecyclerView] which will add this [RecyclerView.ItemDecoration].
      */
-    fun addTo(recyclerView: RecyclerView) {
+    public fun addTo(recyclerView: RecyclerView) {
         removeFrom(recyclerView)
         recyclerView.addItemDecoration(this)
     }
@@ -48,7 +48,7 @@ abstract class BaseDividerItemDecoration(
      *
      * @param recyclerView the [RecyclerView] which will remove this [RecyclerView.ItemDecoration].
      */
-    fun removeFrom(recyclerView: RecyclerView) {
+    public fun removeFrom(recyclerView: RecyclerView) {
         recyclerView.removeItemDecoration(this)
     }
 

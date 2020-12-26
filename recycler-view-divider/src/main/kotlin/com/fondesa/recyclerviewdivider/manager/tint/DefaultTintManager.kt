@@ -27,7 +27,7 @@ import com.fondesa.recyclerviewdivider.manager.size.SizeManager
  * @param tint the color used to tint each item.
  */
 @Deprecated("Use the new divider API instead.")
-class DefaultTintManager(@ColorInt private val tint: Int) : FixedTintManager() {
+public class DefaultTintManager(@ColorInt private val tint: Int) : FixedTintManager() {
 
     @ColorInt
     override fun itemTint(): Int = tint

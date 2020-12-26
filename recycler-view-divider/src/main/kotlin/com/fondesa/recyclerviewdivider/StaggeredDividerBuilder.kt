@@ -71,7 +71,7 @@ import com.fondesa.recyclerviewdivider.space.getThemeAsSpaceOrDefault
  *
  * @param context the [Context] used to build the divider.
  */
-class StaggeredDividerBuilder(private val context: Context) {
+public class StaggeredDividerBuilder(private val context: Context) {
     private var asSpace = false
     @ColorInt private var color: Int? = null
     @Px private var size: Int? = null
@@ -83,7 +83,7 @@ class StaggeredDividerBuilder(private val context: Context) {
      *
      * @return this [StaggeredDividerBuilder] instance.
      */
-    fun asSpace(): StaggeredDividerBuilder = apply { asSpace = true }
+    public fun asSpace(): StaggeredDividerBuilder = apply { asSpace = true }
 
     /**
      * Sets the divider's color.
@@ -92,7 +92,7 @@ class StaggeredDividerBuilder(private val context: Context) {
      * @param colorRes the resource of the color used for each divider.
      * @return this [StaggeredDividerBuilder] instance.
      */
-    fun colorRes(@ColorRes colorRes: Int): StaggeredDividerBuilder = color(ContextCompat.getColor(context, colorRes))
+    public fun colorRes(@ColorRes colorRes: Int): StaggeredDividerBuilder = color(ContextCompat.getColor(context, colorRes))
 
     /**
      * Sets the divider's color.
@@ -101,7 +101,7 @@ class StaggeredDividerBuilder(private val context: Context) {
      * @param color the color used for each divider.
      * @return this [StaggeredDividerBuilder] instance.
      */
-    fun color(@ColorInt color: Int): StaggeredDividerBuilder = apply { this.color = color }
+    public fun color(@ColorInt color: Int): StaggeredDividerBuilder = apply { this.color = color }
 
     /**
      * Sets the divider's size.
@@ -113,7 +113,7 @@ class StaggeredDividerBuilder(private val context: Context) {
      * @return this [StaggeredDividerBuilder] instance.
      */
     @JvmOverloads
-    fun size(size: Int, sizeUnit: Int = TypedValue.COMPLEX_UNIT_PX): StaggeredDividerBuilder = apply {
+    public fun size(size: Int, sizeUnit: Int = TypedValue.COMPLEX_UNIT_PX): StaggeredDividerBuilder = apply {
         this.size = context.resources.pxFromSize(size = size, sizeUnit = sizeUnit)
     }
 
@@ -123,7 +123,7 @@ class StaggeredDividerBuilder(private val context: Context) {
      *
      * @return this [StaggeredDividerBuilder] instance.
      */
-    fun hideSideDividers(): StaggeredDividerBuilder = apply { areSideDividersVisible = false }
+    public fun hideSideDividers(): StaggeredDividerBuilder = apply { areSideDividersVisible = false }
 
     /**
      * Creates the [RecyclerView.ItemDecoration] using the configuration specified in this builder.
@@ -132,7 +132,7 @@ class StaggeredDividerBuilder(private val context: Context) {
      *
      * @return a new [RecyclerView.ItemDecoration] which can be attached to the [RecyclerView].
      */
-    fun build(): BaseDividerItemDecoration {
+    public fun build(): BaseDividerItemDecoration {
         val asSpace = asSpace || context.getThemeAsSpaceOrDefault()
         return StaggeredDividerItemDecoration(
             asSpace = asSpace,

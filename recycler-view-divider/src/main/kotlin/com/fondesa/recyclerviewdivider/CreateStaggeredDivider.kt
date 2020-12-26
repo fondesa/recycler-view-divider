@@ -28,7 +28,7 @@ import androidx.recyclerview.widget.RecyclerView
  * @see StaggeredDividerBuilder
  */
 @JvmName("builder")
-fun Context.staggeredDividerBuilder(): StaggeredDividerBuilder = StaggeredDividerBuilder(context = this)
+public fun Context.staggeredDividerBuilder(): StaggeredDividerBuilder = StaggeredDividerBuilder(context = this)
 
 /**
  * Attaches a default divider created with [StaggeredDividerBuilder] to the given [RecyclerView].
@@ -36,6 +36,6 @@ fun Context.staggeredDividerBuilder(): StaggeredDividerBuilder = StaggeredDivide
  * @see StaggeredDividerBuilder
  */
 @JvmName("attachTo")
-fun RecyclerView.addStaggeredDivider() {
+public fun RecyclerView.addStaggeredDivider() {
     context.staggeredDividerBuilder().build().addTo(this)
 }

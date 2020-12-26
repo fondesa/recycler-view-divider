@@ -26,7 +26,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
  * Defines a [SizeManager] which doesn't depend on the item's position.
  */
 @Deprecated("Use the new divider API instead.")
-abstract class FixedSizeManager : SizeManager {
+public abstract class FixedSizeManager : SizeManager {
 
     @Px
     final override fun itemSize(
@@ -41,7 +41,7 @@ abstract class FixedSizeManager : SizeManager {
      */
     @Deprecated("Use the new divider API instead.")
     @Px
-    abstract fun itemSize(drawable: Drawable, orientation: Int): Int
+    public abstract fun itemSize(drawable: Drawable, orientation: Int): Int
 }
 
 /**

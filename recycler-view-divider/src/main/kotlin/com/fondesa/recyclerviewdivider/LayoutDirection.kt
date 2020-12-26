@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
  * @param horizontal the horizontal direction of the [RecyclerView].
  * @param vertical the vertical direction of the [RecyclerView].
  */
-data class LayoutDirection(
+public data class LayoutDirection(
     val horizontal: Horizontal,
     val vertical: Vertical
 ) {
@@ -43,7 +43,7 @@ data class LayoutDirection(
     /**
      * Identifies the horizontal direction of a [RecyclerView].
      */
-    enum class Horizontal {
+    public enum class Horizontal {
 
         /**
          * The first items are on the left.
@@ -61,7 +61,7 @@ data class LayoutDirection(
     /**
      * Identifies the vertical direction of a [RecyclerView].
      */
-    enum class Vertical {
+    public enum class Vertical {
 
         /**
          * The first items are on the top.

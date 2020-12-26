@@ -19,7 +19,7 @@ package com.fondesa.recyclerviewdivider
 /**
  * Identifies the orientation of a component (e.g. a grid, a divider, etc...).
  */
-enum class Orientation {
+public enum class Orientation {
 
     /**
      * Identifies a vertical component.
@@ -34,10 +34,10 @@ enum class Orientation {
     /**
      * @return true if the component is vertical, false otherwise.
      */
-    val isVertical: Boolean get() = this == VERTICAL
+    public val isVertical: Boolean get() = this == VERTICAL
 
     /**
      * @return true if the component is horizontal, false otherwise.
      */
-    val isHorizontal: Boolean get() = this == HORIZONTAL
+    public val isHorizontal: Boolean get() = this == HORIZONTAL
 }

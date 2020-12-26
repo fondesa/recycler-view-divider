@@ -27,7 +27,7 @@ import androidx.annotation.Px
  * @param insetAfter the inset that will be applied after each item.
  */
 @Deprecated("Use the new divider API instead.")
-class DefaultInsetManager(
+public class DefaultInsetManager(
     @Px private val insetBefore: Int,
     @Px private val insetAfter: Int
 ) : FixedInsetManager() {
@@ -35,7 +35,7 @@ class DefaultInsetManager(
     /**
      * Constructor that assigns a default inset equal to 0.
      */
-    constructor() : this(0, 0)
+    public constructor() : this(0, 0)
 
     @Px
     override fun itemInsetBefore(): Int = insetBefore
