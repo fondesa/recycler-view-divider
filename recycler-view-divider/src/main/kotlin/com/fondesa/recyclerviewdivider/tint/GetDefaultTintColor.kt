@@ -31,5 +31,5 @@ import com.fondesa.recyclerviewdivider.withAttribute
  */
 @ColorInt
 internal fun Context.getThemeTintColor(): Int? = withAttribute(R.attr.recyclerViewDividerTint) {
-    getColor(0, -1).takeIf { it != -1 }
+    getColorStateList(0)?.defaultColor
 }
