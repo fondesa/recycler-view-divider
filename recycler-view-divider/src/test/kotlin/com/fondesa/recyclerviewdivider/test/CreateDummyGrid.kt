@@ -39,7 +39,7 @@ internal fun dummyGrid(
     cellsInLines: IntArray = intArrayOf(),
     fillLine: Boolean = true
 ): Grid {
-    val spanCount = cellsInLines.max() ?: 1
+    val spanCount = cellsInLines.maxOrNull() ?: 1
     return Grid(
         spanCount = spanCount,
         orientation = orientation,

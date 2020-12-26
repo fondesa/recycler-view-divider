@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-apply plugin: "org.jlleitschuh.gradle.ktlint"
-
-ktlint {
-    version = "0.35.0"
-    enableExperimentalRules = true
-}
-
 tasks.configureEach {
     // Matches the compile*Kotlin tasks regardless of the applied plugins.
     it.name.eachMatch("^compile.*Kotlin\$") {
