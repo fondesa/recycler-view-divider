@@ -24,7 +24,7 @@ import com.fondesa.recyclerviewdivider.Grid
 /**
  * Provides the tint color which will tint the divider's [Drawable].
  */
-interface TintProvider {
+fun interface TintProvider {
 
     /**
      * Gets the tint color of the given divider's [Drawable].

@@ -24,7 +24,7 @@ import com.fondesa.recyclerviewdivider.Grid
 /**
  * Provides the divider's size.
  */
-interface SizeProvider {
+fun interface SizeProvider {
 
     /**
      * Gets the divider's size.

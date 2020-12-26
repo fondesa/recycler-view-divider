@@ -14,22 +14,9 @@
  * limitations under the License.
  */
 
-package com.fondesa.recyclerviewdivider.visibility
+apply plugin: "org.jlleitschuh.gradle.ktlint"
 
-import com.fondesa.recyclerviewdivider.Divider
-import com.fondesa.recyclerviewdivider.Grid
-
-/**
- * Provides the divider's visibility.
- */
-fun interface VisibilityProvider {
-
-    /**
-     * Gets the divider's visibility.
-     *
-     * @param grid the [Grid] in which the divider is shown.
-     * @param divider the [Divider] which should be visible or not.
-     * @return true if the divider should be visible, false otherwise.
-     */
-    fun isDividerVisible(grid: Grid, divider: Divider): Boolean
+ktlint {
+    version = "0.39.0"
+    enableExperimentalRules = true
 }
