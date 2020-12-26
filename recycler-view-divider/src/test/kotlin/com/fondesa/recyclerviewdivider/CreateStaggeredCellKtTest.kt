@@ -36,7 +36,7 @@ class CreateStaggeredCellKtTest {
             on(it.layoutParams) doReturn null
         }
 
-        assertThrows(ClassCastException::class.java) { view.staggeredCell() }
+        assertThrows(NullPointerException::class.java) { view.staggeredCell() }
     }
 
     @Test
