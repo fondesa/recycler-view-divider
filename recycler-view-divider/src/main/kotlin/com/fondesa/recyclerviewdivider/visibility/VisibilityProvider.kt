@@ -22,7 +22,7 @@ import com.fondesa.recyclerviewdivider.Grid
 /**
  * Provides the divider's visibility.
  */
-fun interface VisibilityProvider {
+public fun interface VisibilityProvider {
 
     /**
      * Gets the divider's visibility.
@@ -31,5 +31,5 @@ fun interface VisibilityProvider {
      * @param divider the [Divider] which should be visible or not.
      * @return true if the divider should be visible, false otherwise.
      */
-    fun isDividerVisible(grid: Grid, divider: Divider): Boolean
+    public fun isDividerVisible(grid: Grid, divider: Divider): Boolean
 }

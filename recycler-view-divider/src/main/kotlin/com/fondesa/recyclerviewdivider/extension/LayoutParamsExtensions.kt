@@ -28,7 +28,7 @@ import androidx.core.view.MarginLayoutParamsCompat
     message = "Use the Android API instead.",
     replaceWith = ReplaceWith("MarginLayoutParamsCompat.getMarginStart(this)", "androidx.core.view.MarginLayoutParamsCompat")
 )
-val ViewGroup.MarginLayoutParams.startMarginCompat: Int
+public val ViewGroup.MarginLayoutParams.startMarginCompat: Int
     get() = MarginLayoutParamsCompat.getMarginStart(this)
 
 /**
@@ -40,5 +40,5 @@ val ViewGroup.MarginLayoutParams.startMarginCompat: Int
     message = "Use the Android API instead.",
     replaceWith = ReplaceWith("MarginLayoutParamsCompat.getMarginEnd(this)", "androidx.core.view.MarginLayoutParamsCompat")
 )
-val ViewGroup.MarginLayoutParams.endMarginCompat: Int
+public val ViewGroup.MarginLayoutParams.endMarginCompat: Int
     get() = MarginLayoutParamsCompat.getMarginEnd(this)

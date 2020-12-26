@@ -24,7 +24,7 @@ import com.fondesa.recyclerviewdivider.Side
 /**
  * Provides the divider's offset.
  */
-fun interface DividerOffsetProvider {
+public fun interface DividerOffsetProvider {
 
     /**
      * Gets the divider's offset.
@@ -37,5 +37,5 @@ fun interface DividerOffsetProvider {
      * @return the offset which should be rendered by the given divider.
      */
     @Px
-    fun getOffsetFromSize(grid: Grid, divider: Divider, dividerSide: Side, @Px size: Int): Int
+    public fun getOffsetFromSize(grid: Grid, divider: Divider, dividerSide: Side, @Px size: Int): Int
 }

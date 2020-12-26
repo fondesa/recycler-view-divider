@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
  * Defines a [VisibilityManager] which doesn't depend on the item's position.
  */
 @Deprecated("Use the new divider API instead.")
-abstract class FixedVisibilityManager : VisibilityManager {
+public abstract class FixedVisibilityManager : VisibilityManager {
 
     final override fun itemVisibility(
         groupCount: Int,
@@ -35,7 +35,7 @@ abstract class FixedVisibilityManager : VisibilityManager {
      * @see VisibilityManager.itemVisibility
      */
     @Deprecated("Use the new divider API instead.")
-    abstract fun itemVisibility(): VisibilityManager.VisibilityType
+    public abstract fun itemVisibility(): VisibilityManager.VisibilityType
 }
 
 /**

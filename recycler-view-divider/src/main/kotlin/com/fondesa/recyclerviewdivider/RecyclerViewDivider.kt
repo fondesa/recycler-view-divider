@@ -68,7 +68,7 @@ import com.fondesa.recyclerviewdivider.manager.visibility.asFixed
  * @param visibilityManager instance of [VisibilityManager] taken from [Builder].
  */
 @Deprecated("Use the new divider API instead.")
-class RecyclerViewDivider internal constructor(
+public class RecyclerViewDivider internal constructor(
     private val isSpace: Boolean,
     private val drawableManager: DrawableManager,
     private val insetManager: InsetManager,
@@ -77,7 +77,7 @@ class RecyclerViewDivider internal constructor(
     private val visibilityManager: VisibilityManager
 ) : RecyclerView.ItemDecoration() {
 
-    companion object {
+    public companion object {
 
         /**
          * Creates a new [Builder] for the current [Context].
@@ -90,7 +90,7 @@ class RecyclerViewDivider internal constructor(
         @Suppress("DeprecatedCallableAddReplaceWith")
         @Deprecated("Use the new divider API instead.")
         @JvmStatic
-        fun with(context: Context): Builder =
+        public fun with(context: Context): Builder =
             (context.applicationContext as? BuilderProvider)?.provideDividerBuilder(context)
                 ?: Builder(context)
     }
@@ -101,7 +101,7 @@ class RecyclerViewDivider internal constructor(
      * @param recyclerView [RecyclerView] at which the divider will be added.
      */
     @Deprecated("Use the new divider API instead.")
-    fun addTo(recyclerView: RecyclerView) {
+    public fun addTo(recyclerView: RecyclerView) {
         removeFrom(recyclerView)
         recyclerView.addItemDecoration(this)
     }
@@ -113,7 +113,7 @@ class RecyclerViewDivider internal constructor(
      */
     @Suppress("DeprecatedCallableAddReplaceWith")
     @Deprecated("Use the new divider API instead.")
-    fun removeFrom(recyclerView: RecyclerView) {
+    public fun removeFrom(recyclerView: RecyclerView) {
         recyclerView.removeItemDecoration(this)
     }
 
@@ -437,7 +437,7 @@ class RecyclerViewDivider internal constructor(
      * @param context [Context] used to access the resources.
      */
     @Deprecated("Use the new divider API instead.")
-    class Builder(private val context: Context) {
+    public class Builder(private val context: Context) {
         private var drawableManager: DrawableManager? = null
         private var insetManager: InsetManager? = null
         private var sizeManager: SizeManager? = null
@@ -451,7 +451,7 @@ class RecyclerViewDivider internal constructor(
          * it will not draw anything, so, it's the most optimized one.
          */
         @Deprecated("Use the new divider API instead.")
-        fun asSpace() = apply { isSpace = true }
+        public fun asSpace(): Builder = apply { isSpace = true }
 
         /**
          * Set the color of all dividers.
@@ -463,7 +463,7 @@ class RecyclerViewDivider internal constructor(
          */
         @Suppress("DeprecatedCallableAddReplaceWith")
         @Deprecated("Use the new divider API instead.")
-        fun color(@ColorInt color: Int) = drawable(ColorDrawable(color))
+        public fun color(@ColorInt color: Int): Builder = drawable(ColorDrawable(color))
 
         /**
          * Set the drawable of all dividers.
@@ -477,7 +477,7 @@ class RecyclerViewDivider internal constructor(
          */
         @Suppress("DeprecatedCallableAddReplaceWith")
         @Deprecated("Use the new divider API instead.")
-        fun drawable(drawable: Drawable) = drawableManager(DefaultDrawableManager(drawable))
+        public fun drawable(drawable: Drawable): Builder = drawableManager(DefaultDrawableManager(drawable))
 
         /**
          * Hide the divider after the last group of items.
@@ -491,7 +491,7 @@ class RecyclerViewDivider internal constructor(
          */
         @Suppress("DeprecatedCallableAddReplaceWith")
         @Deprecated("Use the new divider API instead.")
-        fun hideLastDivider() = visibilityManager(HideLastVisibilityManager())
+        public fun hideLastDivider(): Builder = visibilityManager(HideLastVisibilityManager())
 
         /**
          * Set the inset before and after the divider.
@@ -504,7 +504,7 @@ class RecyclerViewDivider internal constructor(
          */
         @Suppress("DeprecatedCallableAddReplaceWith")
         @Deprecated("Use the new divider API instead.")
-        fun inset(@Px insetBefore: Int, @Px insetAfter: Int) =
+        public fun inset(@Px insetBefore: Int, @Px insetAfter: Int): Builder =
             insetManager(DefaultInsetManager(insetBefore, insetAfter))
 
         /**
@@ -517,7 +517,7 @@ class RecyclerViewDivider internal constructor(
          */
         @Suppress("DeprecatedCallableAddReplaceWith")
         @Deprecated("Use the new divider API instead.")
-        fun size(@Px size: Int) = sizeManager(DefaultSizeManager(size))
+        public fun size(@Px size: Int): Builder = sizeManager(DefaultSizeManager(size))
 
         /**
          * Set the tint color of all dividers' drawables.
@@ -529,7 +529,7 @@ class RecyclerViewDivider internal constructor(
          */
         @Suppress("DeprecatedCallableAddReplaceWith")
         @Deprecated("Use the new divider API instead.")
-        fun tint(@ColorInt color: Int) = tintManager(DefaultTintManager(color))
+        public fun tint(@ColorInt color: Int): Builder = tintManager(DefaultTintManager(color))
 
         /**
          * Set the divider's custom [DrawableManager].
@@ -540,7 +540,7 @@ class RecyclerViewDivider internal constructor(
          * @return this [Builder] instance.
          */
         @Deprecated("Use the new divider API instead.")
-        fun drawableManager(drawableManager: DrawableManager) = apply {
+        public fun drawableManager(drawableManager: DrawableManager): Builder = apply {
             this.drawableManager = drawableManager
             isSpace = false
         }
@@ -552,7 +552,7 @@ class RecyclerViewDivider internal constructor(
          * @return this [Builder] instance.
          */
         @Deprecated("Use the new divider API instead.")
-        fun insetManager(insetManager: InsetManager) = apply { this.insetManager = insetManager }
+        public fun insetManager(insetManager: InsetManager): Builder = apply { this.insetManager = insetManager }
 
         /**
          * Set the divider's custom [SizeManager].
@@ -561,7 +561,7 @@ class RecyclerViewDivider internal constructor(
          * @return this [Builder] instance.
          */
         @Deprecated("Use the new divider API instead.")
-        fun sizeManager(sizeManager: SizeManager) = apply { this.sizeManager = sizeManager }
+        public fun sizeManager(sizeManager: SizeManager): Builder = apply { this.sizeManager = sizeManager }
 
         /**
          * Set the divider's custom [TintManager].
@@ -570,7 +570,7 @@ class RecyclerViewDivider internal constructor(
          * @return this [Builder] instance.
          */
         @Deprecated("Use the new divider API instead.")
-        fun tintManager(tintManager: TintManager) = apply { this.tintManager = tintManager }
+        public fun tintManager(tintManager: TintManager): Builder = apply { this.tintManager = tintManager }
 
         /**
          * Set the divider's custom [VisibilityManager].
@@ -581,7 +581,7 @@ class RecyclerViewDivider internal constructor(
          * @return this [Builder] instance.
          */
         @Deprecated("Use the new divider API instead.")
-        fun visibilityManager(visibilityManager: VisibilityManager) =
+        public fun visibilityManager(visibilityManager: VisibilityManager): Builder =
             apply { this.visibilityManager = visibilityManager }
 
         /**
@@ -590,7 +590,7 @@ class RecyclerViewDivider internal constructor(
          * @return a new [RecyclerViewDivider] with these [Builder] configurations.
          */
         @Deprecated("Use the new divider API instead.")
-        fun build(): RecyclerViewDivider {
+        public fun build(): RecyclerViewDivider {
             // Get the builder managers or the default ones.
             val drawableManager = drawableManager ?: DefaultDrawableManager()
             val insetManager = insetManager ?: DefaultInsetManager()
@@ -614,7 +614,7 @@ class RecyclerViewDivider internal constructor(
      * through [RecyclerViewDivider.with].
      */
     @Deprecated("Use the new divider API instead.")
-    interface BuilderProvider {
+    public interface BuilderProvider {
 
         /**
          * Provides an instance of [RecyclerViewDivider.Builder].
@@ -623,6 +623,6 @@ class RecyclerViewDivider internal constructor(
          * @return new instance of [RecyclerViewDivider.Builder] with the new configurations set.
          */
         @Deprecated("Use the new divider API instead.")
-        fun provideDividerBuilder(context: Context): Builder
+        public fun provideDividerBuilder(context: Context): Builder
     }
 }

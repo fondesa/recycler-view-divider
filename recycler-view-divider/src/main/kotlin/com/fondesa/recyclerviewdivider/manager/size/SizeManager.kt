@@ -32,7 +32,7 @@ import com.fondesa.recyclerviewdivider.RecyclerViewDivider
  * the [RecyclerViewDivider.Builder.sizeManager] method.
  */
 @Deprecated("Use the new divider API instead.")
-interface SizeManager {
+public interface SizeManager {
 
     /**
      * Defines a custom size for each group of divider.
@@ -45,5 +45,5 @@ interface SizeManager {
      */
     @Deprecated("Use the new divider API instead.")
     @Px
-    fun itemSize(drawable: Drawable, orientation: Int, groupCount: Int, groupIndex: Int): Int
+    public fun itemSize(drawable: Drawable, orientation: Int, groupCount: Int, groupIndex: Int): Int
 }

@@ -27,7 +27,7 @@ import com.fondesa.recyclerviewdivider.sample.R
 import com.fondesa.recyclerviewdivider.sample.StringAdapter
 import com.fondesa.recyclerviewdivider.sample.mapAsStrings
 
-class GridSampleActivity : AppCompatActivity() {
+internal class GridSampleActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

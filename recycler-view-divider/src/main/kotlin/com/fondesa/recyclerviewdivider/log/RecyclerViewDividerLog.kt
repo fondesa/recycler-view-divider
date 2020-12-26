@@ -21,7 +21,7 @@ import android.util.Log
 /**
  * Handles the logging events of the library.
  */
-object RecyclerViewDividerLog {
+public object RecyclerViewDividerLog {
     internal var logger: Logger? = null
         private set
 
@@ -35,7 +35,7 @@ object RecyclerViewDividerLog {
      * @param logger the logger used to log the events or null if the events shouldn't be logged.
      */
     @JvmStatic
-    fun use(logger: Logger?) {
+    public fun use(logger: Logger?) {
         this.logger = logger
     }
 
@@ -43,21 +43,21 @@ object RecyclerViewDividerLog {
      * Brings the [Logger] to its default value.
      */
     @JvmStatic
-    fun reset() {
+    public fun reset() {
         logger = LoggerImpl
     }
 
     /**
      * Logs the events.
      */
-    interface Logger {
+    public interface Logger {
 
         /**
          * Logs a message treated as a warning.
          *
          * @param msg the message which should be logged.
          */
-        fun logWarning(msg: String)
+        public fun logWarning(msg: String)
     }
 
     private object LoggerImpl : Logger {

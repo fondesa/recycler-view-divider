@@ -28,7 +28,7 @@ import androidx.recyclerview.widget.RecyclerView
  * @see DividerBuilder
  */
 @JvmName("builder")
-fun Context.dividerBuilder(): DividerBuilder = DividerBuilder(context = this)
+public fun Context.dividerBuilder(): DividerBuilder = DividerBuilder(context = this)
 
 /**
  * Attaches a default divider created with [DividerBuilder] to the given [RecyclerView].
@@ -36,6 +36,6 @@ fun Context.dividerBuilder(): DividerBuilder = DividerBuilder(context = this)
  * @see DividerBuilder
  */
 @JvmName("attachTo")
-fun RecyclerView.addDivider() {
+public fun RecyclerView.addDivider() {
     context.dividerBuilder().build().addTo(this)
 }

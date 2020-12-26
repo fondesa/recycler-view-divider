@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
  * Defines a [TintManager] which doesn't depend on the item's position.
  */
 @Deprecated("Use the new divider API instead.")
-abstract class FixedTintManager : TintManager {
+public abstract class FixedTintManager : TintManager {
 
     @ColorInt
     final override fun itemTint(groupCount: Int, groupIndex: Int): Int = itemTint()
@@ -35,7 +35,7 @@ abstract class FixedTintManager : TintManager {
      */
     @Deprecated("Use the new divider API instead.")
     @ColorInt
-    abstract fun itemTint(): Int
+    public abstract fun itemTint(): Int
 }
 
 /**

@@ -23,7 +23,7 @@ import com.fondesa.recyclerviewdivider.Grid
 /**
  * Provides the divider's insets.
  */
-interface InsetProvider {
+public interface InsetProvider {
 
     /**
      * Gets the divider's start inset.
@@ -35,7 +35,7 @@ interface InsetProvider {
      * @return the start inset size in pixels of the given divider.
      */
     @Px
-    fun getDividerInsetStart(grid: Grid, divider: Divider): Int
+    public fun getDividerInsetStart(grid: Grid, divider: Divider): Int
 
     /**
      * Gets the divider's end inset.
@@ -47,5 +47,5 @@ interface InsetProvider {
      * @return the end inset size in pixels of the given divider.
      */
     @Px
-    fun getDividerInsetEnd(grid: Grid, divider: Divider): Int
+    public fun getDividerInsetEnd(grid: Grid, divider: Divider): Int
 }

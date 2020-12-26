@@ -23,7 +23,7 @@ package com.fondesa.recyclerviewdivider.manager.visibility
  * excluding the one after the last group.
  */
 @Deprecated("Use the new divider API instead.")
-class HideLastVisibilityManager : VisibilityManager {
+public class HideLastVisibilityManager : VisibilityManager {
 
     override fun itemVisibility(
         groupCount: Int,

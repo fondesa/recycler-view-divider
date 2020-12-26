@@ -28,19 +28,19 @@ import androidx.annotation.ColorInt
  * @param drawable the [Drawable] that will be drawn for each item.
  */
 @Deprecated("Use the new divider API instead.")
-class DefaultDrawableManager(private val drawable: Drawable) : FixedDrawableManager() {
+public class DefaultDrawableManager(private val drawable: Drawable) : FixedDrawableManager() {
 
     /**
      * Constructor that will use a [ColorDrawable] that wraps [color].
      *
      * @param color the color that will be wrapped in a [ColorDrawable].
      */
-    constructor(@ColorInt color: Int) : this(ColorDrawable(color))
+    public constructor(@ColorInt color: Int) : this(ColorDrawable(color))
 
     /**
      * Constructor that will use a [ColorDrawable] that wraps the color #CFCFCF.
      */
-    constructor() : this(0xFFCFCFCF.toInt())
+    public constructor() : this(0xFFCFCFCF.toInt())
 
     override fun itemDrawable(): Drawable = drawable
 }

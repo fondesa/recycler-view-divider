@@ -30,8 +30,7 @@ import com.fondesa.recyclerviewdivider.sample.grid.GridSampleActivity
 import com.fondesa.recyclerviewdivider.sample.linear.LinearSampleActivity
 import com.fondesa.recyclerviewdivider.sample.staggered.StaggeredSampleActivity
 
-class MainActivity : AppCompatActivity() {
-
+internal class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

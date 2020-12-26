@@ -28,7 +28,7 @@ import com.fondesa.recyclerviewdivider.RecyclerViewDivider
  * the [RecyclerViewDivider.Builder.drawableManager] method.
  */
 @Deprecated("Use the new divider API instead.")
-interface DrawableManager {
+public interface DrawableManager {
 
     /**
      * Defines a custom Drawable for each group of divider.
@@ -38,5 +38,5 @@ interface DrawableManager {
      * @return [Drawable] resource for the divider int the current position.
      */
     @Deprecated("Use the new divider API instead.")
-    fun itemDrawable(groupCount: Int, groupIndex: Int): Drawable
+    public fun itemDrawable(groupCount: Int, groupIndex: Int): Drawable
 }
