@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-@file:Suppress("DEPRECATION", "OverridingDeprecatedMember")
+apply plugin: "org.jlleitschuh.gradle.ktlint"
 
-package com.fondesa.recyclerviewdivider.manager.visibility
-
-/**
- * Default implementation of [VisibilityManager] that will show all dividers.
- */
-@Deprecated("Use the new divider API instead.")
-public class DefaultVisibilityManager : FixedVisibilityManager() {
-
-    override fun itemVisibility(): VisibilityManager.VisibilityType =
-        VisibilityManager.VisibilityType.ALL
+ktlint {
+    version = "0.39.0"
+    enableExperimentalRules = true
 }

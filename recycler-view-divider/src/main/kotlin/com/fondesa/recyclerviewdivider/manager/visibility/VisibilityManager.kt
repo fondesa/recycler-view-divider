@@ -27,7 +27,7 @@ import com.fondesa.recyclerviewdivider.RecyclerViewDivider
  * the [RecyclerViewDivider.Builder.visibilityManager] method.
  */
 @Deprecated("Use the new divider API instead.")
-interface VisibilityManager {
+public interface VisibilityManager {
 
     /**
      * Defines a visibility for each group of dividers.
@@ -37,13 +37,13 @@ interface VisibilityManager {
      * @return the type of visibility related to the current group of dividers.
      */
     @Deprecated("Use the new divider API instead.")
-    fun itemVisibility(groupCount: Int, groupIndex: Int): VisibilityType
+    public fun itemVisibility(groupCount: Int, groupIndex: Int): VisibilityType
 
     /**
      * Identifies the visibility of the dividers.
      */
     @Deprecated("Use the new divider API instead.")
-    enum class VisibilityType {
+    public enum class VisibilityType {
         NONE,
         ITEMS_ONLY,
         GROUP_ONLY,

@@ -101,7 +101,7 @@ import com.fondesa.recyclerviewdivider.visibility.VisibilityProviderImpl
  *
  * @param context the [Context] used to build the divider.
  */
-class DividerBuilder internal constructor(private val context: Context) {
+public class DividerBuilder internal constructor(private val context: Context) {
     private var asSpace = false
     private var drawableProvider: DrawableProvider? = null
     @Px private var insetStart: Int? = null
@@ -122,7 +122,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      *
      * @return this [DividerBuilder] instance.
      */
-    fun asSpace(): DividerBuilder = apply { asSpace = true }
+    public fun asSpace(): DividerBuilder = apply { asSpace = true }
 
     /**
      * Sets the divider's drawable as a solid color.
@@ -130,7 +130,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      * @param colorRes the resource of the color used for each divider.
      * @return this [DividerBuilder] instance.
      */
-    fun colorRes(@ColorRes colorRes: Int): DividerBuilder = color(ContextCompat.getColor(context, colorRes))
+    public fun colorRes(@ColorRes colorRes: Int): DividerBuilder = color(ContextCompat.getColor(context, colorRes))
 
     /**
      * Sets the divider's drawable as a solid color.
@@ -138,7 +138,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      * @param color the color used for each divider.
      * @return this [DividerBuilder] instance.
      */
-    fun color(@ColorInt color: Int): DividerBuilder = drawable(drawable = ColorDrawable(color))
+    public fun color(@ColorInt color: Int): DividerBuilder = drawable(drawable = ColorDrawable(color))
 
     /**
      * Sets the divider's drawable.
@@ -146,7 +146,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      * @param drawableRes the resource of the [Drawable] used for each divider.
      * @return this [DividerBuilder] instance.
      */
-    fun drawableRes(@DrawableRes drawableRes: Int): DividerBuilder = drawable(context.getDrawableCompat(drawableRes))
+    public fun drawableRes(@DrawableRes drawableRes: Int): DividerBuilder = drawable(context.getDrawableCompat(drawableRes))
 
     /**
      * Sets the divider's drawable.
@@ -154,7 +154,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      * @param drawable the [Drawable] used for each divider.
      * @return this [DividerBuilder] instance.
      */
-    fun drawable(drawable: Drawable): DividerBuilder =
+    public fun drawable(drawable: Drawable): DividerBuilder =
         drawableProvider(provider = DrawableProviderImpl(drawable = drawable), couldUnbalanceItems = false)
 
     /**
@@ -166,7 +166,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      * @param start the start inset size in pixels used for each divider.
      * @return this [DividerBuilder] instance.
      */
-    fun insetStart(@Px start: Int): DividerBuilder = apply { insetStart = start }
+    public fun insetStart(@Px start: Int): DividerBuilder = apply { insetStart = start }
 
     /**
      * Sets the divider's end inset.
@@ -177,7 +177,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      * @param end the end inset size in pixels used for each divider.
      * @return this [DividerBuilder] instance.
      */
-    fun insetEnd(@Px end: Int): DividerBuilder = apply { insetEnd = end }
+    public fun insetEnd(@Px end: Int): DividerBuilder = apply { insetEnd = end }
 
     /**
      * Sets the divider's insets.
@@ -191,7 +191,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      * @param end the end inset size in pixels used for each divider.
      * @return this [DividerBuilder] instance.
      */
-    fun insets(@Px start: Int, @Px end: Int): DividerBuilder = apply {
+    public fun insets(@Px start: Int, @Px end: Int): DividerBuilder = apply {
         insetStart = start
         insetEnd = end
     }
@@ -206,7 +206,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      * @return this [DividerBuilder] instance.
      */
     @JvmOverloads
-    fun size(size: Int, sizeUnit: Int = TypedValue.COMPLEX_UNIT_PX): DividerBuilder {
+    public fun size(size: Int, sizeUnit: Int = TypedValue.COMPLEX_UNIT_PX): DividerBuilder {
         @Px val pxSize = context.resources.pxFromSize(size = size, sizeUnit = sizeUnit)
         return sizeProvider(SizeProviderImpl(context = context, dividerSize = pxSize), couldUnbalanceItems = false)
     }
@@ -217,7 +217,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      * @param color the tint color of the divider's drawable.
      * @return this [DividerBuilder] instance.
      */
-    fun tint(@ColorInt color: Int): DividerBuilder = tintProvider(TintProviderImpl(dividerTintColor = color))
+    public fun tint(@ColorInt color: Int): DividerBuilder = tintProvider(TintProviderImpl(dividerTintColor = color))
 
     /**
      * Shows the first divider of the list/grid.
@@ -225,7 +225,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      *
      * @return this [DividerBuilder] instance.
      */
-    fun showFirstDivider(): DividerBuilder = apply { isFirstDividerVisible = true }
+    public fun showFirstDivider(): DividerBuilder = apply { isFirstDividerVisible = true }
 
     /**
      * Shows the last divider of the list/grid.
@@ -233,7 +233,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      *
      * @return this [DividerBuilder] instance.
      */
-    fun showLastDivider(): DividerBuilder = apply { isLastDividerVisible = true }
+    public fun showLastDivider(): DividerBuilder = apply { isLastDividerVisible = true }
 
     /**
      * Shows the side dividers of the list/grid.
@@ -241,7 +241,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      *
      * @return this [DividerBuilder] instance.
      */
-    fun showSideDividers(): DividerBuilder = apply { areSideDividersVisible = true }
+    public fun showSideDividers(): DividerBuilder = apply { areSideDividersVisible = true }
 
     /**
      * Customizes the drawable of each divider in the grid.
@@ -251,7 +251,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      * @param provider the [DrawableProvider] which will be invoked for each divider in the grid.
      * @return this [DividerBuilder] instance.
      */
-    fun drawableProvider(provider: DrawableProvider): DividerBuilder = drawableProvider(provider, couldUnbalanceItems = true)
+    public fun drawableProvider(provider: DrawableProvider): DividerBuilder = drawableProvider(provider, couldUnbalanceItems = true)
 
     /**
      * Customizes the insets of each divider in the grid.
@@ -259,7 +259,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      * @param provider the [InsetProvider] which will be invoked for each divider in the grid.
      * @return this [DividerBuilder] instance.
      */
-    fun insetProvider(provider: InsetProvider): DividerBuilder = apply { insetProvider = provider }
+    public fun insetProvider(provider: InsetProvider): DividerBuilder = apply { insetProvider = provider }
 
     /**
      * Customizes the size of each divider in the grid.
@@ -269,7 +269,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      * @param provider the [SizeProvider] which will be invoked for each divider in the grid.
      * @return this [DividerBuilder] instance.
      */
-    fun sizeProvider(provider: SizeProvider): DividerBuilder = sizeProvider(provider, couldUnbalanceItems = true)
+    public fun sizeProvider(provider: SizeProvider): DividerBuilder = sizeProvider(provider, couldUnbalanceItems = true)
 
     /**
      * Customizes the tint color of each divider's drawable in the grid.
@@ -277,7 +277,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      * @param provider the [TintProvider] which will be invoked for each divider in the grid.
      * @return this [DividerBuilder] instance.
      */
-    fun tintProvider(provider: TintProvider): DividerBuilder = apply { tintProvider = provider }
+    public fun tintProvider(provider: TintProvider): DividerBuilder = apply { tintProvider = provider }
 
     /**
      * Customizes the visibility of each divider in the grid.
@@ -287,7 +287,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      * @param provider the [VisibilityProvider] which will be invoked for each divider in the grid.
      * @return this [DividerBuilder] instance.
      */
-    fun visibilityProvider(provider: VisibilityProvider): DividerBuilder = apply {
+    public fun visibilityProvider(provider: VisibilityProvider): DividerBuilder = apply {
         visibilityProvider = provider
         couldUnbalanceItems = true
     }
@@ -299,7 +299,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      * @param provider the [DividerOffsetProvider] which will be invoked for each divider in the grid.
      * @return this [DividerBuilder] instance.
      */
-    fun offsetProvider(provider: DividerOffsetProvider): DividerBuilder = apply {
+    public fun offsetProvider(provider: DividerOffsetProvider): DividerBuilder = apply {
         offsetProvider = provider
     }
 
@@ -310,7 +310,7 @@ class DividerBuilder internal constructor(private val context: Context) {
      *
      * @return a new [RecyclerView.ItemDecoration] which can be attached to the [RecyclerView].
      */
-    fun build(): BaseDividerItemDecoration {
+    public fun build(): BaseDividerItemDecoration {
         val asSpace = asSpace || context.getThemeAsSpaceOrDefault()
         if (offsetProvider == null && couldUnbalanceItems) {
             logWarning(

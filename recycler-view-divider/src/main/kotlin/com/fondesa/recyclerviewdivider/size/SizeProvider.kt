@@ -24,7 +24,7 @@ import com.fondesa.recyclerviewdivider.Grid
 /**
  * Provides the divider's size.
  */
-interface SizeProvider {
+public fun interface SizeProvider {
 
     /**
      * Gets the divider's size.
@@ -37,5 +37,5 @@ interface SizeProvider {
      * @return the size in pixels of the given divider.
      */
     @Px
-    fun getDividerSize(grid: Grid, divider: Divider, dividerDrawable: Drawable): Int
+    public fun getDividerSize(grid: Grid, divider: Divider, dividerDrawable: Drawable): Int
 }

@@ -26,7 +26,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
-class StringAdapter(
+internal class StringAdapter(
     private val isRecyclerViewVertical: Boolean,
     private val fullSpanPositions: List<Int> = emptyList()
 ) : ListAdapter<String, StringAdapter.ViewHolder>(StringDiffUtil) {

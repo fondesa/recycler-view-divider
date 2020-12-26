@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
  * Defines a [DrawableManager] which doesn't depend on the item's position.
  */
 @Deprecated("Use the new divider API instead.")
-abstract class FixedDrawableManager : DrawableManager {
+public abstract class FixedDrawableManager : DrawableManager {
 
     final override fun itemDrawable(groupCount: Int, groupIndex: Int): Drawable = itemDrawable()
 
@@ -33,7 +33,7 @@ abstract class FixedDrawableManager : DrawableManager {
      * @see DrawableManager.itemDrawable
      */
     @Deprecated("Use the new divider API instead.")
-    abstract fun itemDrawable(): Drawable
+    public abstract fun itemDrawable(): Drawable
 }
 
 /**

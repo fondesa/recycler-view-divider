@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
  * Defines a [InsetManager] which doesn't depend on the item's position.
  */
 @Deprecated("Use the new divider API instead.")
-abstract class FixedInsetManager : InsetManager {
+public abstract class FixedInsetManager : InsetManager {
 
     @Px
     final override fun itemInsetBefore(groupCount: Int, groupIndex: Int): Int = itemInsetBefore()
@@ -38,14 +38,14 @@ abstract class FixedInsetManager : InsetManager {
      */
     @Deprecated("Use the new divider API instead.")
     @Px
-    abstract fun itemInsetBefore(): Int
+    public abstract fun itemInsetBefore(): Int
 
     /**
      * @see InsetManager.itemInsetAfter
      */
     @Deprecated("Use the new divider API instead.")
     @Px
-    abstract fun itemInsetAfter(): Int
+    public abstract fun itemInsetAfter(): Int
 }
 
 /**

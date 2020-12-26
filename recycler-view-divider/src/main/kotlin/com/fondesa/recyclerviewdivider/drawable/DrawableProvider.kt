@@ -24,7 +24,7 @@ import com.fondesa.recyclerviewdivider.Grid
 /**
  * Provides the divider's [Drawable].
  */
-interface DrawableProvider {
+public fun interface DrawableProvider {
 
     /**
      * Gets the [Drawable] of the given divider.
@@ -34,5 +34,5 @@ interface DrawableProvider {
      * @param divider the [Divider] which will render the returned [Drawable].
      * @return the [Drawable] of the given divider.
      */
-    fun getDividerDrawable(grid: Grid, divider: Divider): Drawable
+    public fun getDividerDrawable(grid: Grid, divider: Divider): Drawable
 }

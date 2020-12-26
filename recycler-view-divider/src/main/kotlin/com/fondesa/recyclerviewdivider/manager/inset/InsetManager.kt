@@ -29,7 +29,7 @@ import com.fondesa.recyclerviewdivider.manager.drawable.DrawableManager
  * the [RecyclerViewDivider.Builder.drawableManager] method.
  */
 @Deprecated("Use the new divider API instead.")
-interface InsetManager {
+public interface InsetManager {
 
     /**
      * Defines a custom inset that will be applied on the top of each element for a vertical list and
@@ -41,7 +41,7 @@ interface InsetManager {
      */
     @Deprecated("Use the new divider API instead.")
     @Px
-    fun itemInsetBefore(groupCount: Int, groupIndex: Int): Int
+    public fun itemInsetBefore(groupCount: Int, groupIndex: Int): Int
 
     /**
      * Defines a custom inset that will be applied on the bottom of each element for a vertical list and
@@ -53,5 +53,5 @@ interface InsetManager {
      */
     @Deprecated("Use the new divider API instead.")
     @Px
-    fun itemInsetAfter(groupCount: Int, groupIndex: Int): Int
+    public fun itemInsetAfter(groupCount: Int, groupIndex: Int): Int
 }

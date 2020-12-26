@@ -29,7 +29,7 @@ import androidx.recyclerview.widget.RecyclerView
  * If the dimensions can't be calculated, a default size will be used.
  */
 @Deprecated("Use the new divider API instead.")
-class DefaultSizeManager : FixedSizeManager {
+public class DefaultSizeManager : FixedSizeManager {
 
     private val defaultSize: Int
 
@@ -38,7 +38,7 @@ class DefaultSizeManager : FixedSizeManager {
      *
      * @param context the [Context] used to access the resources.
      */
-    constructor(context: Context) {
+    public constructor(context: Context) {
         val dps = 1
         val scale = context.resources.displayMetrics.density
         this.defaultSize = (dps * scale + 0.5f).toInt()
@@ -49,7 +49,7 @@ class DefaultSizeManager : FixedSizeManager {
      *
      * @param defaultSize the size that will be set for each item.
      */
-    constructor(@Px defaultSize: Int) {
+    public constructor(@Px defaultSize: Int) {
         this.defaultSize = defaultSize
     }
 

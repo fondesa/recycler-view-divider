@@ -95,7 +95,7 @@ package com.fondesa.recyclerviewdivider
  * @see Line
  * @see Cell
  */
-data class Divider(
+public data class Divider(
     private val grid: Grid,
     val originX: Int,
     val originY: Int,

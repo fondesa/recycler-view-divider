@@ -27,7 +27,7 @@ import com.fondesa.recyclerviewdivider.sample.StringAdapter
 import com.fondesa.recyclerviewdivider.sample.mapAsStrings
 import com.fondesa.recyclerviewdivider.staggeredDividerBuilder
 
-class StaggeredSampleActivity : AppCompatActivity() {
+internal class StaggeredSampleActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

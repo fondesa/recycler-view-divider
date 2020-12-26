@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
  * @param layoutManagerClass the unsupported [RecyclerView.LayoutManager].
  * @param suggestedBuilderClass the suggested builder class which can be used to support the given [RecyclerView.LayoutManager].
  */
-class IllegalLayoutManagerException internal constructor(
+public class IllegalLayoutManagerException internal constructor(
     layoutManagerClass: Class<out RecyclerView.LayoutManager>,
     suggestedBuilderClass: Class<*>? = null
 ) : RuntimeException(messageOf(layoutManagerClass, suggestedBuilderClass))

@@ -30,7 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
  * @param layoutDirection identifies if the grid is top-to-bottom, right-to-left, bottom-to-top, left-to-right.
  * @param lines the rows in a vertical grid, the columns in an horizontal grid.
  */
-data class Grid(
+public data class Grid(
     val spanCount: Int,
     val orientation: Orientation,
     val layoutDirection: LayoutDirection,
@@ -49,12 +49,12 @@ data class Grid(
  *
  * @param cells the items places in this line.
  */
-inline class Line(val cells: List<Cell>) {
+public inline class Line(public val cells: List<Cell>) {
 
     /**
      * @return the number of items in this line.
      */
-    val cellsCount: Int get() = cells.size
+    public val cellsCount: Int get() = cells.size
 }
 
 /**
@@ -64,4 +64,4 @@ inline class Line(val cells: List<Cell>) {
  *
  * @param spanSize the width (number of columns) in a vertical grid, the height (number of rows) in an horizontal grid.
  */
-inline class Cell(val spanSize: Int)
+public inline class Cell(public val spanSize: Int)

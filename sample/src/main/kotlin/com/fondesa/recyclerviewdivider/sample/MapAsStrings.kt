@@ -16,4 +16,4 @@
 
 package com.fondesa.recyclerviewdivider.sample
 
-fun Iterable<Int>.mapAsStrings(): List<String> = map { it.toString() }
+internal fun Iterable<Int>.mapAsStrings(): List<String> = map { it.toString() }

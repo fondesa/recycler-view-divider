@@ -3060,7 +3060,7 @@ class DividerItemDecorationTest {
     ): List<Rect> = getItemOffsets(
         layoutManager = layoutManager,
         isRTL = isRTL,
-        views = *Array(itemCount) { View(context) }
+        views = Array(itemCount) { View(context) }
     )
 
     private fun GridLayoutManager.withLookup(): GridLayoutManager = apply {

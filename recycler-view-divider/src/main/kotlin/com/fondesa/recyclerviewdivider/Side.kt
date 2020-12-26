@@ -22,7 +22,7 @@ import java.util.EnumSet
 /**
  * Identifies the sides of a rectangle.
  */
-enum class Side {
+public enum class Side {
 
     /**
      * The top side.
@@ -50,7 +50,7 @@ enum class Side {
 /**
  * Identifies a set of [Side], internally implemented with an [EnumSet].
  */
-typealias Sides = EnumSet<Side>
+public typealias Sides = EnumSet<Side>
 
 /**
  * Identifies a map using [Side] as the key, internally implemented with an [EnumMap].
