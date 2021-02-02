@@ -32,4 +32,4 @@ robolectricConfigFile=$projectDir/recycler-view-divider/src/test/resources/robol
 echo "minSdk=$ROBOLECTRIC_MIN_API" >"$robolectricConfigFile"
 echo "maxSdk=$ROBOLECTRIC_MAX_API" >>"$robolectricConfigFile"
 # Runs the tests with the given API.
-"$projectDir"/gradlew :recycler-view-divider:test -s
+"$projectDir"/gradlew :recycler-view-divider:testReleaseUnitTest -s
