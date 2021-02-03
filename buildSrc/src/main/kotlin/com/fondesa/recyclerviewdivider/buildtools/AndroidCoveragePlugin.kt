@@ -42,7 +42,7 @@ class AndroidCoveragePlugin : Plugin<Project> {
             it.reportsDir = file("$buildDir/coverageReport")
         }
         withAndroidPlugin {
-            fixRobolectricCoverage(this)
+            fixRobolectricCoverage()
             configureCoverageTasks(this)
         }
     }
@@ -85,15 +85,13 @@ class AndroidCoveragePlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.fixRobolectricCoverage(extension: BaseExtension) {
-        extension.testOptions.unitTests.all(
-            closureOf {
-                extensions.configure(JacocoTaskExtension::class.java) {
-                    // It must be set to true otherwise the coverage of Robolectric tests is not calculated.
-                    it.isIncludeNoLocationClasses = true
-                }
+    private fun BaseExtension.fixRobolectricCoverage() {
+        testOptions.unitTests.all { test ->
+            test.extensions.configure(JacocoTaskExtension::class.java) {
+                // It must be set to true otherwise the coverage of Robolectric tests is not calculated.
+                it.isIncludeNoLocationClasses = true
             }
-        )
+        }
     }
 
     private fun Project.fileTreeOf(dir: String): FileTree = fileTree(mapOf("dir" to dir, "excludes" to COVERAGE_EXCLUSIONS))
