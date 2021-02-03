@@ -43,7 +43,6 @@ import java.util.regex.Pattern
  * The version which should be deployed is defined through [VersionPlugin].
  */
 class DeployPlugin : Plugin<Project> {
-
     override fun apply(project: Project) = with(project) {
         plugins.apply("maven-publish")
         plugins.apply("com.jfrog.bintray")
@@ -58,7 +57,6 @@ class DeployPlugin : Plugin<Project> {
         configureBintrayUpload(deployProperties)
         configureGitHubReleaseExtension()
         registerPublishLibraryTask()
-        Unit
     }
 
     private val Project.aarFileName: String get() = "$name-$versionName.aar"
@@ -123,7 +121,6 @@ class DeployPlugin : Plugin<Project> {
         }
     }
 
-    @Suppress("UnstableApiUsage")
     private fun Project.configureMavenPom(pom: MavenPom, deployProperties: Properties) {
         pom.name.set(deployProperties.getProperty("lib.name"))
         pom.description.set(deployProperties.getProperty("lib.description"))
