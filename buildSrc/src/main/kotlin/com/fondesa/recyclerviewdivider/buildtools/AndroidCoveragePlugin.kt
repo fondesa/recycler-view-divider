@@ -33,9 +33,7 @@ import java.util.Locale
 /**
  * Enables the unit tests coverage in an Android project.
  */
-@ExperimentalStdlibApi
 class AndroidCoveragePlugin : Plugin<Project> {
-
     override fun apply(project: Project) = with(project) {
         plugins.apply("jacoco")
 
@@ -47,7 +45,6 @@ class AndroidCoveragePlugin : Plugin<Project> {
             fixRobolectricCoverage(this)
             configureCoverageTasks(this)
         }
-        Unit
     }
 
     private fun Project.configureCoverageTasks(extension: BaseExtension) {

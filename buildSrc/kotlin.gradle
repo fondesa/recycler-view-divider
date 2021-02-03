@@ -25,7 +25,7 @@ tasks.configureEach { task ->
         kotlinOptions {
             jvmTarget = "1.8"
             allWarningsAsErrors = true
-            freeCompilerArgs += "-Xuse-experimental=kotlin.Experimental"
+            freeCompilerArgs += "-XXLanguage:+InlineClasses"
             if (task.project.name != "buildSrc" && !taskName.contains("UnitTest")) {
                 freeCompilerArgs += "-Xexplicit-api=strict"
             }
