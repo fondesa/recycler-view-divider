@@ -16,7 +16,6 @@
 
 package com.fondesa.recyclerviewdivider.buildtools
 
-import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseExtension
@@ -42,6 +41,7 @@ import java.util.regex.Pattern
  * The private deploy properties aren't versioned.
  * The version which should be deployed is defined through [VersionPlugin].
  */
+@Suppress("UnstableApiUsage")
 class DeployPlugin : Plugin<Project> {
     override fun apply(project: Project) = with(project) {
         plugins.apply("maven-publish")
@@ -62,24 +62,25 @@ class DeployPlugin : Plugin<Project> {
     private val Project.aarFileName: String get() = "$name-$versionName.aar"
 
     private fun Project.changeAarFileName() {
-        withAndroidPlugin {
-            (this as? LibraryExtension)?.run {
-                libraryVariants.all { variant ->
-                    variant.outputs.all { output ->
-                        (output as BaseVariantOutputImpl).outputFileName = aarFileName
-                    }
+        withAndroidLibraryLegacyPlugin {
+            libraryVariants.all { variant ->
+                variant.outputs.all { output ->
+                    (output as BaseVariantOutputImpl).outputFileName = aarFileName
                 }
             }
         }
     }
 
     private fun Project.registerSourcesJarTask(): TaskProvider<out Task> {
-        val sourcesJarTask = tasks.register("sourcesJar", Jar::class.java)
+        val sourcesJarTask = tasks.register("sourcesJar", Jar::class.java) { task ->
+            task.archiveClassifier.set("sources")
+        }
         withAndroidPlugin {
-            sourceSets.named("main") { sourceSet ->
+            onVariants {
+                if (buildType != "release") return@onVariants
+                val sourceSets = sourceSets(this@registerSourcesJarTask)
                 sourcesJarTask.configure { task ->
-                    task.archiveClassifier.set("sources")
-                    task.from(sourceSet.java.srcDirs)
+                    task.from(sourceSets)
                 }
             }
         }
