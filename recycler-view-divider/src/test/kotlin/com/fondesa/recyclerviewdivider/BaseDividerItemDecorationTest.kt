@@ -23,9 +23,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.fondesa.recyclerviewdivider.test.context
 import com.fondesa.recyclerviewdivider.test.linearLayoutManager
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.spy
+import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import com.nhaarman.mockitokotlin2.whenever
@@ -40,6 +44,7 @@ import org.junit.runner.RunWith
 class BaseDividerItemDecorationTest {
     private val getItemOffsets = mock<GetItemOffsets>()
     private val onDraw = mock<OnDraw>()
+    private val onDataChanged = mock<() -> Unit>()
 
     @Test
     fun `addTo - decoration added to RecyclerView`() {
@@ -281,6 +286,104 @@ class BaseDividerItemDecorationTest {
         verifyZeroInteractions(onDraw)
     }
 
+    @Test
+    fun `onDataChanged - callback invoked`() {
+        val recyclerView = RecyclerView(context)
+        val adapter = mock<RecyclerView.Adapter<*>>()
+        recyclerView.adapter = adapter
+        val dataObserver = argumentCaptor<RecyclerView.AdapterDataObserver>()
+        val decoration = MockDecoration().also { it.addTo(recyclerView) }
+
+        decoration.getItemOffsets(Rect(), View(context), recyclerView, RecyclerView.State())
+
+        // Two times because the first time is a registration done by the Android framework.
+        verify(adapter, times(2)).registerAdapterDataObserver(dataObserver.capture())
+        verifyZeroInteractions(onDataChanged)
+
+        dataObserver.lastValue.onChanged()
+        verify(onDataChanged).invoke()
+        dataObserver.lastValue.onItemRangeChanged(1, 1)
+        verify(onDataChanged, times(2)).invoke()
+        dataObserver.lastValue.onItemRangeChanged(1, 1, Any())
+        verify(onDataChanged, times(3)).invoke()
+        dataObserver.lastValue.onItemRangeInserted(1, 2)
+        verify(onDataChanged, times(4)).invoke()
+        dataObserver.lastValue.onItemRangeRemoved(3, 4)
+        verify(onDataChanged, times(5)).invoke()
+        dataObserver.lastValue.onItemRangeMoved(3, 4, 3)
+        verify(onDataChanged, times(6)).invoke()
+    }
+
+    @Test
+    fun `data observer - same registration until adapter changes`() {
+        val recyclerView = RecyclerView(context)
+        val adapter = mock<RecyclerView.Adapter<*>>()
+        recyclerView.adapter = adapter
+        val decoration = MockDecoration().also { it.addTo(recyclerView) }
+
+        decoration.getItemOffsets(Rect(), View(context), recyclerView, RecyclerView.State())
+        decoration.getItemOffsets(Rect(), View(context), recyclerView, RecyclerView.State())
+        decoration.onDraw(Canvas(), recyclerView, RecyclerView.State())
+
+        // Two times because the first time is a registration done by the Android framework.
+        verify(adapter, times(2)).registerAdapterDataObserver(any())
+
+        val adapter2 = mock<RecyclerView.Adapter<*>>()
+        recyclerView.adapter = adapter2
+
+        decoration.getItemOffsets(Rect(), View(context), recyclerView, RecyclerView.State())
+        decoration.onDraw(Canvas(), recyclerView, RecyclerView.State())
+
+        // Verifies it was not invoked anymore.
+        verify(adapter, times(2)).registerAdapterDataObserver(any())
+        // Two times because the first time is a registration done by the Android framework.
+        verify(adapter2, times(2)).registerAdapterDataObserver(any())
+    }
+
+    @Test
+    fun `attach state change listener - same registration until recycler view changes`() {
+        val recyclerView = spy(RecyclerView(context))
+        val decoration = MockDecoration().also { it.addTo(recyclerView) }
+
+        decoration.getItemOffsets(Rect(), View(context), recyclerView, RecyclerView.State())
+        decoration.getItemOffsets(Rect(), View(context), recyclerView, RecyclerView.State())
+        decoration.onDraw(Canvas(), recyclerView, RecyclerView.State())
+
+        verify(recyclerView).addOnAttachStateChangeListener(any())
+
+        val recyclerView2 = spy(RecyclerView(context))
+        decoration.getItemOffsets(Rect(), View(context), recyclerView2, RecyclerView.State())
+        decoration.onDraw(Canvas(), recyclerView2, RecyclerView.State())
+
+        verify(recyclerView).addOnAttachStateChangeListener(any())
+        verify(recyclerView2).addOnAttachStateChangeListener(any())
+    }
+
+    @Test
+    fun `recycler view detached - unregister observer, detach listener`() {
+        val recyclerView = spy(RecyclerView(context))
+        val adapter = mock<RecyclerView.Adapter<*>>()
+        recyclerView.adapter = adapter
+        val decoration = MockDecoration().also { it.addTo(recyclerView) }
+        val attachStateChangeListener = argumentCaptor<View.OnAttachStateChangeListener>()
+        val dataObserver = argumentCaptor<RecyclerView.AdapterDataObserver>()
+
+        decoration.getItemOffsets(Rect(), View(context), recyclerView, RecyclerView.State())
+        verify(recyclerView).addOnAttachStateChangeListener(attachStateChangeListener.capture())
+        // Two times because the first time is a registration done by the Android framework.
+        verify(adapter, times(2)).registerAdapterDataObserver(dataObserver.capture())
+
+        attachStateChangeListener.lastValue.onViewAttachedToWindow(View(context))
+
+        verify(recyclerView, never()).removeOnAttachStateChangeListener(attachStateChangeListener.lastValue)
+        verify(adapter, never()).unregisterAdapterDataObserver(dataObserver.lastValue)
+
+        attachStateChangeListener.lastValue.onViewDetachedFromWindow(View(context))
+
+        verify(recyclerView).removeOnAttachStateChangeListener(attachStateChangeListener.lastValue)
+        verify(adapter).unregisterAdapterDataObserver(dataObserver.lastValue)
+    }
+
     private inner class MockDecoration(asSpace: Boolean = false) : BaseDividerItemDecoration(asSpace) {
         override fun getItemOffsets(
             layoutManager: RecyclerView.LayoutManager,
@@ -292,6 +395,8 @@ class BaseDividerItemDecorationTest {
 
         override fun onDraw(canvas: Canvas, recyclerView: RecyclerView, layoutManager: RecyclerView.LayoutManager, itemCount: Int) =
             this@BaseDividerItemDecorationTest.onDraw(canvas, recyclerView, layoutManager, itemCount)
+
+        override fun onDataChanged() = this@BaseDividerItemDecorationTest.onDataChanged()
     }
 
     // Simulates mock<Function5<RecyclerView.LayoutManager, Rect, View, Int, Int, Unit>>() since Mockito has issues when used with
