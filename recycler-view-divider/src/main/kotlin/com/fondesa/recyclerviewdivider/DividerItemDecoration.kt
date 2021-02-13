@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.fondesa.recyclerviewdivider.cache.GridCache
 import com.fondesa.recyclerviewdivider.drawable.DrawableProvider
 import com.fondesa.recyclerviewdivider.drawable.drawWithBounds
 import com.fondesa.recyclerviewdivider.inset.InsetProvider
@@ -48,6 +49,7 @@ import com.fondesa.recyclerviewdivider.visibility.VisibilityProvider
  * @param tintProvider the provider of the divider's tint color.
  * @param visibilityProvider the provider of the divider's visibility.
  * @param offsetProvider balances the offsets of the divider.
+ * @param cache caches the creation of the [Grid].
  */
 internal class DividerItemDecoration(
     asSpace: Boolean,
@@ -56,9 +58,9 @@ internal class DividerItemDecoration(
     @VisibleForTesting internal val sizeProvider: SizeProvider,
     @VisibleForTesting internal val tintProvider: TintProvider,
     @VisibleForTesting internal val visibilityProvider: VisibilityProvider,
-    @VisibleForTesting internal val offsetProvider: DividerOffsetProvider
+    @VisibleForTesting internal val offsetProvider: DividerOffsetProvider,
+    @VisibleForTesting internal val cache: GridCache
 ) : BaseDividerItemDecoration(asSpace) {
-
     override fun getItemOffsets(
         layoutManager: RecyclerView.LayoutManager,
         outRect: Rect,
@@ -66,7 +68,7 @@ internal class DividerItemDecoration(
         itemCount: Int,
         itemIndex: Int
     ) = layoutManager.withLinear {
-        val grid = grid(itemCount)
+        val grid = cachedGrid(itemCount)
         val dividers = grid.dividersAroundCell(absoluteCellIndex = itemIndex)
         val startDivider = dividers.getValue(Side.START)
         val topDivider = dividers.getValue(Side.TOP)
@@ -99,8 +101,22 @@ internal class DividerItemDecoration(
         layoutManager: RecyclerView.LayoutManager,
         itemCount: Int
     ) = layoutManager.withLinear {
-        val grid = grid(itemCount)
+        val grid = cachedGrid(itemCount)
         recyclerView.forEachItem { itemIndex, itemView -> itemView.drawDividers(canvas, grid, itemIndex) }
+    }
+
+    override fun onDataChanged() {
+        super.onDataChanged()
+        cache.clear()
+    }
+
+    private fun LinearLayoutManager.cachedGrid(itemCount: Int): Grid {
+        val spanCount = (this as? GridLayoutManager)?.spanCount ?: 1
+        val cachedGrid = cache.get(spanCount, itemCount)
+        if (cachedGrid != null) return cachedGrid
+        return grid(itemCount).also { grid ->
+            cache.put(spanCount = spanCount, itemCount = itemCount, grid = grid)
+        }
     }
 
     private fun View.drawDividers(canvas: Canvas, grid: Grid, itemIndex: Int) {

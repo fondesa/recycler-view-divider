@@ -28,6 +28,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fondesa.recyclerviewdivider.cache.InMemoryGridCache
 import com.fondesa.recyclerviewdivider.drawable.DrawableProvider
 import com.fondesa.recyclerviewdivider.drawable.DrawableProviderImpl
 import com.fondesa.recyclerviewdivider.drawable.getThemeDrawable
@@ -333,7 +334,8 @@ public class DividerBuilder internal constructor(private val context: Context) {
                 isLastDividerVisible = isLastDividerVisible,
                 areSideDividersVisible = areSideDividersVisible
             ),
-            offsetProvider = offsetProvider ?: DividerOffsetProviderImpl(areSideDividersVisible)
+            offsetProvider = offsetProvider ?: DividerOffsetProviderImpl(areSideDividersVisible),
+            cache = InMemoryGridCache()
         )
     }
 
