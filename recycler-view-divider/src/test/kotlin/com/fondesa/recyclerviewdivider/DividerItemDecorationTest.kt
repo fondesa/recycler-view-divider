@@ -26,6 +26,8 @@ import androidx.annotation.Px
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.fondesa.recyclerviewdivider.cache.GridCache
+import com.fondesa.recyclerviewdivider.cache.InMemoryGridCache
 import com.fondesa.recyclerviewdivider.drawable.DrawableProviderImpl
 import com.fondesa.recyclerviewdivider.inset.InsetProviderImpl
 import com.fondesa.recyclerviewdivider.offset.DividerOffsetProviderImpl
@@ -42,6 +44,12 @@ import com.fondesa.recyclerviewdivider.test.onDraw
 import com.fondesa.recyclerviewdivider.test.staggeredLayoutManager
 import com.fondesa.recyclerviewdivider.tint.TintProviderImpl
 import com.fondesa.recyclerviewdivider.visibility.VisibilityProviderImpl
+import com.nhaarman.mockitokotlin2.argumentCaptor
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.never
+import com.nhaarman.mockitokotlin2.spy
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
@@ -51,6 +59,8 @@ import org.robolectric.annotation.Config
  */
 @RunWith(AndroidJUnit4::class)
 class DividerItemDecorationTest {
+    private val gridCache: GridCache = spy(InMemoryGridCache())
+
     @Test(expected = IllegalLayoutManagerException::class)
     fun `getItemOffsets - StaggeredGridLayoutManager - IllegalLayoutManagerException thrown`() {
         decoration().getItemOffsets(staggeredLayoutManager(), false, 1)
@@ -3025,6 +3035,34 @@ class DividerItemDecorationTest {
         )
     }
 
+    @Test
+    fun `onDataChanged - grid cache cleared`() {
+        val recyclerView = RecyclerView(context)
+        val adapter = mock<RecyclerView.Adapter<*>>()
+        recyclerView.adapter = adapter
+        val dataObserver = argumentCaptor<RecyclerView.AdapterDataObserver>()
+        val decoration = decoration().also { it.addTo(recyclerView) }
+
+        decoration.getItemOffsets(Rect(), View(context), recyclerView, RecyclerView.State())
+
+        // Two times because the first time is a registration done by the Android framework.
+        verify(adapter, times(2)).registerAdapterDataObserver(dataObserver.capture())
+        verify(gridCache, never()).clear()
+
+        dataObserver.lastValue.onChanged()
+        verify(gridCache).clear()
+        dataObserver.lastValue.onItemRangeChanged(1, 1)
+        verify(gridCache, times(2)).clear()
+        dataObserver.lastValue.onItemRangeChanged(1, 1, Any())
+        verify(gridCache, times(3)).clear()
+        dataObserver.lastValue.onItemRangeInserted(1, 2)
+        verify(gridCache, times(4)).clear()
+        dataObserver.lastValue.onItemRangeRemoved(3, 4)
+        verify(gridCache, times(5)).clear()
+        dataObserver.lastValue.onItemRangeMoved(3, 4, 3)
+        verify(gridCache, times(6)).clear()
+    }
+
     private fun decoration(
         @Px size: Int = 10,
         @ColorInt color: Int = Color.RED,
@@ -3045,7 +3083,8 @@ class DividerItemDecorationTest {
             isFirstDividerVisible = isFirstDividerVisible,
             isLastDividerVisible = isLastDividerVisible,
             areSideDividersVisible = areSideDividersVisible
-        )
+        ),
+        cache = gridCache
     )
 
     private fun view(left: Int, top: Int, right: Int, bottom: Int): View = View(context).apply {

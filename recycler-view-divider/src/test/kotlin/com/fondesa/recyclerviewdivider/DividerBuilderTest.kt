@@ -26,6 +26,7 @@ import androidx.annotation.Px
 import androidx.core.content.ContextCompat
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.fondesa.recyclerviewdivider.cache.InMemoryGridCache
 import com.fondesa.recyclerviewdivider.drawable.DrawableProvider
 import com.fondesa.recyclerviewdivider.drawable.DrawableProviderImpl
 import com.fondesa.recyclerviewdivider.drawable.transparentDrawable
@@ -715,6 +716,7 @@ class DividerBuilderTest {
         assertFalse((decoration.visibilityProvider as VisibilityProviderImpl).isFirstDividerVisible)
         assertFalse(decoration.visibilityProvider.isLastDividerVisible)
         assertFalse(decoration.visibilityProvider.areSideDividersVisible)
+        assertTrue(decoration.cache is InMemoryGridCache)
         verify(logger).logWarning(
             "Can't render the divider without a color/drawable. " +
                 "Specify \"recyclerViewDividerDrawable\" or \"android:listDivider\" in the theme or set a color/drawable " +
@@ -742,6 +744,7 @@ class DividerBuilderTest {
         assertFalse((decoration.visibilityProvider as VisibilityProviderImpl).isFirstDividerVisible)
         assertFalse(decoration.visibilityProvider.isLastDividerVisible)
         assertFalse(decoration.visibilityProvider.areSideDividersVisible)
+        assertTrue(decoration.cache is InMemoryGridCache)
         verifyZeroInteractions(logger)
     }
 
@@ -769,6 +772,7 @@ class DividerBuilderTest {
         assertTrue((decoration.visibilityProvider as VisibilityProviderImpl).isFirstDividerVisible)
         assertTrue(decoration.visibilityProvider.isLastDividerVisible)
         assertTrue(decoration.visibilityProvider.areSideDividersVisible)
+        assertTrue(decoration.cache is InMemoryGridCache)
         verifyZeroInteractions(logger)
     }
 
