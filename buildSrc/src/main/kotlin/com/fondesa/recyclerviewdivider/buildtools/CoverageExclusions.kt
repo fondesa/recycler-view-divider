@@ -20,10 +20,5 @@ package com.fondesa.recyclerviewdivider.buildtools
  * Specifies all the files which should be excluded from a coverage report.
  */
 internal val COVERAGE_EXCLUSIONS: Set<String> = setOf(
-    "**/BuildConfig.*", // AGP
-    "com/fondesa/recyclerviewdivider/extension/**", // Legacy API
-    "com/fondesa/recyclerviewdivider/legacy/**", // Legacy API
-    "com/fondesa/recyclerviewdivider/manager/**", // Legacy API
-    "com/fondesa/recyclerviewdivider/RecyclerViewDivider.*", // Legacy API
-    "com/fondesa/recyclerviewdivider/RecyclerViewDivider$*.*" // Legacy API
+    "**/BuildConfig.*" // AGP
 )
