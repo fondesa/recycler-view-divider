@@ -23,7 +23,7 @@ object Deps {
     const val bintrayPlugin = "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5"
     const val dokkaPlugin = "org.jetbrains.dokka:dokka-gradle-plugin:1.4.20"
     const val gitHubReleasePlugin = "com.github.breadmoirai:github-release:2.2.12"
-    const val junit = "junit:junit:4.13.1"
+    const val junit = "junit:junit:4.13.2"
     const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:1.4.30"
     const val kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.30"
     const val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.30"
