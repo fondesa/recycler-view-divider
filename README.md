@@ -45,7 +45,7 @@ Compatibility
 Integration
 ------
 
-You can download a jar from GitHub's [releases page](https://github.com/fondesa/recycler-view-divider/releases) or grab it from ```jcenter()``` or ```mavenCentral()```.
+You can download a jar from GitHub's [releases page](https://github.com/fondesa/recycler-view-divider/releases) or grab it from ```mavenCentral()```.
 
 ### Gradle ###
 
