@@ -21,7 +21,6 @@ apply plugin: "recycler-view-divider-deploy"
 
 dependencies {
     api Deps.androidxRecyclerView
-    api Deps.kotlinStdLib
 
     testImplementation Deps.androidxAppCompat
     testImplementation Deps.androidxJUnit
