@@ -15,21 +15,23 @@
  */
 
 buildscript {
-    apply from: rootProject.file("buildSrc/repositories.gradle"), to: buildscript
+    apply from: rootProject.file("build-tools/repositories.gradle"), to: buildscript
+    apply from: rootProject.file("build-tools/parse-dependencies.gradle")
 
     dependencies {
-        classpath Deps.androidPlugin
-        classpath Deps.dokkaPlugin
-        classpath Deps.gitHubReleasePlugin
-        classpath Deps.kotlinPlugin
-        classpath Deps.ktlint
-        classpath Deps.releasesHubPlugin
+        classpath deps.androidPlugin
+        classpath deps.dokkaPlugin
+        classpath deps.gitHubReleasePlugin
+        classpath deps.kotlinPlugin
+        classpath deps.ktlint
+        classpath deps.recyclerViewDividerBuildTools
+        classpath deps.releasesHubPlugin
     }
 }
 
 allprojects {
-    apply from: rootProject.file("buildSrc/repositories.gradle")
-    apply from: rootProject.file("buildSrc/kotlin.gradle")
+    apply from: rootProject.file("build-tools/repositories.gradle")
+    apply from: rootProject.file("build-tools/kotlin.gradle")
     // Adds the version of this library to all the projects, including the root project.
     apply plugin: "recycler-view-divider-version"
 }
@@ -37,7 +39,7 @@ allprojects {
 apply plugin: "com.dipien.releaseshub.gradle.plugin"
 
 releasesHub {
-    dependenciesBasePath = "buildSrc/src/main/kotlin/"
+    dependenciesBasePath = "build-tools/src/main/kotlin/"
     dependenciesClassNames = ["Deps.kt"]
     pullRequestLabels = ["dependencies"]
     headBranchPrefix = "update-dependency/"
