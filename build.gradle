@@ -45,8 +45,6 @@ releasesHub {
     headBranchPrefix = "update-dependency/"
     gitHubRepositoryOwner = "fondesa"
     gitHubRepositoryName = "recycler-view-divider"
-    // Excluded for the issue: https://github.com/Kotlin/dokka/issues/1463
-    excludes = ["org.jetbrains.dokka"]
 }
 
 apply plugin: "com.github.breadmoirai.github-release"
