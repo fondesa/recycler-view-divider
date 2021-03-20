@@ -101,14 +101,15 @@ class BaseDividerItemDecorationTest {
     @Test
     fun `getItemOffsets - adapter with no items - overload not invoked`() {
         val recyclerView = RecyclerView(context)
-        val adapter = mock<RecyclerView.Adapter<*>> {
-            on(it.itemCount) doReturn 0
-        }
+        val adapter = mock<RecyclerView.Adapter<*>>()
         recyclerView.adapter = adapter
         val decoration = MockDecoration().also { it.addTo(recyclerView) }
         val rect = Rect()
+        val state = mock<RecyclerView.State> {
+            on(it.itemCount) doReturn 0
+        }
 
-        decoration.getItemOffsets(rect, View(context), recyclerView, RecyclerView.State())
+        decoration.getItemOffsets(rect, View(context), recyclerView, state)
 
         assertEquals(Rect(), rect)
         verifyZeroInteractions(getItemOffsets)
@@ -117,14 +118,15 @@ class BaseDividerItemDecorationTest {
     @Test
     fun `getItemOffsets - layout manager not attached - overload not invoked`() {
         val recyclerView = RecyclerView(context)
-        val adapter = mock<RecyclerView.Adapter<*>> {
-            on(it.itemCount) doReturn 4
-        }
+        val adapter = mock<RecyclerView.Adapter<*>>()
         recyclerView.adapter = adapter
         val decoration = MockDecoration().also { it.addTo(recyclerView) }
         val rect = Rect()
+        val state = mock<RecyclerView.State> {
+            on(it.itemCount) doReturn 4
+        }
 
-        decoration.getItemOffsets(rect, View(context), recyclerView, RecyclerView.State())
+        decoration.getItemOffsets(rect, View(context), recyclerView, state)
 
         assertEquals(Rect(), rect)
         verifyZeroInteractions(getItemOffsets)
@@ -137,14 +139,15 @@ class BaseDividerItemDecorationTest {
             doReturn(RecyclerView.NO_POSITION).whenever(it).getChildAdapterPosition(itemView)
         }
         recyclerView.layoutManager = linearLayoutManager()
-        val adapter = mock<RecyclerView.Adapter<*>> {
-            on(it.itemCount) doReturn 4
-        }
+        val adapter = mock<RecyclerView.Adapter<*>>()
         recyclerView.adapter = adapter
         val decoration = MockDecoration().also { it.addTo(recyclerView) }
         val rect = Rect()
+        val state = mock<RecyclerView.State> {
+            on(it.itemCount) doReturn 4
+        }
 
-        decoration.getItemOffsets(rect, itemView, recyclerView, RecyclerView.State())
+        decoration.getItemOffsets(rect, itemView, recyclerView, state)
 
         assertEquals(Rect(), rect)
         verifyZeroInteractions(getItemOffsets)
@@ -158,14 +161,15 @@ class BaseDividerItemDecorationTest {
         }
         val layoutManager = linearLayoutManager()
         recyclerView.layoutManager = layoutManager
-        val adapter = mock<RecyclerView.Adapter<*>> {
-            on(it.itemCount) doReturn 4
-        }
+        val adapter = mock<RecyclerView.Adapter<*>>()
         recyclerView.adapter = adapter
         val decoration = MockDecoration().also { it.addTo(recyclerView) }
         val rect = Rect()
+        val state = mock<RecyclerView.State> {
+            on(it.itemCount) doReturn 4
+        }
 
-        decoration.getItemOffsets(rect, itemView, recyclerView, RecyclerView.State())
+        decoration.getItemOffsets(rect, itemView, recyclerView, state)
 
         assertEquals(Rect(), rect)
         verify(getItemOffsets).invoke(layoutManager = layoutManager, outRect = rect, itemView = itemView, itemCount = 4, itemIndex = 2)
@@ -179,9 +183,7 @@ class BaseDividerItemDecorationTest {
         }
         val layoutManager = linearLayoutManager()
         recyclerView.layoutManager = layoutManager
-        val adapter = mock<RecyclerView.Adapter<*>> {
-            on(it.itemCount) doReturn 4
-        }
+        val adapter = mock<RecyclerView.Adapter<*>>()
         recyclerView.adapter = adapter
         val decoration = MockDecoration().also { it.addTo(recyclerView) }
         val rect = Rect()
@@ -220,14 +222,15 @@ class BaseDividerItemDecorationTest {
     @Test
     fun `onDraw - adapter with no items, overload not invoked`() {
         val recyclerView = RecyclerView(context)
-        val adapter = mock<RecyclerView.Adapter<*>> {
-            on(it.itemCount) doReturn 0
-        }
+        val adapter = mock<RecyclerView.Adapter<*>>()
         recyclerView.adapter = adapter
         val decoration = MockDecoration().also { it.addTo(recyclerView) }
         val canvas = mock<Canvas>()
+        val state = mock<RecyclerView.State> {
+            on(it.itemCount) doReturn 0
+        }
 
-        decoration.onDraw(canvas, recyclerView, RecyclerView.State())
+        decoration.onDraw(canvas, recyclerView, state)
 
         verifyZeroInteractions(canvas)
         verifyZeroInteractions(onDraw)
@@ -236,14 +239,15 @@ class BaseDividerItemDecorationTest {
     @Test
     fun `onDraw - layout manager not attached - overload not invoked`() {
         val recyclerView = RecyclerView(context)
-        val adapter = mock<RecyclerView.Adapter<*>> {
-            on(it.itemCount) doReturn 4
-        }
+        val adapter = mock<RecyclerView.Adapter<*>>()
         recyclerView.adapter = adapter
         val decoration = MockDecoration().also { it.addTo(recyclerView) }
         val canvas = mock<Canvas>()
+        val state = mock<RecyclerView.State> {
+            on(it.itemCount) doReturn 4
+        }
 
-        decoration.onDraw(canvas, recyclerView, RecyclerView.State())
+        decoration.onDraw(canvas, recyclerView, state)
 
         verifyZeroInteractions(canvas)
         verifyZeroInteractions(onDraw)
@@ -254,14 +258,15 @@ class BaseDividerItemDecorationTest {
         val recyclerView = RecyclerView(context)
         val layoutManager = linearLayoutManager()
         recyclerView.layoutManager = layoutManager
-        val adapter = mock<RecyclerView.Adapter<*>> {
-            on(it.itemCount) doReturn 4
-        }
+        val adapter = mock<RecyclerView.Adapter<*>>()
         recyclerView.adapter = adapter
         val decoration = MockDecoration().also { it.addTo(recyclerView) }
         val canvas = mock<Canvas>()
+        val state = mock<RecyclerView.State> {
+            on(it.itemCount) doReturn 4
+        }
 
-        decoration.onDraw(canvas, recyclerView, RecyclerView.State())
+        decoration.onDraw(canvas, recyclerView, state)
 
         verifyZeroInteractions(canvas)
         verify(onDraw).invoke(canvas = canvas, recyclerView = recyclerView, layoutManager = layoutManager, itemCount = 4)
@@ -272,9 +277,7 @@ class BaseDividerItemDecorationTest {
         val recyclerView = RecyclerView(context)
         val layoutManager = linearLayoutManager()
         recyclerView.layoutManager = layoutManager
-        val adapter = mock<RecyclerView.Adapter<*>> {
-            on(it.itemCount) doReturn 4
-        }
+        val adapter = mock<RecyclerView.Adapter<*>>()
         recyclerView.adapter = adapter
         val decoration = MockDecoration().also { it.addTo(recyclerView) }
         val canvas = mock<Canvas>()
