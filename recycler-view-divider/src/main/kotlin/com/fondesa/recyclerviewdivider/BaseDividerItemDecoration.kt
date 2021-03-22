@@ -99,7 +99,7 @@ public abstract class BaseDividerItemDecoration(
         outRect.setEmpty()
         val adapter = parent.adapter ?: return
         adapter.setupDataObserver()
-        val itemCount = state.itemCount
+        val itemCount = adapter.itemCount
         if (itemCount == 0) return
         val layoutManager = parent.layoutManager ?: return
         val itemIndex = parent.getChildAdapterPositionOrNull(view) ?: return
@@ -113,7 +113,7 @@ public abstract class BaseDividerItemDecoration(
         if (asSpace) return
         val adapter = parent.adapter ?: return
         adapter.setupDataObserver()
-        val itemCount = state.itemCount
+        val itemCount = adapter.itemCount
         if (itemCount == 0) return
         val layoutManager = parent.layoutManager ?: return
         onDraw(canvas = c, recyclerView = parent, layoutManager = layoutManager, itemCount = itemCount)
