@@ -324,12 +324,6 @@ class BaseDividerItemDecorationTest {
     }
 
     @Test
-    fun `onDataChanged - callback invoked before RecyclerView is attached - exception not thrown`() {
-        // It shouldn't throw an exception.
-        MockDecoration().onDataChanged()
-    }
-
-    @Test
     fun `data observer - same registration until adapter changes`() {
         val recyclerView = RecyclerView(context)
         val adapter = mock<RecyclerView.Adapter<*>>()
@@ -411,7 +405,7 @@ class BaseDividerItemDecorationTest {
         override fun onDraw(canvas: Canvas, recyclerView: RecyclerView, layoutManager: RecyclerView.LayoutManager, itemCount: Int) =
             this@BaseDividerItemDecorationTest.onDraw(canvas, recyclerView, layoutManager, itemCount)
 
-        public override fun onDataChanged() {
+        override fun onDataChanged() {
             super.onDataChanged()
             this@BaseDividerItemDecorationTest.onDataChanged()
         }
