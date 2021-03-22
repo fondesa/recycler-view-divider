@@ -21,6 +21,7 @@ import android.graphics.Rect
 import android.view.View
 import androidx.annotation.VisibleForTesting
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.markItemDecorationsDirty
 
 /**
  * Base implementation of [RecyclerView.ItemDecoration] which provides some utilities methods.
@@ -89,7 +90,9 @@ public abstract class BaseDividerItemDecoration(
      * Specifically, this callback is invoked every time a method of [RecyclerView.AdapterDataObserver] is invoked.
      */
     protected open fun onDataChanged() {
-        // No-op.
+        // In this way, getItemOffsets() will be executed also on the previous items.
+        // Do not call invalidateItemDecorations() since we don't need requestLayout().
+        attachStateListenerHolder?.recyclerView?.markItemDecorationsDirty()
     }
 
     final override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {

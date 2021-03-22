@@ -19,12 +19,14 @@ package com.fondesa.recyclerviewdivider
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.view.View
+import androidx.recyclerview.widget.MockRecyclerView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.fondesa.recyclerviewdivider.test.context
 import com.fondesa.recyclerviewdivider.test.linearLayoutManager
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.argumentCaptor
+import com.nhaarman.mockitokotlin2.clearInvocations
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
@@ -288,7 +290,7 @@ class BaseDividerItemDecorationTest {
 
     @Test
     fun `onDataChanged - callback invoked`() {
-        val recyclerView = RecyclerView(context)
+        val recyclerView = spy(MockRecyclerView(context))
         val adapter = mock<RecyclerView.Adapter<*>>()
         recyclerView.adapter = adapter
         val dataObserver = argumentCaptor<RecyclerView.AdapterDataObserver>()
@@ -299,19 +301,26 @@ class BaseDividerItemDecorationTest {
         // Two times because the first time is a registration done by the Android framework.
         verify(adapter, times(2)).registerAdapterDataObserver(dataObserver.capture())
         verifyZeroInteractions(onDataChanged)
+        clearInvocations(recyclerView)
 
         dataObserver.lastValue.onChanged()
         verify(onDataChanged).invoke()
+        verify(recyclerView).markItemDecorInsetsDirty()
         dataObserver.lastValue.onItemRangeChanged(1, 1)
         verify(onDataChanged, times(2)).invoke()
+        verify(recyclerView, times(2)).markItemDecorInsetsDirty()
         dataObserver.lastValue.onItemRangeChanged(1, 1, Any())
         verify(onDataChanged, times(3)).invoke()
+        verify(recyclerView, times(3)).markItemDecorInsetsDirty()
         dataObserver.lastValue.onItemRangeInserted(1, 2)
         verify(onDataChanged, times(4)).invoke()
+        verify(recyclerView, times(4)).markItemDecorInsetsDirty()
         dataObserver.lastValue.onItemRangeRemoved(3, 4)
         verify(onDataChanged, times(5)).invoke()
+        verify(recyclerView, times(5)).markItemDecorInsetsDirty()
         dataObserver.lastValue.onItemRangeMoved(3, 4, 3)
         verify(onDataChanged, times(6)).invoke()
+        verify(recyclerView, times(6)).markItemDecorInsetsDirty()
     }
 
     @Test
@@ -396,7 +405,10 @@ class BaseDividerItemDecorationTest {
         override fun onDraw(canvas: Canvas, recyclerView: RecyclerView, layoutManager: RecyclerView.LayoutManager, itemCount: Int) =
             this@BaseDividerItemDecorationTest.onDraw(canvas, recyclerView, layoutManager, itemCount)
 
-        override fun onDataChanged() = this@BaseDividerItemDecorationTest.onDataChanged()
+        override fun onDataChanged() {
+            super.onDataChanged()
+            this@BaseDividerItemDecorationTest.onDataChanged()
+        }
     }
 
     // Simulates mock<Function5<RecyclerView.LayoutManager, Rect, View, Int, Int, Unit>>() since Mockito has issues when used with
