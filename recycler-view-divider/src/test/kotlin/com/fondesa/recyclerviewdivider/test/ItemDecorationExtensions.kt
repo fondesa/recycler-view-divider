@@ -41,13 +41,10 @@ internal fun RecyclerView.ItemDecoration.getItemOffsets(
     vararg views: View
 ): List<Rect> {
     val recyclerView = recyclerView(layoutManager, isRTL, views)
-    val state = mock<RecyclerView.State> {
-        on(it.itemCount) doReturn views.size
-    }
     return views.mapIndexed { index, view ->
         doReturn(index).whenever(recyclerView).getChildAdapterPosition(view)
         val rect = Rect()
-        getItemOffsets(rect, view, recyclerView, state)
+        getItemOffsets(rect, view, recyclerView, RecyclerView.State())
         rect
     }
 }
@@ -73,10 +70,7 @@ internal fun RecyclerView.ItemDecoration.onDraw(
         doCallRealMethod().whenever(it)
             .drawRect(leftCaptor.capture(), topCaptor.capture(), rightCaptor.capture(), bottomCaptor.capture(), any())
     }
-    val state = mock<RecyclerView.State> {
-        on(it.itemCount) doReturn views.size
-    }
-    onDraw(canvas, recyclerView, state)
+    onDraw(canvas, recyclerView, RecyclerView.State())
     // Since the argument captors are invoked in the same method, their size is equal.
     return (leftCaptor.allValues.indices).map { index ->
         Rect(
@@ -98,7 +92,9 @@ private fun recyclerView(
     }
     doReturn(views.size).whenever(recyclerView).childCount
     recyclerView.layoutManager = layoutManager
-    val adapter = mock<RecyclerView.Adapter<*>>()
+    val adapter = mock<RecyclerView.Adapter<*>> {
+        on(it.itemCount) doReturn views.size
+    }
     recyclerView.adapter = adapter
     views.forEachIndexed { index, view ->
         doReturn(view).whenever(recyclerView).getChildAt(index)
