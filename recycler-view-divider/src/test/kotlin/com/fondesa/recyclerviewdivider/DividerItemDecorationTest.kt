@@ -3063,6 +3063,20 @@ class DividerItemDecorationTest {
         verify(gridCache, times(6)).clear()
     }
 
+    @Test
+    fun `onDraw - translations`() {
+        decoration().onDraw(
+            linearLayoutManager(Orientation.VERTICAL, false),
+            false,
+            view(20, 20, 120, 120).margins(5, 4, 6, 8).translations(6.7f, 4.3f),
+            view(20, 180, 120, 280).margins(0, 8, 0, 10).translations(-10.2f, -9.3f),
+            view(20, 340, 120, 420).margins(7, 12, 3, 6).translations(23f, 42f)
+        ).assertEquals(
+            Rect(22, 132, 133, 142),
+            Rect(10, 281, 110, 291)
+        )
+    }
+
     private fun decoration(
         @Px size: Int = 10,
         @ColorInt color: Int = Color.RED,
@@ -3090,6 +3104,11 @@ class DividerItemDecorationTest {
     private fun view(left: Int, top: Int, right: Int, bottom: Int): View = View(context).apply {
         layoutParams = ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         bounds(left, top, right, bottom)
+    }
+
+    private fun View.translations(translationX: Float, translationY: Float): View = apply {
+        this.translationX = translationX
+        this.translationY = translationY
     }
 
     private fun RecyclerView.ItemDecoration.getItemOffsets(
