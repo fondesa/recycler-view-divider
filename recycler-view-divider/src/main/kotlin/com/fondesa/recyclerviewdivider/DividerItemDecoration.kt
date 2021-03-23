@@ -38,6 +38,7 @@ import com.fondesa.recyclerviewdivider.offset.DividerOffsetProvider
 import com.fondesa.recyclerviewdivider.size.SizeProvider
 import com.fondesa.recyclerviewdivider.tint.TintProvider
 import com.fondesa.recyclerviewdivider.visibility.VisibilityProvider
+import kotlin.math.roundToInt
 
 /**
  * Implementation of [DividerItemDecoration] used in a [LinearLayoutManager]/[GridLayoutManager].
@@ -122,10 +123,12 @@ internal class DividerItemDecoration(
     private fun View.drawDividers(canvas: Canvas, grid: Grid, itemIndex: Int) {
         val layoutBottomToTop = grid.layoutDirection.isBottomToTop
         val layoutRightToLeft = grid.layoutDirection.isRightToLeft
-        val left = leftWithMargin
-        val right = rightWithMargin
-        val top = topWithMargin
-        val bottom = bottomWithMargin
+        val translationX = translationX.roundToInt()
+        val translationY = translationY.roundToInt()
+        val left = leftWithMargin + translationX
+        val right = rightWithMargin + translationX
+        val top = topWithMargin + translationY
+        val bottom = bottomWithMargin + translationY
         val dividers = grid.dividersAroundCell(absoluteCellIndex = itemIndex)
         val startDivider = dividers.getValue(Side.START)
         val topDivider = dividers.getValue(Side.TOP)
