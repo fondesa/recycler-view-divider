@@ -1466,6 +1466,39 @@ class StaggeredDividerItemDecorationTest {
         )
     }
 
+    @Test
+    fun `onDraw - translations`() {
+        decoration().onDraw(
+            staggeredLayoutManager(1, Orientation.VERTICAL, false),
+            false,
+            view(0, false)
+                .bounds(20, 20, 120, 120)
+                .margins(5, 4, 6, 8)
+                .translations(6.7f, 4.3f),
+            view(0, false)
+                .bounds(20, 180, 120, 280)
+                .margins(0, 8, 0, 10)
+                .translations(-10.2f, -9.3f),
+            view(0, false)
+                .bounds(20, 340, 120, 420)
+                .margins(7, 12, 3, 6)
+                .translations(23f, 42f)
+        ).assertEquals(
+            Rect(133, 10, 143, 142),
+            Rect(12, 10, 22, 142),
+            Rect(22, 10, 133, 20),
+            Rect(22, 132, 133, 142),
+            Rect(110, 153, 120, 291),
+            Rect(0, 153, 10, 291),
+            Rect(10, 153, 110, 163),
+            Rect(10, 281, 110, 291),
+            Rect(146, 360, 156, 478),
+            Rect(26, 360, 36, 478),
+            Rect(36, 360, 146, 370),
+            Rect(36, 468, 146, 478)
+        )
+    }
+
     private fun decoration(
         size: Int = 10,
         areSideDividersVisible: Boolean = true
@@ -1484,5 +1517,10 @@ class StaggeredDividerItemDecorationTest {
             doReturn(spanIndex).whenever(it).spanIndex
         }
         return View(context).apply { layoutParams = spiedParams }
+    }
+
+    private fun View.translations(translationX: Float, translationY: Float): View = apply {
+        this.translationX = translationX
+        this.translationY = translationY
     }
 }

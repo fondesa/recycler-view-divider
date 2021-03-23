@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.fondesa.recyclerviewdivider.drawable.drawWithBounds
 import com.fondesa.recyclerviewdivider.offset.StaggeredDividerOffsetProvider
+import kotlin.math.roundToInt
 
 /**
  * Implementation of [BaseDividerItemDecoration] used in a [StaggeredGridLayoutManager].
@@ -79,10 +80,12 @@ internal class StaggeredDividerItemDecoration(
     private fun View.drawDividersOfItem(canvas: Canvas, grid: StaggeredGrid) {
         val layoutRightToLeft = grid.layoutDirection.isRightToLeft
         val layoutBottomToTop = grid.layoutDirection.isBottomToTop
-        val left = leftWithMargin
-        val right = rightWithMargin
-        val top = topWithMargin
-        val bottom = bottomWithMargin
+        val translationX = translationX.roundToInt()
+        val translationY = translationY.roundToInt()
+        val left = leftWithMargin + translationX
+        val right = rightWithMargin + translationX
+        val top = topWithMargin + translationY
+        val bottom = bottomWithMargin + translationY
         val cell = staggeredCell()
         val adjacentGridSides = grid.sidesAdjacentToCell(cell)
         val shouldDrawTop: Boolean
