@@ -30,6 +30,6 @@ object Deps {
     const val mockitoCore = "org.mockito:mockito-core:3.8.0"
     const val mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     const val recyclerViewDividerBuildTools = "com.fondesa.recyclerviewdivider.buildtools:build-tools"
-    const val releasesHubPlugin = "com.dipien:releases-hub-gradle-plugin:2.0.0"
+    const val releasesHubPlugin = "com.dipien:releases-hub-gradle-plugin:2.0.2"
     const val robolectric = "org.robolectric:robolectric:4.5.1"
 }
