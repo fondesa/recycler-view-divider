@@ -32,8 +32,8 @@ import androidx.recyclerview.widget.markItemDecorationsDirty
 public abstract class BaseDividerItemDecoration(
     @VisibleForTesting internal val asSpace: Boolean
 ) : RecyclerView.ItemDecoration() {
-    private var attachStateListenerHolder: AttachStateListenerHolder? = null
-    private var observerHolder: ObserverHolder? = null
+    private val attachStateListenerHolders = mutableMapOf<RecyclerView, View.OnAttachStateChangeListener>()
+    private val observerHolders = mutableMapOf<RecyclerView.Adapter<*>, RecyclerView.AdapterDataObserver>()
 
     /**
      * Adds this decoration to the given [RecyclerView].
@@ -92,7 +92,9 @@ public abstract class BaseDividerItemDecoration(
     protected open fun onDataChanged() {
         // In this way, getItemOffsets() will be executed also on the previous items.
         // Do not call invalidateItemDecorations() since we don't need requestLayout().
-        attachStateListenerHolder?.recyclerView?.markItemDecorationsDirty()
+        attachStateListenerHolders.keys.forEach { recyclerView ->
+            recyclerView.markItemDecorationsDirty()
+        }
     }
 
     final override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
@@ -133,51 +135,40 @@ public abstract class BaseDividerItemDecoration(
     }
 
     private fun RecyclerView.setupAttachStateListener() {
-        // If the RecyclerView didn't change, we shouldn't add a new listener.
-        if (this == attachStateListenerHolder?.recyclerView) return
-        clearAttachStateListenerHolder()
+        // If the listener is already attached, we shouldn't add a new listener.
+        if (this in attachStateListenerHolders) return
         val listener = OnRecyclerViewDetachedFromWindow(::destroy)
-        attachStateListenerHolder = AttachStateListenerHolder(this, listener)
+        attachStateListenerHolders[this] = listener
         addOnAttachStateChangeListener(listener)
     }
 
     private fun RecyclerView.Adapter<*>.setupDataObserver() {
-        // If the adapter didn't change, we shouldn't register a new observer.
-        if (this == observerHolder?.adapter) return
+        // If the observer is already attached, we shouldn't add a new listener.
+        if (this in observerHolders) return
         clearObserverHolder()
         val observer = DataObserver(::onDataChanged)
-        observerHolder = ObserverHolder(this, observer)
+        observerHolders[this] = observer
         registerAdapterDataObserver(observer)
     }
 
-    private fun clearAttachStateListenerHolder() {
-        attachStateListenerHolder?.let { (recyclerView, listener) ->
+    private fun clearAttachStateListenerHolders() {
+        attachStateListenerHolders.forEach { (recyclerView, listener) ->
             recyclerView.removeOnAttachStateChangeListener(listener)
         }
-        attachStateListenerHolder = null
+        attachStateListenerHolders.clear()
     }
 
     private fun clearObserverHolder() {
-        observerHolder?.let { (adapter, observer) ->
+        observerHolders.forEach { (adapter, observer) ->
             adapter.unregisterAdapterDataObserver(observer)
         }
-        observerHolder = null
+        observerHolders.clear()
     }
 
     private fun destroy() {
         clearObserverHolder()
-        clearAttachStateListenerHolder()
+        clearAttachStateListenerHolders()
     }
-
-    private data class AttachStateListenerHolder(
-        val recyclerView: RecyclerView,
-        val listener: View.OnAttachStateChangeListener
-    )
-
-    private data class ObserverHolder(
-        val adapter: RecyclerView.Adapter<*>,
-        val observer: RecyclerView.AdapterDataObserver
-    )
 
     private class DataObserver(private val onDataChanged: () -> Unit) : RecyclerView.AdapterDataObserver() {
         override fun onChanged() = onDataChanged()
