@@ -103,7 +103,7 @@ internal class DividerItemDecoration(
         itemCount: Int
     ) = layoutManager.withLinear {
         val grid = cachedGrid(itemCount)
-        recyclerView.forEachItem { itemIndex, itemView -> itemView.drawDividers(canvas, grid, itemIndex) }
+        recyclerView.forEachItem(itemCount) { itemIndex, itemView -> itemView.drawDividers(canvas, grid, itemIndex) }
     }
 
     override fun onDataChanged() {

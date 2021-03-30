@@ -107,7 +107,7 @@ public abstract class BaseDividerItemDecoration(
         val itemCount = adapter.itemCount
         if (itemCount == 0) return
         val layoutManager = parent.layoutManager ?: return
-        val itemIndex = parent.getChildAdapterPositionOrNull(view) ?: return
+        val itemIndex = parent.getChildAdapterPositionOrNull(view, itemCount) ?: return
         getItemOffsets(layoutManager = layoutManager, outRect = outRect, itemView = view, itemCount = itemCount, itemIndex = itemIndex)
     }
 

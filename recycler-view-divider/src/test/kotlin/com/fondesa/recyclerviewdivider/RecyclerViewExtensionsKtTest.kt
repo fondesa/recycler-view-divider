@@ -30,7 +30,6 @@ import org.junit.Test
  * Tests of RecyclerViewExtensions.kt file.
  */
 class RecyclerViewExtensionsKtTest {
-
     @Test
     fun `getChildAdapterPositionOrNull - getChildAdapterPosition returns valid position - returns original position`() {
         val view = mock<View>()
@@ -38,7 +37,7 @@ class RecyclerViewExtensionsKtTest {
             on(it.getChildAdapterPosition(view)) doReturn 3
         }
 
-        assertEquals(3, recyclerView.getChildAdapterPositionOrNull(view))
+        assertEquals(3, recyclerView.getChildAdapterPositionOrNull(view, 4))
     }
 
     @Test
@@ -48,7 +47,17 @@ class RecyclerViewExtensionsKtTest {
             on(it.getChildAdapterPosition(view)) doReturn RecyclerView.NO_POSITION
         }
 
-        assertNull(recyclerView.getChildAdapterPositionOrNull(view))
+        assertNull(recyclerView.getChildAdapterPositionOrNull(view, 3))
+    }
+
+    @Test
+    fun `getChildAdapterPositionOrNull - getChildAdapterPosition returns valid position but out of bounds - returns null`() {
+        val view = mock<View>()
+        val recyclerView = mock<RecyclerView> {
+            on(it.getChildAdapterPosition(view)) doReturn 3
+        }
+
+        assertNull(recyclerView.getChildAdapterPositionOrNull(view, 3))
     }
 
     @Test
@@ -67,7 +76,7 @@ class RecyclerViewExtensionsKtTest {
         }
         val action = mock<Function2<Int, View, Unit>>()
 
-        recyclerView.forEachItem(action)
+        recyclerView.forEachItem(13, action)
 
         inOrder(action) {
             verify(action).invoke(10, firstChild)
@@ -78,7 +87,7 @@ class RecyclerViewExtensionsKtTest {
     }
 
     @Test
-    fun `forEachItem - some children without adapter position - action executed only for children with adapter position`() {
+    fun `forEachItem - some children with null adapter position - action executed only for children with adapter position`() {
         val firstChild = mock<View>()
         val secondChild = mock<View>()
         val thirdChild = mock<View>()
@@ -92,11 +101,11 @@ class RecyclerViewExtensionsKtTest {
             on(it.getChildAdapterPosition(firstChild)) doReturn 10
             on(it.getChildAdapterPosition(secondChild)) doReturn RecyclerView.NO_POSITION
             on(it.getChildAdapterPosition(thirdChild)) doReturn 12
-            on(it.getChildAdapterPosition(fourthChild)) doReturn RecyclerView.NO_POSITION
+            on(it.getChildAdapterPosition(fourthChild)) doReturn 13
         }
         val action = mock<Function2<Int, View, Unit>>()
 
-        recyclerView.forEachItem(action)
+        recyclerView.forEachItem(13, action)
 
         inOrder(action) {
             verify(action).invoke(10, firstChild)
