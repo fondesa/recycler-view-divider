@@ -24,9 +24,9 @@ import androidx.recyclerview.widget.RecyclerView
  *
  * @return the adapter position or null if there isn't a position corresponding to the given [view].
  */
-internal fun RecyclerView.getChildAdapterPositionOrNull(view: View): Int? {
+internal fun RecyclerView.getChildAdapterPositionOrNull(view: View, adapterItemCount: Int): Int? {
     val itemPosition = getChildAdapterPosition(view)
-    return if (itemPosition == RecyclerView.NO_POSITION) null else itemPosition
+    return itemPosition.takeIf { it != RecyclerView.NO_POSITION && it < adapterItemCount }
 }
 
 /**
@@ -34,11 +34,11 @@ internal fun RecyclerView.getChildAdapterPositionOrNull(view: View): Int? {
  *
  * @param action the action which should be executed for each item.
  */
-internal inline fun RecyclerView.forEachItem(action: (itemIndex: Int, itemView: View) -> Unit) {
+internal inline fun RecyclerView.forEachItem(adapterItemCount: Int, action: (itemIndex: Int, itemView: View) -> Unit) {
     for (i in 0 until childCount) {
         val view = getChildAt(i)
         // Don't execute the given action if the adapter position can't be retrieved.
-        val itemPosition = getChildAdapterPositionOrNull(view) ?: continue
+        val itemPosition = getChildAdapterPositionOrNull(view, adapterItemCount) ?: continue
         action(itemPosition, view)
     }
 }

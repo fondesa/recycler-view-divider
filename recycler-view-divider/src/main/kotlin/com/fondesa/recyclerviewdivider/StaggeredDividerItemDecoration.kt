@@ -74,7 +74,7 @@ internal class StaggeredDividerItemDecoration(
         itemCount: Int
     ) = layoutManager.withStaggered {
         val grid = staggeredGrid()
-        recyclerView.forEachItem { _, itemView -> itemView.drawDividersOfItem(canvas, grid) }
+        recyclerView.forEachItem(itemCount) { _, itemView -> itemView.drawDividersOfItem(canvas, grid) }
     }
 
     private fun View.drawDividersOfItem(canvas: Canvas, grid: StaggeredGrid) {
