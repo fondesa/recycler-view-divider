@@ -108,8 +108,6 @@ jobs:
           java-version: 1.8
       - name: Grant execute permission for Gradle Wrapper
         run: chmod +x gradlew
-      - name: Build
-        run: ./gradlew build -s
       - name: Extract tag
         id: tag-extractor
         run: echo ::set-output name=TAG::${GITHUB_REF#refs/*/}
