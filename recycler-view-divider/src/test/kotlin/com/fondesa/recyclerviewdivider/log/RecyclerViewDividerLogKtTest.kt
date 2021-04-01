@@ -16,6 +16,7 @@
 
 package com.fondesa.recyclerviewdivider.log
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions
@@ -24,10 +25,12 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Test
+import org.junit.runner.RunWith
 
 /**
  * Tests of RecyclerViewDividerLog.kt file.
  */
+@RunWith(AndroidJUnit4::class)
 class RecyclerViewDividerLogKtTest {
 
     @After
@@ -88,5 +91,11 @@ class RecyclerViewDividerLogKtTest {
         logWarning("Dummy message")
 
         verifyZeroInteractions(logger)
+    }
+
+    @Test
+    fun `logWarning - default logger - does not crash`() {
+        // It shouldn't crash.
+        logWarning("Dummy message")
     }
 }
