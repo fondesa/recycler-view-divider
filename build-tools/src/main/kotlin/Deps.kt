@@ -19,7 +19,7 @@ object Deps {
     const val androidPluginApi = "com.android.tools.build:gradle-api:4.1.3"
     const val androidxAppCompat = "androidx.appcompat:appcompat:1.2.0"
     const val androidxJUnit = "androidx.test.ext:junit:1.1.2"
-    const val androidxRecyclerView = "androidx.recyclerview:recyclerview:1.1.0"
+    const val androidxRecyclerView = "androidx.recyclerview:recyclerview:1.2.0"
     const val dokkaPlugin = "org.jetbrains.dokka:dokka-gradle-plugin:1.4.30"
     const val gitHubReleasePlugin = "com.github.breadmoirai:github-release:2.2.12"
     const val gradleMavenPublishPlugin = "com.vanniktech:gradle-maven-publish-plugin:0.14.2"
