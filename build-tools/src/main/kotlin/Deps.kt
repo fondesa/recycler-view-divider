@@ -24,7 +24,7 @@ object Deps {
     const val gitHubReleasePlugin = "com.github.breadmoirai:github-release:2.2.12"
     const val gradleMavenPublishPlugin = "com.vanniktech:gradle-maven-publish-plugin:0.14.2"
     const val junit = "junit:junit:4.13.2"
-    const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:1.4.32"
+    const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:1.5.0"
     const val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.0"
     const val ktlint = "org.jlleitschuh.gradle:ktlint-gradle:10.0.0"
     const val mockitoCore = "org.mockito:mockito-core:3.9.0"
