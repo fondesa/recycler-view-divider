@@ -186,12 +186,12 @@ public data class Divider(
                 cellIndex = originY
             }
             val line = grid.lines[lineIndex]
-            return (0 until cellIndex).sumBy { i -> line.cells[i].spanSize }
+            return (0 until cellIndex).sumOf { i -> line.cells[i].spanSize }
         }
 
     private val isGridVertical: Boolean get() = grid.orientation.isVertical
 
     private val isGridHorizontal: Boolean get() = grid.orientation.isHorizontal
 
-    private val Line.isFilled: Boolean get() = cells.sumBy { it.spanSize } == grid.spanCount
+    private val Line.isFilled: Boolean get() = cells.sumOf { it.spanSize } == grid.spanCount
 }
