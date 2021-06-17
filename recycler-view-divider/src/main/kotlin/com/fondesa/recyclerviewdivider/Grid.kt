@@ -49,7 +49,8 @@ public data class Grid(
  *
  * @param cells the items places in this line.
  */
-public inline class Line(public val cells: List<Cell>) {
+@JvmInline
+public value class Line(public val cells: List<Cell>) {
 
     /**
      * @return the number of items in this line.
@@ -64,4 +65,5 @@ public inline class Line(public val cells: List<Cell>) {
  *
  * @param spanSize the width (number of columns) in a vertical grid, the height (number of rows) in an horizontal grid.
  */
-public inline class Cell(public val spanSize: Int)
+@JvmInline
+public value class Cell(public val spanSize: Int)
