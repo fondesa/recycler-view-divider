@@ -34,10 +34,6 @@ import com.fondesa.recyclerviewdivider.test.context
 import com.fondesa.recyclerviewdivider.test.launchThemeActivity
 import com.fondesa.recyclerviewdivider.test.letActivity
 import com.fondesa.recyclerviewdivider.test.resources
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -45,6 +41,10 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyZeroInteractions
 
 /**
  * Tests of [StaggeredDividerBuilder].

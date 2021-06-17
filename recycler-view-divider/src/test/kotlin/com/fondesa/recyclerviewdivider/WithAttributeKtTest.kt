@@ -18,11 +18,11 @@ package com.fondesa.recyclerviewdivider
 
 import android.content.Context
 import android.content.res.TypedArray
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 
 /**
  * Tests of WithAttribute.kt file.

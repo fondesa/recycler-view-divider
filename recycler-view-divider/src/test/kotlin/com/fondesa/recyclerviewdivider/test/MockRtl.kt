@@ -19,8 +19,8 @@ package com.fondesa.recyclerviewdivider.test
 import android.os.Build
 import android.view.View
 import androidx.core.view.ViewCompat
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.spy
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.spy
 
 /**
  * Mocks the [View] layout direction.

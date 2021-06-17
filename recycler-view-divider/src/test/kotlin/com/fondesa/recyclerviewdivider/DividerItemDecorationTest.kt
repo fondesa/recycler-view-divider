@@ -44,14 +44,14 @@ import com.fondesa.recyclerviewdivider.test.onDraw
 import com.fondesa.recyclerviewdivider.test.staggeredLayoutManager
 import com.fondesa.recyclerviewdivider.tint.TintProviderImpl
 import com.fondesa.recyclerviewdivider.visibility.VisibilityProviderImpl
-import com.nhaarman.mockitokotlin2.argumentCaptor
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import org.robolectric.annotation.Config
 
 /**

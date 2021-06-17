@@ -16,9 +16,9 @@
 
 package androidx.recyclerview.widget
 
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
 import org.junit.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 
 /**
  * Tests of MarkItemDecorationsDirty.kt file.

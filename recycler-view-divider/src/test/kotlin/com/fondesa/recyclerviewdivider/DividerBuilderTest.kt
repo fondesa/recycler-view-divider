@@ -47,13 +47,6 @@ import com.fondesa.recyclerviewdivider.tint.TintProvider
 import com.fondesa.recyclerviewdivider.tint.TintProviderImpl
 import com.fondesa.recyclerviewdivider.visibility.VisibilityProvider
 import com.fondesa.recyclerviewdivider.visibility.VisibilityProviderImpl
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -62,6 +55,13 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyZeroInteractions
 
 /**
  * Tests of [DividerBuilder].

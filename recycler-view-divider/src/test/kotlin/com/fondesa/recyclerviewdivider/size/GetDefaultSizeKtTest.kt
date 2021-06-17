@@ -28,13 +28,13 @@ import com.fondesa.recyclerviewdivider.test.context
 import com.fondesa.recyclerviewdivider.test.launchThemeActivity
 import com.fondesa.recyclerviewdivider.test.letActivity
 import com.fondesa.recyclerviewdivider.test.resources
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.spy
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.spy
 
 /**
  * Tests of GetDefaultSize.kt file.
