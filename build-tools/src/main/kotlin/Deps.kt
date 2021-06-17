@@ -27,7 +27,7 @@ object Deps {
     const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:1.4.32"
     const val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32"
     const val ktlint = "org.jlleitschuh.gradle:ktlint-gradle:10.0.0"
-    const val mockitoCore = "org.mockito:mockito-core:3.10.0"
+    const val mockitoCore = "org.mockito:mockito-core:3.11.1"
     const val mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     const val recyclerViewDividerBuildTools = "com.fondesa.recyclerviewdivider.buildtools:build-tools"
     const val releasesHubPlugin = "com.dipien:releases-hub-gradle-plugin:2.0.2"
