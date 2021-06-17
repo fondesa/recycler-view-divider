@@ -20,11 +20,11 @@ import android.util.DisplayMetrics
 import android.util.TypedValue
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.fondesa.recyclerviewdivider.test.resources
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.spy
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.spy
 
 /**
  * Tests of PxFromSize.kt file.

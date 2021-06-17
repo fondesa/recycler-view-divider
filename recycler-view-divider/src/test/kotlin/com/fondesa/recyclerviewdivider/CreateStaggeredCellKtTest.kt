@@ -19,11 +19,11 @@ package com.fondesa.recyclerviewdivider
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 
 /**
  * Tests of CreateStaggeredCell.kt file.

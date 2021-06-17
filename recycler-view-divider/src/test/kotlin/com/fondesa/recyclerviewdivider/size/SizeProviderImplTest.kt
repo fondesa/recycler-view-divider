@@ -25,11 +25,11 @@ import com.fondesa.recyclerviewdivider.dividersAroundCell
 import com.fondesa.recyclerviewdivider.test.allDividers
 import com.fondesa.recyclerviewdivider.test.context
 import com.fondesa.recyclerviewdivider.test.dummyGrid
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 
 /**
  * Tests of [SizeProviderImpl].
