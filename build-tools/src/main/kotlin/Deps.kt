@@ -22,7 +22,7 @@ object Deps {
     const val androidxRecyclerView = "androidx.recyclerview:recyclerview:1.2.1"
     const val dokkaPlugin = "org.jetbrains.dokka:dokka-gradle-plugin:1.4.32"
     const val gitHubReleasePlugin = "com.github.breadmoirai:github-release:2.2.12"
-    const val gradleMavenPublishPlugin = "com.vanniktech:gradle-maven-publish-plugin:0.15.1"
+    const val gradleMavenPublishPlugin = "com.vanniktech:gradle-maven-publish-plugin:0.17.0"
     const val junit = "junit:junit:4.13.2"
     const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:1.5.20"
     const val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.20"
