@@ -20,13 +20,11 @@ import android.graphics.Canvas
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import org.mockito.kotlin.any
-import org.mockito.kotlin.argumentCaptor
-import org.mockito.kotlin.doCallRealMethod
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.whenever
+import org.robolectric.Shadows.shadowOf
 
 /**
  * Invokes the method [getItemOffsets] creating a test [RecyclerView].
@@ -62,23 +60,12 @@ internal fun RecyclerView.ItemDecoration.onDraw(
     vararg views: View
 ): List<Rect> {
     val recyclerView = recyclerView(layoutManager, isRTL, views)
-    val leftCaptor = argumentCaptor<Float>()
-    val topCaptor = argumentCaptor<Float>()
-    val rightCaptor = argumentCaptor<Float>()
-    val bottomCaptor = argumentCaptor<Float>()
-    val canvas = spy(Canvas()) {
-        doCallRealMethod().whenever(it)
-            .drawRect(leftCaptor.capture(), topCaptor.capture(), rightCaptor.capture(), bottomCaptor.capture(), any())
-    }
+    val canvas = Canvas()
+    val shadowCanvas = shadowOf(canvas)
     onDraw(canvas, recyclerView, RecyclerView.State())
-    // Since the argument captors are invoked in the same method, their size is equal.
-    return (leftCaptor.allValues.indices).map { index ->
-        Rect(
-            leftCaptor.allValues[index].toInt(),
-            topCaptor.allValues[index].toInt(),
-            rightCaptor.allValues[index].toInt(),
-            bottomCaptor.allValues[index].toInt()
-        )
+    return (0 until shadowCanvas.rectPaintHistoryCount).map { index ->
+        val rect = shadowCanvas.getDrawnRect(index)
+        Rect(rect.left.toInt(), rect.top.toInt(), rect.right.toInt(), rect.bottom.toInt())
     }
 }
 
