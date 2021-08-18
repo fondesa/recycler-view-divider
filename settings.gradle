@@ -20,3 +20,4 @@ includeBuild "build-tools"
 
 include ":recycler-view-divider"
 include ":sample"
+include ":app"
