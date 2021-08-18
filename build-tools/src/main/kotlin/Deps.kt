@@ -17,7 +17,7 @@
 object Deps {
     const val androidPlugin = "com.android.tools.build:gradle:4.2.2"
     const val androidPluginApi = "com.android.tools.build:gradle-api:4.2.2"
-    const val androidxAppCompat = "androidx.appcompat:appcompat:1.3.0"
+    const val androidxAppCompat = "androidx.appcompat:appcompat:1.3.1"
     const val androidxJUnit = "androidx.test.ext:junit:1.1.3"
     const val androidxRecyclerView = "androidx.recyclerview:recyclerview:1.2.1"
     const val dokkaPlugin = "org.jetbrains.dokka:dokka-gradle-plugin:1.5.0"
