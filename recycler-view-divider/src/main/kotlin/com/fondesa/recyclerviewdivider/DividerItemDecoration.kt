@@ -34,6 +34,7 @@ import com.fondesa.recyclerviewdivider.cache.GridCache
 import com.fondesa.recyclerviewdivider.drawable.DrawableProvider
 import com.fondesa.recyclerviewdivider.drawable.drawWithBounds
 import com.fondesa.recyclerviewdivider.inset.InsetProvider
+import com.fondesa.recyclerviewdivider.log.logWarning
 import com.fondesa.recyclerviewdivider.offset.DividerOffsetProvider
 import com.fondesa.recyclerviewdivider.size.SizeProvider
 import com.fondesa.recyclerviewdivider.tint.TintProvider
@@ -81,6 +82,7 @@ internal class DividerItemDecoration(
         topDivider.computeOffsetSize(grid) { dividerSize ->
             @Px val size = offsetProvider.getOffsetFromSize(grid, topDivider, Side.TOP, dividerSize)
             if (layoutBottomToTop) outRect.bottom = size else outRect.top = size
+            logWarning("LYRA size $size")
         }
         startDivider.computeOffsetSize(grid) { dividerSize ->
             @Px val size = offsetProvider.getOffsetFromSize(grid, startDivider, Side.START, dividerSize)
@@ -89,6 +91,7 @@ internal class DividerItemDecoration(
         bottomDivider.computeOffsetSize(grid) { dividerSize ->
             @Px val size = offsetProvider.getOffsetFromSize(grid, bottomDivider, Side.BOTTOM, dividerSize)
             if (layoutBottomToTop) outRect.top = size else outRect.bottom = size
+            logWarning("LYRA size $size")
         }
         endDivider.computeOffsetSize(grid) { dividerSize ->
             @Px val size = offsetProvider.getOffsetFromSize(grid, endDivider, Side.END, dividerSize)
