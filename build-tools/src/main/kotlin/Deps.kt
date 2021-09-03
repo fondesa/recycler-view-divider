@@ -16,7 +16,7 @@
 
 object Deps {
     const val androidPlugin = "com.android.tools.build:gradle:7.0.2"
-    const val androidPluginApi = "com.android.tools.build:gradle-api:7.0.0"
+    const val androidPluginApi = "com.android.tools.build:gradle-api:7.0.2"
     const val androidxAppCompat = "androidx.appcompat:appcompat:1.3.1"
     const val androidxJUnit = "androidx.test.ext:junit:1.1.3"
     const val androidxRecyclerView = "androidx.recyclerview:recyclerview:1.2.1"
