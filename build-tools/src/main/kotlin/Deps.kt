@@ -20,7 +20,7 @@ object Deps {
     const val androidxAppCompat = "androidx.appcompat:appcompat:1.3.1"
     const val androidxJUnit = "androidx.test.ext:junit:1.1.3"
     const val androidxRecyclerView = "androidx.recyclerview:recyclerview:1.2.1"
-    const val dokkaPlugin = "org.jetbrains.dokka:dokka-gradle-plugin:1.5.0"
+    const val dokkaPlugin = "org.jetbrains.dokka:dokka-gradle-plugin:1.6.0"
     const val gitHubReleasePlugin = "com.github.breadmoirai:github-release:2.2.12"
     const val gradleMavenPublishPlugin = "com.vanniktech:gradle-maven-publish-plugin:0.18.0"
     const val junit = "junit:junit:4.13.2"
