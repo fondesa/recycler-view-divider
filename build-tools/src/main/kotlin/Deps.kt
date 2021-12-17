@@ -25,7 +25,7 @@ object Deps {
     const val gradleMavenPublishPlugin = "com.vanniktech:gradle-maven-publish-plugin:0.18.0"
     const val junit = "junit:junit:4.13.2"
     const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:1.5.30"
-    const val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30"
+    const val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
     const val ktlint = "org.jlleitschuh.gradle:ktlint-gradle:10.2.0"
     const val mockitoCore = "org.mockito:mockito-core:3.12.4"
     const val mockitoKotlin = "org.mockito.kotlin:mockito-kotlin:4.0.0"
