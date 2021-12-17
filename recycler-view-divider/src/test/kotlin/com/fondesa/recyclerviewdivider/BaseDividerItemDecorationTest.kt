@@ -36,7 +36,7 @@ import org.mockito.kotlin.never
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
-import org.mockito.kotlin.verifyZeroInteractions
+import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 
 /**
@@ -97,7 +97,7 @@ class BaseDividerItemDecorationTest {
         decoration.getItemOffsets(rect, View(context), recyclerView, RecyclerView.State())
 
         assertEquals(Rect(), rect)
-        verifyZeroInteractions(getItemOffsets)
+        verifyNoInteractions(getItemOffsets)
     }
 
     @Test
@@ -113,7 +113,7 @@ class BaseDividerItemDecorationTest {
         decoration.getItemOffsets(rect, View(context), recyclerView, RecyclerView.State())
 
         assertEquals(Rect(), rect)
-        verifyZeroInteractions(getItemOffsets)
+        verifyNoInteractions(getItemOffsets)
     }
 
     @Test
@@ -129,7 +129,7 @@ class BaseDividerItemDecorationTest {
         decoration.getItemOffsets(rect, View(context), recyclerView, RecyclerView.State())
 
         assertEquals(Rect(), rect)
-        verifyZeroInteractions(getItemOffsets)
+        verifyNoInteractions(getItemOffsets)
     }
 
     @Test
@@ -149,7 +149,7 @@ class BaseDividerItemDecorationTest {
         decoration.getItemOffsets(rect, itemView, recyclerView, RecyclerView.State())
 
         assertEquals(Rect(), rect)
-        verifyZeroInteractions(getItemOffsets)
+        verifyNoInteractions(getItemOffsets)
     }
 
     @Test
@@ -192,7 +192,7 @@ class BaseDividerItemDecorationTest {
         decoration.getItemOffsets(rect, 2, recyclerView)
 
         assertEquals(Rect(), rect)
-        verifyZeroInteractions(getItemOffsets)
+        verifyNoInteractions(getItemOffsets)
     }
 
     @Test
@@ -203,8 +203,8 @@ class BaseDividerItemDecorationTest {
 
         decoration.onDraw(canvas, recyclerView, RecyclerView.State())
 
-        verifyZeroInteractions(canvas)
-        verifyZeroInteractions(onDraw)
+        verifyNoInteractions(canvas)
+        verifyNoInteractions(onDraw)
     }
 
     @Test
@@ -215,8 +215,8 @@ class BaseDividerItemDecorationTest {
 
         decoration.onDraw(canvas, recyclerView, RecyclerView.State())
 
-        verifyZeroInteractions(canvas)
-        verifyZeroInteractions(onDraw)
+        verifyNoInteractions(canvas)
+        verifyNoInteractions(onDraw)
     }
 
     @Test
@@ -231,8 +231,8 @@ class BaseDividerItemDecorationTest {
 
         decoration.onDraw(canvas, recyclerView, RecyclerView.State())
 
-        verifyZeroInteractions(canvas)
-        verifyZeroInteractions(onDraw)
+        verifyNoInteractions(canvas)
+        verifyNoInteractions(onDraw)
     }
 
     @Test
@@ -247,8 +247,8 @@ class BaseDividerItemDecorationTest {
 
         decoration.onDraw(canvas, recyclerView, RecyclerView.State())
 
-        verifyZeroInteractions(canvas)
-        verifyZeroInteractions(onDraw)
+        verifyNoInteractions(canvas)
+        verifyNoInteractions(onDraw)
     }
 
     @Test
@@ -265,7 +265,7 @@ class BaseDividerItemDecorationTest {
 
         decoration.onDraw(canvas, recyclerView, RecyclerView.State())
 
-        verifyZeroInteractions(canvas)
+        verifyNoInteractions(canvas)
         verify(onDraw).invoke(canvas = canvas, recyclerView = recyclerView, layoutManager = layoutManager, itemCount = 4)
     }
 
@@ -284,8 +284,8 @@ class BaseDividerItemDecorationTest {
         @Suppress("DEPRECATION")
         decoration.onDraw(canvas, recyclerView)
 
-        verifyZeroInteractions(canvas)
-        verifyZeroInteractions(onDraw)
+        verifyNoInteractions(canvas)
+        verifyNoInteractions(onDraw)
     }
 
     @Test
@@ -300,7 +300,7 @@ class BaseDividerItemDecorationTest {
 
         // Two times because the first time is a registration done by the Android framework.
         verify(adapter, times(2)).registerAdapterDataObserver(dataObserver.capture())
-        verifyZeroInteractions(onDataChanged)
+        verifyNoInteractions(onDataChanged)
         clearInvocations(recyclerView)
 
         dataObserver.lastValue.onChanged()
