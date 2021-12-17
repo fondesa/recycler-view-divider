@@ -44,7 +44,7 @@ import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
-import org.mockito.kotlin.verifyZeroInteractions
+import org.mockito.kotlin.verifyNoInteractions
 
 /**
  * Tests of [StaggeredDividerBuilder].
@@ -95,7 +95,7 @@ class StaggeredDividerBuilderTest {
         val decoration = staggeredDividerBuilder().build()
 
         assertTrue(decoration.asSpace)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -105,7 +105,7 @@ class StaggeredDividerBuilderTest {
             .build()
 
         assertTrue(decoration.asSpace)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -118,7 +118,7 @@ class StaggeredDividerBuilderTest {
 
         val drawable = (decoration as StaggeredDividerItemDecoration).drawable
         assertEqualDrawables(ColorDrawable(ContextCompat.getColor(context, R.color.test_recyclerViewDividerDrawable)), drawable)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -131,7 +131,7 @@ class StaggeredDividerBuilderTest {
 
         val drawable = (decoration as StaggeredDividerItemDecoration).drawable
         assertEqualDrawables(ColorDrawable(Color.RED), drawable)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -143,7 +143,7 @@ class StaggeredDividerBuilderTest {
 
         val drawable = (decoration as StaggeredDividerItemDecoration).drawable
         assertEqualDrawables(ColorDrawable(expectedColor), drawable)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -155,7 +155,7 @@ class StaggeredDividerBuilderTest {
 
         val drawable = (decoration as StaggeredDividerItemDecoration).drawable
         assertEqualDrawables(ColorDrawable(expectedColor), drawable)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -181,7 +181,7 @@ class StaggeredDividerBuilderTest {
 
         val drawable = (decoration as StaggeredDividerItemDecoration).drawable
         assertEqualDrawables(drawable, expectedDrawable)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -207,7 +207,7 @@ class StaggeredDividerBuilderTest {
 
         val drawable = (decoration as StaggeredDividerItemDecoration).drawable
         assertEqualDrawables(ColorDrawable(expectedColor), drawable)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -233,7 +233,7 @@ class StaggeredDividerBuilderTest {
 
         val drawable = (decoration as StaggeredDividerItemDecoration).drawable
         assertEqualDrawables(transparentDrawable(), drawable)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -246,7 +246,7 @@ class StaggeredDividerBuilderTest {
 
         @Px val providerSize = (decoration as StaggeredDividerItemDecoration).size
         assertEquals(resources.pxFromSize(4, sizeUnit = TypedValue.COMPLEX_UNIT_DIP), providerSize)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -259,7 +259,7 @@ class StaggeredDividerBuilderTest {
 
         @Px val providerSize = (decoration as StaggeredDividerItemDecoration).size
         assertEquals(4, providerSize)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -270,7 +270,7 @@ class StaggeredDividerBuilderTest {
 
         @Px val providerSize = (decoration as StaggeredDividerItemDecoration).size
         assertEquals(resources.pxFromSize(21, sizeUnit = TypedValue.COMPLEX_UNIT_DIP), providerSize)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -334,7 +334,7 @@ class StaggeredDividerBuilderTest {
         assertEqualDrawables(ColorDrawable(expectedDrawableColor), decoration.drawable)
         assertEquals(resources.pxFromSize(21, TypedValue.COMPLEX_UNIT_DIP), decoration.size)
         assertTrue(decoration.areSideDividersVisible)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -352,7 +352,7 @@ class StaggeredDividerBuilderTest {
         assertEqualDrawables(ColorDrawable(Color.RED), decoration.drawable)
         assertEquals(34, decoration.size)
         assertFalse(decoration.areSideDividersVisible)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     private fun staggeredDividerBuilder(): StaggeredDividerBuilder = if (::scenario.isInitialized) {
