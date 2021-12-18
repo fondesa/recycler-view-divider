@@ -25,7 +25,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
-import org.mockito.kotlin.verifyZeroInteractions
+import org.mockito.kotlin.verifyNoInteractions
 
 /**
  * Tests of RecyclerViewDividerLog.kt file.
@@ -90,7 +90,7 @@ class RecyclerViewDividerLogKtTest {
 
         logWarning("Dummy message")
 
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test

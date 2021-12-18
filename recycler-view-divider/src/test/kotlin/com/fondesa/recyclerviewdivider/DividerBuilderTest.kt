@@ -61,7 +61,7 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.verify
-import org.mockito.kotlin.verifyZeroInteractions
+import org.mockito.kotlin.verifyNoInteractions
 
 /**
  * Tests of [DividerBuilder].
@@ -95,7 +95,7 @@ class DividerBuilderTest {
         val decoration = dividerBuilder().build()
 
         assertFalse(decoration.asSpace)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -105,7 +105,7 @@ class DividerBuilderTest {
         val decoration = dividerBuilder().build()
 
         assertTrue(decoration.asSpace)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -115,7 +115,7 @@ class DividerBuilderTest {
             .build()
 
         assertTrue(decoration.asSpace)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -130,7 +130,7 @@ class DividerBuilderTest {
         assertTrue(provider is DrawableProviderImpl)
         val providerDrawable = (provider as DrawableProviderImpl).drawable
         assertEqualDrawables(ColorDrawable(ContextCompat.getColor(context, R.color.test_recyclerViewDividerDrawable)), providerDrawable)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -145,7 +145,7 @@ class DividerBuilderTest {
         assertTrue(provider is DrawableProviderImpl)
         val providerDrawable = (provider as DrawableProviderImpl).drawable
         assertEqualDrawables(ColorDrawable(Color.RED), providerDrawable)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -161,7 +161,7 @@ class DividerBuilderTest {
         assertTrue(provider is DrawableProviderImpl)
         val providerDrawable = (provider as DrawableProviderImpl).drawable
         assertEqualDrawables(expectedDrawable, providerDrawable)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test(expected = NullPointerException::class)
@@ -191,7 +191,7 @@ class DividerBuilderTest {
         assertTrue(provider is DrawableProviderImpl)
         val providerDrawable = (provider as DrawableProviderImpl).drawable
         assertEqualDrawables(ColorDrawable(Color.RED), providerDrawable)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -218,7 +218,7 @@ class DividerBuilderTest {
         assertTrue(provider is DrawableProviderImpl)
         val providerDrawable = (provider as DrawableProviderImpl).drawable
         assertEqualDrawables(ColorDrawable(expectedColor), providerDrawable)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -248,7 +248,7 @@ class DividerBuilderTest {
         assertTrue(provider is DrawableProviderImpl)
         val providerDrawable = (provider as DrawableProviderImpl).drawable
         assertEqualDrawables(transparentDrawable(), providerDrawable)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -263,7 +263,7 @@ class DividerBuilderTest {
         @Px val providerInsetEnd = provider.dividerInsetEnd
         assertEquals(32, providerInsetStart)
         assertEquals(0, providerInsetEnd)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -280,7 +280,7 @@ class DividerBuilderTest {
         @Px val providerInsetEnd = provider.dividerInsetEnd
         assertEquals(32, providerInsetStart)
         assertEquals(resources.pxFromSize(9, TypedValue.COMPLEX_UNIT_DIP), providerInsetEnd)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -295,7 +295,7 @@ class DividerBuilderTest {
         @Px val providerInsetEnd = provider.dividerInsetEnd
         assertEquals(0, providerInsetStart)
         assertEquals(32, providerInsetEnd)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -312,7 +312,7 @@ class DividerBuilderTest {
         @Px val providerInsetEnd = provider.dividerInsetEnd
         assertEquals(resources.pxFromSize(12, TypedValue.COMPLEX_UNIT_DIP), providerInsetStart)
         assertEquals(32, providerInsetEnd)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -329,7 +329,7 @@ class DividerBuilderTest {
         @Px val providerInsetEnd = provider.dividerInsetEnd
         assertEquals(32, providerInsetStart)
         assertEquals(21, providerInsetEnd)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -343,7 +343,7 @@ class DividerBuilderTest {
 
         val actualProvider = (decoration as DividerItemDecoration).insetProvider
         assertEquals(expectedProvider, actualProvider)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -358,7 +358,7 @@ class DividerBuilderTest {
         @Px val providerInsetEnd = provider.dividerInsetEnd
         assertEquals(resources.pxFromSize(12, TypedValue.COMPLEX_UNIT_DIP), providerInsetStart)
         assertEquals(resources.pxFromSize(9, TypedValue.COMPLEX_UNIT_DIP), providerInsetEnd)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -371,7 +371,7 @@ class DividerBuilderTest {
         @Px val providerInsetEnd = provider.dividerInsetEnd
         assertEquals(0, providerInsetStart)
         assertEquals(0, providerInsetEnd)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -386,7 +386,7 @@ class DividerBuilderTest {
         assertTrue(provider is SizeProviderImpl)
         @Px val providerSize = (provider as SizeProviderImpl).dividerSize
         assertEquals(resources.pxFromSize(4, sizeUnit = TypedValue.COMPLEX_UNIT_DIP), providerSize)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -401,7 +401,7 @@ class DividerBuilderTest {
         assertTrue(provider is SizeProviderImpl)
         @Px val providerSize = (provider as SizeProviderImpl).dividerSize
         assertEquals(4, providerSize)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -414,7 +414,7 @@ class DividerBuilderTest {
         assertTrue(provider is SizeProviderImpl)
         @Px val providerSize = (provider as SizeProviderImpl).dividerSize
         assertEquals(resources.pxFromSize(21, sizeUnit = TypedValue.COMPLEX_UNIT_DIP), providerSize)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -425,7 +425,7 @@ class DividerBuilderTest {
         assertTrue(provider is SizeProviderImpl)
         @Px val providerSize = (provider as SizeProviderImpl).dividerSize
         assertNull(providerSize)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -453,7 +453,7 @@ class DividerBuilderTest {
         assertTrue(provider is TintProviderImpl)
         @ColorInt val providerTintColor = (provider as TintProviderImpl).dividerTintColor
         assertEquals(Color.RED, providerTintColor)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -467,7 +467,7 @@ class DividerBuilderTest {
         assertTrue(provider is TintProviderImpl)
         @ColorInt val providerTintColor = (provider as TintProviderImpl).dividerTintColor
         assertEquals(expectedTintColor, providerTintColor)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -478,7 +478,7 @@ class DividerBuilderTest {
         assertTrue(provider is TintProviderImpl)
         @ColorInt val providerTintColor = (provider as TintProviderImpl).dividerTintColor
         assertNull(providerTintColor)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -492,7 +492,7 @@ class DividerBuilderTest {
 
         val actualProvider = (decoration as DividerItemDecoration).tintProvider
         assertEquals(expectedProvider, actualProvider)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -506,7 +506,7 @@ class DividerBuilderTest {
         assertTrue((provider as VisibilityProviderImpl).isFirstDividerVisible)
         assertFalse(provider.isLastDividerVisible)
         assertFalse(provider.areSideDividersVisible)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -520,7 +520,7 @@ class DividerBuilderTest {
         assertFalse((provider as VisibilityProviderImpl).isFirstDividerVisible)
         assertTrue(provider.isLastDividerVisible)
         assertFalse(provider.areSideDividersVisible)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -534,7 +534,7 @@ class DividerBuilderTest {
         assertFalse((provider as VisibilityProviderImpl).isFirstDividerVisible)
         assertFalse(provider.isLastDividerVisible)
         assertTrue(provider.areSideDividersVisible)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -549,7 +549,7 @@ class DividerBuilderTest {
         assertTrue((provider as VisibilityProviderImpl).isFirstDividerVisible)
         assertTrue(provider.isLastDividerVisible)
         assertFalse(provider.areSideDividersVisible)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -564,7 +564,7 @@ class DividerBuilderTest {
         assertTrue((provider as VisibilityProviderImpl).isFirstDividerVisible)
         assertFalse(provider.isLastDividerVisible)
         assertTrue(provider.areSideDividersVisible)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -579,7 +579,7 @@ class DividerBuilderTest {
         assertFalse((provider as VisibilityProviderImpl).isFirstDividerVisible)
         assertTrue(provider.isLastDividerVisible)
         assertTrue(provider.areSideDividersVisible)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -595,7 +595,7 @@ class DividerBuilderTest {
         assertTrue((provider as VisibilityProviderImpl).isFirstDividerVisible)
         assertTrue(provider.isLastDividerVisible)
         assertTrue(provider.areSideDividersVisible)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -607,7 +607,7 @@ class DividerBuilderTest {
         assertFalse((provider as VisibilityProviderImpl).isFirstDividerVisible)
         assertFalse(provider.isLastDividerVisible)
         assertFalse(provider.areSideDividersVisible)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -632,7 +632,7 @@ class DividerBuilderTest {
 
         val actualProvider = (decoration as DividerItemDecoration).offsetProvider
         assertEquals(expectedProvider, actualProvider)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -678,7 +678,7 @@ class DividerBuilderTest {
             .offsetProvider(mock())
             .build()
 
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -688,7 +688,7 @@ class DividerBuilderTest {
             .offsetProvider(mock())
             .build()
 
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -698,7 +698,7 @@ class DividerBuilderTest {
             .offsetProvider(mock())
             .build()
 
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -745,7 +745,7 @@ class DividerBuilderTest {
         assertFalse(decoration.visibilityProvider.isLastDividerVisible)
         assertFalse(decoration.visibilityProvider.areSideDividersVisible)
         assertTrue(decoration.cache is InMemoryGridCache)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     @Test
@@ -773,7 +773,7 @@ class DividerBuilderTest {
         assertTrue(decoration.visibilityProvider.isLastDividerVisible)
         assertTrue(decoration.visibilityProvider.areSideDividersVisible)
         assertTrue(decoration.cache is InMemoryGridCache)
-        verifyZeroInteractions(logger)
+        verifyNoInteractions(logger)
     }
 
     private fun dividerBuilder(): DividerBuilder = if (::scenario.isInitialized) {
