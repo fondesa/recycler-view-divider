@@ -20,12 +20,12 @@ apply plugin: "recycler-view-divider-android-coverage"
 apply plugin: "recycler-view-divider-deploy"
 
 dependencies {
-    api Deps.androidxRecyclerView
+    api libs.androidx.recyclerView
 
-    testImplementation Deps.androidxAppCompat
-    testImplementation Deps.androidxJUnit
-    testImplementation Deps.mockitoCore
-    testImplementation Deps.mockitoKotlin
-    testImplementation Deps.junit
-    testImplementation Deps.robolectric
+    testImplementation libs.androidx.appCompat
+    testImplementation libs.androidx.junit
+    testImplementation libs.mockito.core
+    testImplementation libs.mockito.kotlin
+    testImplementation libs.junit
+    testImplementation libs.robolectric
 }

@@ -16,16 +16,15 @@
 
 buildscript {
     apply from: rootProject.file("build-tools/repositories.gradle"), to: buildscript
-    apply from: rootProject.file("build-tools/parse-dependencies.gradle")
 
     dependencies {
-        classpath deps.androidPlugin
-        classpath deps.dokkaPlugin
-        classpath deps.gitHubReleasePlugin
-        classpath deps.kotlinPlugin
-        classpath deps.ktlint
-        classpath deps.recyclerViewDividerBuildTools
-        classpath deps.releasesHubPlugin
+        classpath libs.android.gp.impl
+        classpath libs.dokka.gp
+        classpath libs.gitHubRelease.gp
+        classpath libs.kotlin.gp
+        classpath libs.ktlint.gp
+        classpath libs.recyclerViewDivider.buildTools
+        classpath libs.releasesHub.gp
     }
 }
 
@@ -40,7 +39,10 @@ apply plugin: "com.dipien.releaseshub.gradle.plugin"
 
 releasesHub {
     autoDetectDependenciesPaths = false
-    dependenciesPaths = ["build-tools/src/main/kotlin/Deps.kt"]
+    dependenciesPaths = [
+            "gradle/libs.versions.toml",
+            "gradle/wrapper/gradle-wrapper.properties"
+    ]
     pullRequestLabels = ["dependencies"]
     headBranchPrefix = "update-dependency/"
     gitHubRepositoryOwner = "fondesa"
