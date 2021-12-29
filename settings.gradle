@@ -16,6 +16,8 @@
 
 rootProject.name = "recycler-view-divider-root"
 
+enableFeaturePreview("VERSION_CATALOGS")
+
 includeBuild "build-tools"
 
 include ":recycler-view-divider"
