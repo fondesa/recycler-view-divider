@@ -40,9 +40,9 @@ import kotlin.math.roundToInt
  */
 internal class StaggeredDividerItemDecoration(
     asSpace: Boolean,
-    @VisibleForTesting internal val drawable: Drawable,
-    @[VisibleForTesting Px] internal val size: Int,
-    @VisibleForTesting internal val areSideDividersVisible: Boolean,
+    @get:VisibleForTesting internal val drawable: Drawable,
+    @get:VisibleForTesting @Px internal val size: Int,
+    @get:VisibleForTesting internal val areSideDividersVisible: Boolean,
     private val offsetProvider: StaggeredDividerOffsetProvider
 ) : BaseDividerItemDecoration(asSpace) {
 

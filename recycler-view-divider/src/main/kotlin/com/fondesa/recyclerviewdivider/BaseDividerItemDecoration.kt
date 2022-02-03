@@ -30,7 +30,7 @@ import androidx.recyclerview.widget.markItemDecorationsDirty
  * @param asSpace true if the divider should behave as a space.
  */
 public abstract class BaseDividerItemDecoration(
-    @VisibleForTesting internal val asSpace: Boolean
+    @get:VisibleForTesting internal val asSpace: Boolean
 ) : RecyclerView.ItemDecoration() {
     private val attachStateListenerHolders = mutableMapOf<RecyclerView, View.OnAttachStateChangeListener>()
     private val observerHolders = mutableMapOf<RecyclerView.Adapter<*>, RecyclerView.AdapterDataObserver>()

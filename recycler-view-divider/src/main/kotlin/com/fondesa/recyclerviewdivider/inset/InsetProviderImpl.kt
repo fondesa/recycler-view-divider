@@ -28,8 +28,8 @@ import com.fondesa.recyclerviewdivider.Grid
  * @param dividerInsetEnd the end inset of each divider.
  */
 internal class InsetProviderImpl(
-    @[VisibleForTesting Px] internal val dividerInsetStart: Int,
-    @[VisibleForTesting Px] internal val dividerInsetEnd: Int
+    @get:VisibleForTesting @Px internal val dividerInsetStart: Int,
+    @get:VisibleForTesting @Px internal val dividerInsetEnd: Int
 ) : InsetProvider {
 
     @Px

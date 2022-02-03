@@ -32,7 +32,7 @@ import com.fondesa.recyclerviewdivider.Grid
  * @param context the [Context] used to retrieve the default divider size.
  * @param dividerSize the divider size of each divider or null if there isn't a defined size.
  */
-internal class SizeProviderImpl(context: Context, @[VisibleForTesting Px] internal val dividerSize: Int?) : SizeProvider {
+internal class SizeProviderImpl(context: Context, @get:VisibleForTesting @Px internal val dividerSize: Int?) : SizeProvider {
     @Px private val defaultDividerSize: Int = context.getDefaultSize()
 
     @Px
