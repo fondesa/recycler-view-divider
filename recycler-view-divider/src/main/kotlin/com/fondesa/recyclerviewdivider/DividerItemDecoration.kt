@@ -54,13 +54,13 @@ import kotlin.math.roundToInt
  */
 internal class DividerItemDecoration(
     asSpace: Boolean,
-    @VisibleForTesting internal val drawableProvider: DrawableProvider,
-    @VisibleForTesting internal val insetProvider: InsetProvider,
-    @VisibleForTesting internal val sizeProvider: SizeProvider,
-    @VisibleForTesting internal val tintProvider: TintProvider,
-    @VisibleForTesting internal val visibilityProvider: VisibilityProvider,
-    @VisibleForTesting internal val offsetProvider: DividerOffsetProvider,
-    @VisibleForTesting internal val cache: GridCache
+    @get:VisibleForTesting internal val drawableProvider: DrawableProvider,
+    @get:VisibleForTesting internal val insetProvider: InsetProvider,
+    @get:VisibleForTesting internal val sizeProvider: SizeProvider,
+    @get:VisibleForTesting internal val tintProvider: TintProvider,
+    @get:VisibleForTesting internal val visibilityProvider: VisibilityProvider,
+    @get:VisibleForTesting internal val offsetProvider: DividerOffsetProvider,
+    @get:VisibleForTesting internal val cache: GridCache
 ) : BaseDividerItemDecoration(asSpace) {
     override fun getItemOffsets(
         layoutManager: RecyclerView.LayoutManager,

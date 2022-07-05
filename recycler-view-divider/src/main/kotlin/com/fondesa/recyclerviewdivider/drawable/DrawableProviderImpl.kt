@@ -26,7 +26,7 @@ import com.fondesa.recyclerviewdivider.Grid
  *
  * @param drawable the [Drawable] of each divider.
  */
-internal class DrawableProviderImpl(@VisibleForTesting internal val drawable: Drawable) : DrawableProvider {
+internal class DrawableProviderImpl(@get:VisibleForTesting internal val drawable: Drawable) : DrawableProvider {
 
     override fun getDividerDrawable(grid: Grid, divider: Divider): Drawable = drawable
 }
