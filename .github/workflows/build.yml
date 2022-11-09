@@ -26,10 +26,10 @@ jobs:
         run: ./gradlew assembleRelease ktlintCheck lintRelease testReleaseUnitTest -s
       - name: Upload coverage reports
         uses: codecov/codecov-action@v3.1.1
-          with:
-            files: "**/build/coverageReport/test*Coverage/test*Coverage.xml"
-            token: ${{ secrets.CODECOV_TOKEN }}
-            fail_ci_if_error: true
+        with:
+          files: "**/build/coverageReport/test*Coverage/test*Coverage.xml"
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
   test1:
     name: test 1/3
     runs-on: ubuntu-latest
