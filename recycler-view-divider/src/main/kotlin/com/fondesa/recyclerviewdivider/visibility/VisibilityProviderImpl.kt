@@ -29,9 +29,9 @@ import com.fondesa.recyclerviewdivider.Grid
  * @param areSideDividersVisible true if the sides dividers of the grid should be shown, false otherwise.
  */
 internal class VisibilityProviderImpl(
-    @VisibleForTesting internal val isFirstDividerVisible: Boolean,
-    @VisibleForTesting internal val isLastDividerVisible: Boolean,
-    @VisibleForTesting internal val areSideDividersVisible: Boolean
+    @get:VisibleForTesting internal val isFirstDividerVisible: Boolean,
+    @get:VisibleForTesting internal val isLastDividerVisible: Boolean,
+    @get:VisibleForTesting internal val areSideDividersVisible: Boolean
 ) : VisibilityProvider {
 
     override fun isDividerVisible(grid: Grid, divider: Divider): Boolean = when {

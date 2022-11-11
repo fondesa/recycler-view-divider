@@ -38,7 +38,7 @@ class AndroidModulePlugin : Plugin<Project> {
                 sourceCompatibility = JavaVersion.VERSION_1_8
                 targetCompatibility = JavaVersion.VERSION_1_8
             }
-            lint.isWarningsAsErrors = true
+            lint.warningsAsErrors = true
             testOptions.unitTests.apply {
                 // Used by Robolectric since Android resources can be used in unit tests.
                 isIncludeAndroidResources = true
