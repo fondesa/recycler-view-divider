@@ -32,5 +32,5 @@ ktlint-gp = "org.jlleitschuh.gradle:ktlint-gradle:11.0.0"
 mockito-core = "org.mockito:mockito-core:4.6.1"
 mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:4.0.0"
 recyclerViewDivider-buildTools = { module = "com.fondesa.recyclerviewdivider.buildtools:build-tools" }
-releasesHub-gp = "com.dipien:releases-hub-gradle-plugin:3.1.0"
+releasesHub-gp = "com.dipien:releases-hub-gradle-plugin:4.0.0"
 robolectric = "org.robolectric:robolectric:4.9"
