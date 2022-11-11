@@ -55,8 +55,10 @@ apply plugin: "com.github.breadmoirai.github-release"
 githubRelease {
     owner "fondesa"
     repo "recycler-view-divider"
+    targetCommitish "master"
     tagName version
     releaseName "RecyclerViewDivider $version"
+    body "TBD"
     draft true
 }
 def gitHubToken = project.properties["github.token"] ?: System.getenv("GITHUB_TOKEN")
