@@ -19,7 +19,7 @@
 [libraries]
 android-gp-api = "com.android.tools.build:gradle-api:7.0.4"
 android-gp-impl = "com.android.tools.build:gradle:7.0.4"
-androidx-appCompat = "androidx.appcompat:appcompat:1.4.2"
+androidx-appCompat = "androidx.appcompat:appcompat:1.5.1"
 androidx-junit = "androidx.test.ext:junit:1.1.3"
 androidx-recyclerView = "androidx.recyclerview:recyclerview:1.2.1"
 dokka-gp = "org.jetbrains.dokka:dokka-gradle-plugin:1.7.20"
