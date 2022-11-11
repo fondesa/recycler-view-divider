@@ -19,6 +19,6 @@
 
     <!--suppress AndroidDomInspection -->
     <application android:theme="@style/TestTheme">
-        <activity android:name=".test.ThemeTestActivity" />
+        <activity android:name="com.fondesa.recyclerviewdivider.test.ThemeTestActivity" />
     </application>
 </manifest>
