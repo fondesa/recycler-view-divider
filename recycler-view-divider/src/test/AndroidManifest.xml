@@ -14,9 +14,7 @@
   ~ limitations under the License.
   -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.fondesa.recyclerviewdivider">
-
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!--suppress AndroidDomInspection -->
     <application android:theme="@style/TestTheme">
         <activity android:name="com.fondesa.recyclerviewdivider.test.ThemeTestActivity" />
