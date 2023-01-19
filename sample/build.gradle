@@ -17,7 +17,7 @@
 apply plugin: "com.android.application"
 apply plugin: "recycler-view-divider-android"
 
-android.defaultConfig.applicationId "com.fondesa.recyclerviewdivider.sample"
+android.namespace "com.fondesa.recyclerviewdivider.sample"
 
 dependencies {
     implementation project(":recycler-view-divider")
