@@ -20,7 +20,6 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /**
@@ -58,7 +57,7 @@ class AndroidModulePlugin : Plugin<Project> {
             task.compilerOptions {
                 jvmTarget.set(JvmTarget.JVM_1_8)
                 allWarningsAsErrors.set(warningsAsErrors)
-                if ("UnitTest" in task.name) {
+                if ("UnitTest" !in task.name) {
                     freeCompilerArgs.add("-Xexplicit-api=strict")
                 }
             }
