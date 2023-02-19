@@ -19,6 +19,9 @@ package com.fondesa.recyclerviewdivider.buildtools
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /**
  * Applies the base configuration to all the Android modules of this project.
@@ -26,9 +29,12 @@ import org.gradle.api.Project
 @Suppress("UnstableApiUsage")
 class AndroidModulePlugin : Plugin<Project> {
     override fun apply(project: Project) = with(project) {
-        plugins.apply("kotlin-android")
-        plugins.apply("org.jetbrains.dokka")
+        pluginManager.apply("kotlin-android")
+        pluginManager.apply("org.jetbrains.dokka")
+        pluginManager.apply("org.jlleitschuh.gradle.ktlint")
 
+
+        val warningsAsErrors = project.properties["recyclerViewDivider.warningsAsErrors"].toString().toBooleanStrict()
         val androidProperties = readPropertiesOf("android-config.properties")
         withAndroidPlugin {
             compileSdk = androidProperties.getProperty("android.config.compileSdk").toInt()
@@ -38,7 +44,7 @@ class AndroidModulePlugin : Plugin<Project> {
                 sourceCompatibility = JavaVersion.VERSION_1_8
                 targetCompatibility = JavaVersion.VERSION_1_8
             }
-            lint.warningsAsErrors = true
+            lint.warningsAsErrors = warningsAsErrors
             testOptions.unitTests.apply {
                 // Used by Robolectric since Android resources can be used in unit tests.
                 isIncludeAndroidResources = true
@@ -47,9 +53,13 @@ class AndroidModulePlugin : Plugin<Project> {
                     test.systemProperty("robolectric.logging.enabled", true)
                 }
             }
-            // Adds the Kotlin source set for each Java source set.
-            sourceSets.all { sourceSet ->
-                sourceSet.java.srcDirs("src/${sourceSet.name}/kotlin")
+        }
+        tasks.withType(KotlinCompile::class.java) { task ->
+            if ("UnitTest" in task.name) return@withType
+            task.compilerOptions {
+                jvmTarget.set(JvmTarget.JVM_1_8)
+                allWarningsAsErrors.set(warningsAsErrors)
+                freeCompilerArgs.add("-Xexplicit-api=strict")
             }
         }
         withAndroidApplicationPlugin {
