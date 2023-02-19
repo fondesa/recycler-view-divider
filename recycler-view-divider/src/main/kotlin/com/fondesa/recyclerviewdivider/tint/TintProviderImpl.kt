@@ -26,7 +26,10 @@ import com.fondesa.recyclerviewdivider.Grid
  *
  * @param dividerTintColor the tint color of each divider or null if the dividers shouldn't be tinted.
  */
-internal class TintProviderImpl(@[VisibleForTesting ColorInt] internal val dividerTintColor: Int?) : TintProvider {
+internal class TintProviderImpl(
+    /* ktlint-disable annotation */
+    @[VisibleForTesting ColorInt] internal val dividerTintColor: Int?
+) : TintProvider {
 
     @ColorInt
     override fun getDividerTintColor(grid: Grid, divider: Divider): Int? = dividerTintColor
