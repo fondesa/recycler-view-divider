@@ -55,11 +55,12 @@ class AndroidModulePlugin : Plugin<Project> {
             }
         }
         tasks.withType(KotlinCompile::class.java) { task ->
-            if ("UnitTest" in task.name) return@withType
             task.compilerOptions {
                 jvmTarget.set(JvmTarget.JVM_1_8)
                 allWarningsAsErrors.set(warningsAsErrors)
-                freeCompilerArgs.add("-Xexplicit-api=strict")
+                if ("UnitTest" in task.name) {
+                    freeCompilerArgs.add("-Xexplicit-api=strict")
+                }
             }
         }
         withAndroidApplicationPlugin {
