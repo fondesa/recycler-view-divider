@@ -19,7 +19,7 @@ apply plugin: "recycler-view-divider-android"
 apply plugin: "recycler-view-divider-android-coverage"
 apply plugin: "recycler-view-divider-deploy"
 
-android.testNamespace "com.fondesa.recyclerviewdivider.test"
+android.namespace "com.fondesa.recyclerviewdivider"
 
 dependencies {
     api libs.androidx.recyclerView
