@@ -16,7 +16,7 @@
 
 [libraries]
 android-gp-api = "com.android.tools.build:gradle-api:7.4.2"
-android-gp-impl = "com.android.tools.build:gradle:7.4.2"
+android-gp-impl = "com.android.tools.build:gradle:8.1.1"
 androidx-appCompat = "androidx.appcompat:appcompat:1.6.1"
 androidx-junit = "androidx.test.ext:junit:1.1.5"
 androidx-recyclerView = "androidx.recyclerview:recyclerview:1.2.1"
