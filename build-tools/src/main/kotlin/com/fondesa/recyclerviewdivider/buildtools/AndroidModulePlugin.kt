@@ -40,8 +40,8 @@ class AndroidModulePlugin : Plugin<Project> {
             buildToolsVersion = androidProperties.getProperty("android.config.buildTools")
             defaultConfig.minSdk = androidProperties.getProperty("android.config.minSdk").toInt()
             compileOptions {
-                sourceCompatibility = JavaVersion.VERSION_1_8
-                targetCompatibility = JavaVersion.VERSION_1_8
+                sourceCompatibility = JavaVersion.VERSION_11
+                targetCompatibility = JavaVersion.VERSION_11
             }
             lint.warningsAsErrors = warningsAsErrors
             testOptions.unitTests.apply {
@@ -55,7 +55,7 @@ class AndroidModulePlugin : Plugin<Project> {
         }
         tasks.withType(KotlinCompile::class.java) { task ->
             task.compilerOptions {
-                jvmTarget.set(JvmTarget.JVM_1_8)
+                jvmTarget.set(JvmTarget.JVM_11)
                 allWarningsAsErrors.set(warningsAsErrors)
                 if ("UnitTest" !in task.name) {
                     freeCompilerArgs.add("-Xexplicit-api=strict")
