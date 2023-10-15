@@ -6,9 +6,10 @@
   "packageRules": [
     {
       "matchPackageNames": [
-        "mockito"
+        "org.mockito",
+        "org.mockito.kotlin"
       ],
-      "allowedVersions": "<=5.0.0"
+      "allowedVersions": "<5.0.0"
     }
   ]
 }
