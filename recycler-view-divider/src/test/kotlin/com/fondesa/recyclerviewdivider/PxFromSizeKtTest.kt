@@ -51,7 +51,7 @@ class PxFromSizeKtTest {
 
     @Test
     fun `pxFromSize - size in sp - returns input value converted to sp`() {
-        val spiedResources = spy(resources) {
+        @Suppress("DEPRECATION") val spiedResources = spy(resources) {
             on(it.displayMetrics) doReturn DisplayMetrics().apply { scaledDensity = 2f }
         }
         assertEquals(10, spiedResources.pxFromSize(5, TypedValue.COMPLEX_UNIT_SP))
