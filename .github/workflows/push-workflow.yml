@@ -15,3 +15,35 @@ jobs:
   test:
     uses: ./.github/workflows/test-jobs.yml
     secrets: inherit
+            - name: EkLine (GitHub Action)
+  # You may pin to the exact commit or the version.
+  # uses: ekline-io/ekline-github-action@8fefc6800e452addf2fcc0aac994611b3dc1fdfd
+  uses: ekline-io/ekline-github-action@v6.15.0
+  with:
+    # GITHUB_TOKEN
+    github_token: # optional, default is ${{ github.token }}
+    # Working directory relative to the root directory.
+    workdir: # optional, default is .
+    # Report level for reviewdog [info,warning,error]
+    level: # optional, default is info
+    # Reporter of reviewdog command [github-pr-check,github-pr-review].
+    reporter: # optional, default is github-pr-check
+    # Filtering mode for the reviewdog command [added,diff_context,file,nofilter].
+Default is added.
+
+    filter_mode: # optional, default is added
+    # Exit code for reviewdog when errors are found [true,false]
+Default is `false`.
+
+    fail_on_error: # optional, default is false
+    # Additional reviewdog flags
+    reviewdog_flags: # optional, default is 
+    # Token for EkLine application
+    ek_token: 
+    # Content directory relative to the root directory.
+    content_dir: # optional, default is .
+    # Ignore the rules that are passed in as comma seperated values (eg: EK1,EK4)
+    ignore_rule: # optional, default is 
+    # Enable AI suggestions
+    enable_ai_suggestions: # optional
+          
